@@ -29,6 +29,7 @@ namespace _2DGame.Utility
             HandleKeys(player);
             player.UpdateVelocity(); // Maybe I shouldn't put these here but for now... /s
             player.UpdatePosition();
+            player.UpdateCharacterSpritePosition();
         }
     }
 }

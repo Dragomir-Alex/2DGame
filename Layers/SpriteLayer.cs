@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class SpriteLayer : Drawable
+    public class SpriteLayer : Layer, Drawable
     {
         public uint[,] TileIDs { get; set; }
         public Tilemap LayerTilemap { get; set; }
@@ -26,7 +26,7 @@ namespace _2DGame.Layers
             LayerMask.Load(this);
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public override void Draw(RenderTarget target, RenderStates states)
         {
             LayerTilemap.Draw(target, states);
         }

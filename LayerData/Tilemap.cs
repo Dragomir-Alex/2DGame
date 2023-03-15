@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.LayerData
 {
-    public class Tilemap : Transformable, Drawable
+    public class Tilemap : Drawable
     {
         public const uint TILE_SIZE = 32;
         private VertexArray Vertices { get; set; }

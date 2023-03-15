@@ -30,6 +30,7 @@ namespace _2DGame
             TextureManager.DrawTextures(this, view, player, backgroundLayer);
             Window.Draw(spriteLayer);
 
+
             DebugUtility.DrawPerformanceData(this, Color.White);
             DebugUtility.DrawGameData(this, player, Color.White);
         }
@@ -73,7 +74,7 @@ namespace _2DGame
         public override void LoadContent()
         {
             DebugUtility.LoadContent();
-            TextureManager.LoadTextures(backgroundLayer);
+            TextureManager.LoadTextures(player, backgroundLayer);
         }
 
         public override void Update(GameTime gameTime)

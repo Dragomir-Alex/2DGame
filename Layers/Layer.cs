@@ -8,7 +8,7 @@ using static _2DGame.Layers.BackgroundLayer;
 
 namespace _2DGame.Layers
 {
-    public abstract class Layer
+    public abstract class Layer : Drawable
     {
         public float XSpeed { get; set; }
         public float YSpeed { get; set; }
@@ -23,6 +23,8 @@ namespace _2DGame.Layers
             AutoYSpeed = 0f;
         }
 
-        public abstract void Draw(GameLoop gameLoop);
+        public abstract void Draw(RenderTarget target, RenderStates states);
+
+        //public abstract void Draw(GameLoop gameLoop);
     }
 }

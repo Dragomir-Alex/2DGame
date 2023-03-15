@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class BackgroundLayer : Layer
+    public class BackgroundLayer : Layer, Drawable
     {
         public enum BackgroundMode
         {
@@ -20,8 +20,6 @@ namespace _2DGame.Layers
         public Texture? Texture { get; set; }
         public string TextureFilename { private get; set; }
         public Sprite? Sprite { get; set; }
-        public float XScale { get; set; }
-        public float YScale { get; set; }
 
         public BackgroundMode Mode { get; set; }
 
@@ -29,36 +27,9 @@ namespace _2DGame.Layers
         {
             Mode = BackgroundMode.Default;
             Texture = null;
-            XScale = 1f;
-            YScale = 1f;
         }
 
-        public override void Draw(GameLoop gameLoop)
-        {
-            if (Sprite != null)
-            {
-                switch (Mode)
-                { 
-                    case BackgroundMode.Default:
-                        Vector2f pos = this.Sprite.Position;
-
-                        if (pos.X >= 0 || pos.X <= -(this.Sprite.TextureRect.Width / 3) * 2)
-                            Sprite.Position = new Vector2f(-(this.Sprite.TextureRect.Width / 3), pos.Y);
-                        if (pos.Y >= 0 || pos.Y <= -(this.Sprite.TextureRect.Height / 3) * 2)
-                            Sprite.Position = new Vector2f(pos.X, -(this.Sprite.TextureRect.Width / 3));
-
-                        UtilityFunctions.Move(this.Sprite, AutoXSpeed, AutoYSpeed);
-
-                        gameLoop.Window.Draw(this.Sprite);
-
-                        break;
-                    case BackgroundMode.Parallax3D:
-                        break;  
-                }
-            }
-        }
-
-        public void InitializeSprite(GameLoop gameLoop)
+        public void InitializeSprite()
         {
             if (Texture != null)
             {
@@ -77,6 +48,31 @@ namespace _2DGame.Layers
 
                     this.Sprite.TextureRect = new IntRect(0, 0, TextureRectWidth, TextureRectHeight);
                     this.Sprite.Position = new Vector2f(-TextureRectWidth / 3, -TextureRectHeight / 3);
+                }
+            }
+        }
+
+        public override void Draw(RenderTarget target, RenderStates states)
+        {
+            if (Sprite != null)
+            {
+                switch (Mode)
+                {
+                    case BackgroundMode.Default:
+                        Vector2f pos = this.Sprite.Position;
+
+                        if (pos.X >= 0 || pos.X <= -(this.Sprite.TextureRect.Width / 3) * 2)
+                            Sprite.Position = new Vector2f(-(this.Sprite.TextureRect.Width / 3), pos.Y);
+                        if (pos.Y >= 0 || pos.Y <= -(this.Sprite.TextureRect.Height / 3) * 2)
+                            Sprite.Position = new Vector2f(pos.X, -(this.Sprite.TextureRect.Width / 3));
+
+                        UtilityFunctions.Move(this.Sprite, AutoXSpeed, AutoYSpeed);
+
+                        target.Draw(this.Sprite);
+
+                        break;
+                    case BackgroundMode.Parallax3D:
+                        break;
                 }
             }
         }

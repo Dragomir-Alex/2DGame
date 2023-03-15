@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static _2DGame.Layers.BackgroundLayer;
 
 namespace _2DGame.Entities
 {
-    public class Player
+    public class Player : Drawable
     {
+        public Texture? Texture { get; set; }
         public Sprite CharacterSprite { get; set; }
         public Vector2f Position; // Not sure what to do with these at the moment, make them vars?
         public Vector2f Velocity;
@@ -22,11 +24,24 @@ namespace _2DGame.Entities
 
         public Player()
         {
+            Texture = null;
             CharacterSprite = new Sprite();
             Position = new Vector2f(100f, 200f);
             Velocity = new Vector2f(0f, 0f);
             MaxVelocity = new Vector2f(5f, 5f);
             Camera = new View();
+        }
+
+        public void InitializeSprite()
+        {
+            if (Texture != null)
+            {
+                this.Texture.Smooth = true;
+
+                Sprite playerSprite = new Sprite();
+                playerSprite.Texture = this.Texture;
+                CharacterSprite = playerSprite;
+            }
         }
 
         public void SetPlayerCamera(Vector2f center, Vector2f size)
@@ -47,6 +62,11 @@ namespace _2DGame.Entities
         {
             Position.X += Velocity.X;
             Position.Y += Velocity.Y;
+        }
+
+        public void UpdateCharacterSpritePosition()
+        {
+            CharacterSprite.Position = Position;
         }
 
         public void GainPositiveXVelocity() { Velocity.X += X_VELOCITY_GAIN; }
@@ -98,6 +118,11 @@ namespace _2DGame.Entities
 
             if (Velocity.Y < -MaxVelocity.Y)
                 Velocity.Y = -MaxVelocity.Y;
+        }
+
+        public void Draw(RenderTarget target, RenderStates states)
+        {
+            target.Draw(CharacterSprite);
         }
     }
 }
