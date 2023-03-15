@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2DGame
+namespace _2DGame.LayerData
 {
     public class Tilemap : Transformable, Drawable
     {
@@ -42,7 +42,7 @@ namespace _2DGame
 
                     //Debug.WriteLine("Vertices[" + index + 0 + "] = new Vertex(new Vector2f(" + i * TILE_SIZE + ", " + j * TILE_SIZE + "), new Vector2f(" + tileX * TILE_SIZE + ", " + tileY * TILE_SIZE + "));");
                 }
-                    
+
             }
             return true;
         }
