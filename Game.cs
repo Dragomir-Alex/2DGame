@@ -7,6 +7,7 @@ using _2DGame.Utility;
 using _2DGame.Entities;
 using _2DGame.Layers;
 using System.Diagnostics;
+using InstilledBee.SFML.SimpleCollision;
 
 namespace _2DGame
 {
@@ -30,7 +31,6 @@ namespace _2DGame
             TextureManager.DrawTextures(this, view, player, backgroundLayer);
             Window.Draw(spriteLayer);
 
-
             DebugUtility.DrawPerformanceData(this, Color.White);
             DebugUtility.DrawGameData(this, player, Color.White);
         }
@@ -49,7 +49,7 @@ namespace _2DGame
                         };*/
 
             uint[,] tiles = {
-                { 9 }
+                { 9, 10 }
             };
 
             spriteLayer = new SpriteLayer("aztec.png", "aztec_mask.png", tiles);

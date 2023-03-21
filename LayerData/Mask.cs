@@ -21,7 +21,7 @@ namespace _2DGame.LevelData
             public const bool NON_SOLID = false;
         }
 
-        public bool[,] MaskData { get; private set; }
+        public Sprite MaskSprite;
         public Image MaskImage { get; private set; }
 
         public Mask(string maskFilename)
@@ -37,7 +37,7 @@ namespace _2DGame.LevelData
             uint maskWidth = (uint)spriteLayer.TileIDs.GetLength(1) * Tilemap.TILE_SIZE;
             uint maskHeight = (uint)spriteLayer.TileIDs.GetLength(0) * Tilemap.TILE_SIZE;
 
-            MaskData = new bool[maskWidth, maskHeight];
+            Color[,] maskPixels = new Color[maskWidth, maskHeight];
 
             for (uint i = 0; i < levelWidth; ++i)
             {
@@ -55,24 +55,16 @@ namespace _2DGame.LevelData
                             uint xPixel = maskX * Tilemap.TILE_SIZE + k - i * Tilemap.TILE_SIZE;
                             uint yPixel = maskY * Tilemap.TILE_SIZE + l - j * Tilemap.TILE_SIZE;
 
-                            if (MaskImage.GetPixel(xPixel, yPixel).A != 255)
-                                MaskData[l, k] = MaskValues.SOLID;
-                            else MaskData[l, k] = MaskValues.NON_SOLID;
+                            if (MaskImage.GetPixel(xPixel, yPixel).A == 255)
+                                maskPixels[k, l] = Color.Black;
                         }
                     }
                 }
             }
 
-/*            for (int i = 0; i < maskWidth; ++i)
-            {
-                for (int j = 0; j < maskHeight; ++j)
-                {
-                    if (MaskData[j, i] == MaskValues.Solid)
-                        Debug.Write("0");
-                    else Debug.Write("1");
-                }
-                Debug.Write('\n');
-            }*/
+            Image maskFullImage = new Image(maskPixels);
+            Texture maskTexture = new Texture(maskFullImage);
+            MaskSprite = new Sprite(maskTexture);
         }
     }
 }
