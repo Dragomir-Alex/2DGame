@@ -1,11 +1,11 @@
-﻿using SFML.Graphics;
+﻿using _2DGame.LayerData;
+using _2DGame.Layers;
+using InstilledBee.SFML.SimpleCollision;
+using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static _2DGame.Layers.BackgroundLayer;
+using System.Diagnostics;
+using System.Numerics;
+using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
@@ -13,8 +13,11 @@ namespace _2DGame.Entities
     {
         public Texture? Texture { get; set; }
         public Sprite CharacterSprite { get; set; }
+        public Hitbox CharacterHitbox { get; set; }
         public Vector2f Position; // Not sure what to do with these at the moment, make them vars?
         public Vector2f Velocity;
+        public TileCoordinates TileCoordinates; // Ditto
+
         public Vector2f MaxVelocity { get; set; }
         public View Camera { get; set; }
         private const float X_VELOCITY_GAIN = 0.3f;
@@ -30,6 +33,7 @@ namespace _2DGame.Entities
             Velocity = new Vector2f(0f, 0f);
             MaxVelocity = new Vector2f(5f, 5f);
             Camera = new View();
+            TileCoordinates = new TileCoordinates();
         }
 
         public void InitializeSprite()
@@ -39,8 +43,20 @@ namespace _2DGame.Entities
                 this.Texture.Smooth = true;
 
                 Sprite playerSprite = new Sprite();
-                playerSprite.Texture = this.Texture;
+                playerSprite.Texture = Texture;
                 CharacterSprite = playerSprite;
+                UpdateSpritePosition();
+                CollisionTester.AddBitMask(Texture);
+            }
+        }
+
+        public void InitializeHitbox()
+        {
+            if (CharacterSprite != null)
+            {
+                Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(Texture.Size.X, 0), new Vector2(Texture.Size.X, Texture.Size.Y), new Vector2(0, Texture.Size.Y), new Vector2(0, 0) };
+                CharacterHitbox = new Hitbox(vector2Arr);
+                UpdateHitboxPosition();
             }
         }
 
@@ -58,15 +74,104 @@ namespace _2DGame.Entities
                 Camera.Center = new Vector2f(screenWidth / 2, Position.Y + CharacterSprite.Texture.Size.Y);
         }
 
-        public void UpdatePosition()
+        public void UpdatePosition(SpriteLayer spriteLayer)
         {
             Position.X += Velocity.X;
             Position.Y += Velocity.Y;
+
+            UpdateAllPositionProperties();
+
+            List<Tuple<Hitbox, int, int>> collidedTiles = PlayerLevelCollision(spriteLayer);
+            if (collidedTiles.Count != 0)
+            {
+                RemoveCharacterFromSolidTiles(collidedTiles);
+            }
         }
 
-        public void UpdateCharacterSpritePosition()
+        public List<Tuple<Hitbox, int, int>> PlayerLevelCollision(SpriteLayer spriteLayer)
         {
-            CharacterSprite.Position = Position;
+            List<Tuple<Hitbox, int, int>> collidedTiles = new();
+
+            for (int i = TileCoordinates.X - 2; i <= TileCoordinates.X + 2; ++i)
+            {
+                for (int j = TileCoordinates.Y - 2; j <= TileCoordinates.Y + 2; ++j)
+                {
+                    if (spriteLayer.LayerTilemap.TileHitboxData.ContainsKey((j, i)))
+                    {
+                        if (spriteLayer.LayerTilemap.TileHitboxData[(j, i)].Overlaps(CharacterHitbox))
+                        {
+                            var newTile = new Tuple<Hitbox, int, int>(spriteLayer.LayerTilemap.TileHitboxData[(j, i)], j, i);
+                            collidedTiles.Add(newTile);
+                        }
+                    }
+                }
+            }
+            return collidedTiles;
+        }
+
+        public void RemoveCharacterFromSolidTiles(List<Tuple<Hitbox, int, int>> collidedTiles)
+        {
+            foreach (var collidedTile in collidedTiles)
+            {
+                foreach (var crossPoint in CharacterHitbox.CrossPointsWith(collidedTile.Item1))
+                {
+                    float xDisplacement, yDisplacement;
+
+                    if (crossPoint.X > Position.X)  // Left collision
+                    {
+                        xDisplacement = -(Position.X + Texture.Size.X / 2 - collidedTile.Item3 * Tilemap.TILE_SIZE);
+                    }
+                    else                            // Right collision
+                    {
+                        xDisplacement = (collidedTile.Item3 + 1) * Tilemap.TILE_SIZE - (Position.X - Texture.Size.X / 2);
+                    }
+
+                    if (crossPoint.Y > Position.Y)  // Top collision
+                    {
+                        yDisplacement = -(Position.Y + Texture.Size.Y / 2 - collidedTile.Item2 * Tilemap.TILE_SIZE);
+                    }
+                    else                            // Bottom collision
+                    {
+                        yDisplacement = (collidedTile.Item2 + 1) * Tilemap.TILE_SIZE - (Position.Y - Texture.Size.Y / 2);
+                    }
+
+                    if (Math.Abs(xDisplacement) <= Math.Abs(yDisplacement))
+                        Position.X += xDisplacement;
+                    else Position.Y += yDisplacement;
+                }
+            }
+
+            UpdateAllPositionProperties();
+        }
+
+        public void UpdateSpritePosition()
+        {
+            CharacterSprite.Position = new Vector2f(Position.X - Texture.Size.X / 2, Position.Y - Texture.Size.Y / 2);
+        }
+
+        public void UpdateHitboxPosition()
+        {
+            TransformableHitbox2D.Transform transform = new();
+            transform.Position = new Vector2(CharacterSprite.Position.X, CharacterSprite.Position.Y);
+            CharacterHitbox.Transform(transform);
+        }
+
+        public void UpdateTileCoordinates()
+        {
+            TileCoordinates.X = (int)((int)Position.X / LayerData.Tilemap.TILE_SIZE);
+            if (Position.X < 0)
+                TileCoordinates.X--;
+
+            TileCoordinates.Y = (int)((int)Position.Y / LayerData.Tilemap.TILE_SIZE);
+            if (Position.Y < 0)
+                TileCoordinates.Y--;
+        }
+
+        public void UpdateAllPositionProperties()
+        {
+            UpdateSpritePosition();
+            UpdateHitboxPosition();
+            UpdateTileCoordinates();
         }
 
         public void GainPositiveXVelocity() { Velocity.X += X_VELOCITY_GAIN; }

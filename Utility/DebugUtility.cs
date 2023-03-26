@@ -27,11 +27,11 @@ namespace _2DGame.Utility
             float fps = 1f / gameLoop.GameTime.DeltaTime;
             string fpsStr = fps.ToString("0.00");
 
-            Text textA = new Text(totalTimeElapsedStr, consoleFont, 14);
+            Text textA = new Text("Time elapsed: " + totalTimeElapsedStr, consoleFont, 14);
             textA.Position = new Vector2f(4f, 8f);
             textA.FillColor = color;
 
-            Text textB = new Text(deltaTimeStr, consoleFont, 14);
+            Text textB = new Text("Delta time: " + deltaTimeStr, consoleFont, 14);
             textB.Position = new Vector2f(4f, 28f);
             textB.FillColor = color;
 
@@ -51,12 +51,24 @@ namespace _2DGame.Utility
             if (consoleFont == null) return;
 
             string playerPositionStr = "X: " + player.Position.X.ToString() + "  Y: " + player.Position.Y.ToString();
+            string playerVelocityStr = "X-Vel: " + player.Velocity.X.ToString() + " Y-Vel: " + player.Velocity.Y.ToString();
+            string playerTileCoordinatesStr = "X-Tile: " + player.TileCoordinates.X.ToString() + " Y-Tile: " + player.TileCoordinates.Y.ToString();
 
-            Text text = new Text(playerPositionStr, consoleFont, 14);
-            text.Position = new Vector2f(4f, 68f);
-            text.FillColor = color;
+            Text positionText = new Text(playerPositionStr, consoleFont, 14);
+            positionText.Position = new Vector2f(4f, 68f);
+            positionText.FillColor = color;
 
-            gameLoop.Window.Draw(text);
+            Text velocityText = new Text(playerVelocityStr, consoleFont, 14);
+            velocityText.Position = new Vector2f(4f, 88f);
+            velocityText.FillColor = color;
+
+            Text tileCoordinatesText = new Text(playerTileCoordinatesStr, consoleFont, 14);
+            tileCoordinatesText.Position = new Vector2f(4f, 108f);
+            tileCoordinatesText.FillColor = color;
+
+            gameLoop.Window.Draw(positionText);
+            gameLoop.Window.Draw(velocityText);
+            gameLoop.Window.Draw(tileCoordinatesText);
         }
 
         public static void DrawMessage(GameLoop gameLoop, string message, Color color)

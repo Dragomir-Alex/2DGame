@@ -8,6 +8,7 @@ using _2DGame.Entities;
 using _2DGame.Layers;
 using System.Diagnostics;
 using InstilledBee.SFML.SimpleCollision;
+using TransformableHitbox2D;
 
 namespace _2DGame
 {
@@ -31,6 +32,21 @@ namespace _2DGame
             TextureManager.DrawTextures(this, view, player, backgroundLayer);
             Window.Draw(spriteLayer);
 
+            // DEbug start
+            CircleShape shape = new CircleShape(2);
+            shape.FillColor = new Color(100, 250, 50);
+            shape.Position = player.Position;
+            Window.Draw(shape);
+
+            foreach (var line in player.CharacterHitbox.Lines)
+            {
+                CircleShape shape2 = new CircleShape(2);
+                shape2.FillColor = new Color(200, 50, 50);
+                shape2.Position = new Vector2f(line.A.X, line.A.Y);
+                Window.Draw(shape2);
+            }
+            //Debug end
+
             DebugUtility.DrawPerformanceData(this, Color.White);
             DebugUtility.DrawGameData(this, player, Color.White);
         }
@@ -49,7 +65,7 @@ namespace _2DGame
                         };*/
 
             uint[,] tiles = {
-                { 9, 10 }
+                { 0, 0, 0, 0, 0, 0, 0, 9, 10 }
             };
 
             spriteLayer = new SpriteLayer("aztec.png", "aztec_mask.png", tiles);
@@ -68,6 +84,7 @@ namespace _2DGame
             level.TrackFilename = "lush.ogg";
             level.InitializeLevel(this);
             TextureManager.InitializeSprites(this, player, backgroundLayer);
+            player.InitializeHitbox();
             SoundManager.SetMusicVolume(settings.MusicVolume);
         }
 
@@ -79,7 +96,7 @@ namespace _2DGame
 
         public override void Update(GameTime gameTime)
         {
-            KeyboardManager.Update(player);
+            KeyboardManager.Update(player, spriteLayer);
             SoundManager.PlayMusic();
             player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         }

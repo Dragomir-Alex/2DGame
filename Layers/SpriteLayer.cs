@@ -1,5 +1,4 @@
 ﻿using _2DGame.LayerData;
-using _2DGame.LevelData;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -15,15 +14,12 @@ namespace _2DGame.Layers
     {
         public uint[,] TileIDs { get; set; }
         public Tilemap LayerTilemap { get; set; }
-        public Mask? LayerMask { get; set; }
 
         public SpriteLayer(string tilesetFilename, string maskFilename, uint[,] tileIDs)
         {
             TileIDs = tileIDs;
             LayerTilemap = new Tilemap(tilesetFilename);
             LayerTilemap.Load(tileIDs);
-            LayerMask = new Mask(maskFilename);
-            LayerMask.Load(this);
         }
 
         public override void Draw(RenderTarget target, RenderStates states)
