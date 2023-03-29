@@ -9,9 +9,9 @@ namespace _2DGame.Utility
     {
         public const string CONSOLE_FONT_PATH = "./Data/Fonts/8bitOperatorPlus-Regular.ttf";
 
-        public static Font consoleFont;
+        private static Font consoleFont;
 
-        public static void LoadContent()
+        public static void LoadFont()
         {
             consoleFont = new Font(CONSOLE_FONT_PATH);
         }

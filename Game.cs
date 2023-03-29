@@ -18,21 +18,22 @@ namespace _2DGame
         public const uint DEFAULT_WINDOW_HEIGHT = 720;
         public const string WINDOW_TITLE = "Game";
         public const uint LAYER_COUNT = 8;
+        public const uint PRIMARY_LAYER = 3;
+        public const uint BACKGROUND_LAYER = 7;
 
         public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
         private Player player;
         private View view;
-        private BackgroundLayer backgroundLayer;
-        private SpriteLayer spriteLayer;
+        private Layer[] layers;
         private Level level;
         private Settings settings;
 
         public override void Draw(GameTime gameTime)
         {
-            TextureManager.DrawTextures(this, view, player, backgroundLayer);
-            Window.Draw(spriteLayer);
+            TextureManager.DrawTextures(this, view, player, (BackgroundLayer)layers[BACKGROUND_LAYER]);
+            Window.Draw((SpriteLayer)layers[PRIMARY_LAYER]);
 
-            // DEbug start
+            // Debug start
             CircleShape shape = new CircleShape(2);
             shape.FillColor = new Color(100, 250, 50);
             shape.Position = player.Position;
@@ -54,22 +55,8 @@ namespace _2DGame
         public override void Instantiate()
         {
             player = new Player();
-            backgroundLayer = new BackgroundLayer();
-
-            //TEST
-
-            /*            uint[,] tiles = {
-                            { 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-                            { 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19},
-                            { 0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29}
-                        };*/
-
-            uint[,] tiles = {
-                { 0, 0, 0, 0, 0, 0, 0, 9, 10 }
-            };
-
-            spriteLayer = new SpriteLayer("aztec.png", "aztec_mask.png", tiles);
-
+            layers = new Layer[LAYER_COUNT];
+            InstantiateLayers();
             level = new Level();
             settings = new Settings();
         }
@@ -77,28 +64,81 @@ namespace _2DGame
         public override void Initialize()
         {
             settings.MusicVolume = 0;
-            backgroundLayer.AutoXSpeed = -1;
-            backgroundLayer.AutoYSpeed = -1;
+
+            // Testing
+            List<uint[,]> tilesList = new();
+            uint[,] tiles = {
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 10, 10, 10, 10, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 10, 10, 10, 10, 0, 0 },
+            };
+
+            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(tiles);
+            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(new uint[0, 0]);
+
+            InitializeLayers("aztec.png", tilesList);
+
             player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
             view = player.Camera;
+
             level.TrackFilename = "lush.ogg";
             level.InitializeLevel(this);
-            TextureManager.InitializeSprites(this, player, backgroundLayer);
-            player.InitializeHitbox();
+
+            TextureManager.InitializeSprites(this, player, (BackgroundLayer)layers[BACKGROUND_LAYER]);
             SoundManager.SetMusicVolume(settings.MusicVolume);
+
+            player.InitializeHitbox();
         }
 
         public override void LoadContent()
         {
-            DebugUtility.LoadContent();
-            TextureManager.LoadTextures(player, backgroundLayer);
+            DebugUtility.LoadFont();
+            TextureManager.LoadTextures(player, (BackgroundLayer)layers[BACKGROUND_LAYER]);
         }
 
         public override void Update(GameTime gameTime)
         {
-            KeyboardManager.Update(player, spriteLayer);
+            KeyboardManager.Update(player, (SpriteLayer)layers[PRIMARY_LAYER]);
             SoundManager.PlayMusic();
             player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        }
+
+        private  void InstantiateLayers()
+        {
+            for (int i = 0; i < LAYER_COUNT - 1; ++i)
+            {
+                layers[i] = new SpriteLayer();
+            }
+            layers[LAYER_COUNT - 1] = new BackgroundLayer();
+        }
+
+        private void InitializeLayers(string tilesetFilename, List<uint[,]> tilesList)
+        {
+            for (int i = 0; i < LAYER_COUNT - 1; ++i)
+            {
+                if (i == PRIMARY_LAYER)
+                {
+                    SpriteLayer tmpSpriteLayer = (SpriteLayer)layers[i];
+                    tmpSpriteLayer.Initialize(tilesetFilename, tilesList[i], true);
+                    layers[i] = tmpSpriteLayer;
+                }
+                else
+                {
+                    SpriteLayer tmpSpriteLayer = (SpriteLayer)layers[i];
+                    tmpSpriteLayer.Initialize(tilesetFilename, tilesList[i], false);
+                    layers[i] = tmpSpriteLayer;
+                }
+            }
+
+            layers[LAYER_COUNT - 1].AutoXSpeed = -1;
+            layers[LAYER_COUNT - 1].AutoYSpeed = -1;
         }
     }
 }

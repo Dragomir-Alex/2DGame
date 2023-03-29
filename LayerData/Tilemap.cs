@@ -20,7 +20,7 @@ namespace _2DGame.LayerData
         private VertexArray Vertices { get; set; }
         private Texture? Tileset { get; set; }
 
-        public bool Load(uint[,] tileIDs)
+        public bool Load(uint[,] tileIDs, bool initializeHitboxDictionary)
         {
             uint width = (uint)tileIDs.GetLength(1);
             uint height = (uint)tileIDs.GetLength(0);
@@ -37,7 +37,7 @@ namespace _2DGame.LayerData
                     uint tileX = tileNumber % (Tileset.Size.X / TILE_SIZE);
                     uint tileY = tileNumber / (Tileset.Size.X / TILE_SIZE);
 
-                    if (tileNumber != 0) // Initialize hitbox dictionary
+                    if (initializeHitboxDictionary && tileNumber != 0) // Initialize hitbox dictionary
                     {
                         Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(TILE_SIZE, 0), new Vector2(TILE_SIZE, TILE_SIZE), new Vector2(0, TILE_SIZE), new Vector2(0, 0) };
                         Hitbox hitbox = new Hitbox(vector2Arr);

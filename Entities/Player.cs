@@ -29,7 +29,7 @@ namespace _2DGame.Entities
         {
             Texture = null;
             CharacterSprite = new Sprite();
-            Position = new Vector2f(100f, 200f);
+            Position = new Vector2f(100, 200);
             Velocity = new Vector2f(0f, 0f);
             MaxVelocity = new Vector2f(5f, 5f);
             Camera = new View();
@@ -68,16 +68,16 @@ namespace _2DGame.Entities
 
         public void UpdatePlayerCamera(uint screenWidth, uint screenHeight)
         {
-            if (Position.X + CharacterSprite.Texture.Size.X > screenWidth / 2)
-                Camera.Center = new Vector2f(Position.X + CharacterSprite.Texture.Size.X, Position.Y + CharacterSprite.Texture.Size.Y);
+            if ((int)Position.X + CharacterSprite.Texture.Size.X > screenWidth / 2)
+                Camera.Center = new Vector2f((int)Position.X + CharacterSprite.Texture.Size.X, (int)Position.Y + CharacterSprite.Texture.Size.Y);
             else
-                Camera.Center = new Vector2f(screenWidth / 2, Position.Y + CharacterSprite.Texture.Size.Y);
+                Camera.Center = new Vector2f(screenWidth / 2, (int)Position.Y + CharacterSprite.Texture.Size.Y);
         }
 
         public void UpdatePosition(SpriteLayer spriteLayer)
         {
-            Position.X += Velocity.X;
-            Position.Y += Velocity.Y;
+            Position.X += (int)Velocity.X;
+            Position.Y += (int)Velocity.Y;
 
             UpdateAllPositionProperties();
 
