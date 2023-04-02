@@ -1,4 +1,5 @@
-﻿using _2DGame.LayerData;
+﻿using _2DGame.ExternalLibraries;
+using _2DGame.LayerData;
 using NetTopologySuite.Triangulate;
 using SFML.Graphics;
 using SFML.System;
@@ -13,21 +14,21 @@ namespace _2DGame.Layers
 {
     public class SpriteLayer : Layer, Drawable
     {
-        public uint[,] TileIDs { get; set; }
+        public TileData? TileIDs { get; set; }
         public Tilemap LayerTilemap { get; set; }
 
         public SpriteLayer() : base()
         {
-            TileIDs = new uint[0, 0];
+            TileIDs = null;
             LayerTilemap = null;
         }
 
-        public SpriteLayer(string tilesetFilename, uint[,] tileIDs, bool initializeHitboxDirectory) : base()
+        public SpriteLayer(string tilesetFilename, TileData tileIDs, bool initializeHitboxDirectory) : base()
         {
             Initialize(tilesetFilename, tileIDs, initializeHitboxDirectory);
         }
 
-        public void Initialize(string tilesetFilename, uint[,] tileIDs, bool initializeHitboxDirectory)
+        public void Initialize(string tilesetFilename, TileData tileIDs, bool initializeHitboxDirectory)
         {
             TileIDs = tileIDs;
             LayerTilemap = new Tilemap(tilesetFilename);

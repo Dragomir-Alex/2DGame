@@ -26,7 +26,7 @@ namespace _2DGame.Utility
 
         public static void DrawTextures(GameLoop gameLoop, View view, Player player, BackgroundLayer backgroundLayer)
         {
-            gameLoop.Window.SetView(gameLoop.Window.DefaultView); // For UI and backgrounds only
+            gameLoop.Window.SetView(gameLoop.Window.DefaultView); // For UI and background only
 
             gameLoop.Window.Draw(backgroundLayer);
 

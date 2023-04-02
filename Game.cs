@@ -9,6 +9,7 @@ using _2DGame.Layers;
 using System.Diagnostics;
 using InstilledBee.SFML.SimpleCollision;
 using TransformableHitbox2D;
+using _2DGame.ExternalLibraries;
 
 namespace _2DGame
 {
@@ -66,22 +67,32 @@ namespace _2DGame
             settings.MusicVolume = 0;
 
             // Testing
-            List<uint[,]> tilesList = new();
-            uint[,] tiles = {
+            List<TileData> tilesList = new();
+            TileData tiles = new TileData(new int[,]{
                 { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 10, 10, 10, 10, 0, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 10, 10, 10, 10, 0, 0 },
-            };
+                { 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 10, 10, 10, 10, 0, 0 }
+            });
 
-            tilesList.Add(new uint[0, 0]);
-            tilesList.Add(new uint[0, 0]);
-            tilesList.Add(new uint[0, 0]);
+            TileData tilesBg = new TileData(new int[,] {
+                { 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 },
+                { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 },
+                { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 },
+                { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 },
+                { 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 },
+                { 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 },
+                { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 },
+            });
+
+            tilesList.Add(null);
+            tilesList.Add(null);
+            tilesList.Add(null);
             tilesList.Add(tiles);
-            tilesList.Add(new uint[0, 0]);
-            tilesList.Add(new uint[0, 0]);
-            tilesList.Add(new uint[0, 0]);
+            tilesList.Add(null);
+            tilesList.Add(null);
+            tilesList.Add(null);
 
             InitializeLayers("aztec.png", tilesList);
 
@@ -110,7 +121,7 @@ namespace _2DGame
             player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         }
 
-        private  void InstantiateLayers()
+        private void InstantiateLayers()
         {
             for (int i = 0; i < LAYER_COUNT - 1; ++i)
             {
@@ -119,21 +130,17 @@ namespace _2DGame
             layers[LAYER_COUNT - 1] = new BackgroundLayer();
         }
 
-        private void InitializeLayers(string tilesetFilename, List<uint[,]> tilesList)
+        private void InitializeLayers(string tilesetFilename, List<TileData> tilesList)
         {
             for (int i = 0; i < LAYER_COUNT - 1; ++i)
             {
                 if (i == PRIMARY_LAYER)
                 {
-                    SpriteLayer tmpSpriteLayer = (SpriteLayer)layers[i];
-                    tmpSpriteLayer.Initialize(tilesetFilename, tilesList[i], true);
-                    layers[i] = tmpSpriteLayer;
+                    (layers[i] as SpriteLayer).Initialize(tilesetFilename, tilesList[i], true);
                 }
                 else
                 {
-                    SpriteLayer tmpSpriteLayer = (SpriteLayer)layers[i];
-                    tmpSpriteLayer.Initialize(tilesetFilename, tilesList[i], false);
-                    layers[i] = tmpSpriteLayer;
+                    (layers[i] as SpriteLayer).Initialize(tilesetFilename, tilesList[i], false);
                 }
             }
 

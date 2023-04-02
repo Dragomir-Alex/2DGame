@@ -1,4 +1,5 @@
-﻿using _2DGame.Utility;
+﻿using _2DGame.ExternalLibraries;
+using _2DGame.Utility;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -20,22 +21,25 @@ namespace _2DGame.LayerData
         private VertexArray Vertices { get; set; }
         private Texture? Tileset { get; set; }
 
-        public bool Load(uint[,] tileIDs, bool initializeHitboxDictionary)
+        public bool Load(TileData tileIDs, bool initializeHitboxDictionary)
         {
-            uint width = (uint)tileIDs.GetLength(1);
-            uint height = (uint)tileIDs.GetLength(0);
+            if (tileIDs == null)
+                return false;
+
+            int width = tileIDs.Width();
+            int height = tileIDs.Height();
 
             Vertices.PrimitiveType = PrimitiveType.Quads;
-            Vertices.Resize(width * height * 4);
+            Vertices.Resize((uint)(width * height * 4));
 
             for (uint i = 0; i < width; ++i)
             {
                 for (uint j = 0; j < height; ++j)
                 {
-                    uint tileNumber = tileIDs[j, i];
+                    int tileNumber = tileIDs.GetTile(((int, int))(j, i));
 
-                    uint tileX = tileNumber % (Tileset.Size.X / TILE_SIZE);
-                    uint tileY = tileNumber / (Tileset.Size.X / TILE_SIZE);
+                    uint tileX = (uint)(tileNumber % (Tileset.Size.X / TILE_SIZE));
+                    uint tileY = (uint)(tileNumber / (Tileset.Size.X / TILE_SIZE));
 
                     if (initializeHitboxDictionary && tileNumber != 0) // Initialize hitbox dictionary
                     {
@@ -48,7 +52,7 @@ namespace _2DGame.LayerData
                         TileHitboxData.Add(((int)j, (int)i), hitbox);
                     }
 
-                    uint index = (i + j * width) * 4;
+                    uint index = (uint)((i + j * width) * 4);
 
                     Vertices[index + 0] = new Vertex(new Vector2f(i * TILE_SIZE, j * TILE_SIZE), new Vector2f(tileX * TILE_SIZE, tileY * TILE_SIZE));
                     Vertices[index + 1] = new Vertex(new Vector2f((i + 1) * TILE_SIZE, j * TILE_SIZE), new Vector2f((tileX + 1) * TILE_SIZE, tileY * TILE_SIZE));

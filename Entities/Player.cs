@@ -106,6 +106,7 @@ namespace _2DGame.Entities
                     }
                 }
             }
+
             return collidedTiles;
         }
 
