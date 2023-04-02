@@ -31,7 +31,7 @@ namespace _2DGame
 
         public override void Draw(GameTime gameTime)
         {
-            TextureManager.DrawTextures(this, view, player, (BackgroundLayer)layers[BACKGROUND_LAYER]);
+            TextureManager.DrawTextures(this, view, player, (BackgroundLayer)layers[BACKGROUND_LAYER], (DetailLayer)layers[5]);
             Window.Draw((SpriteLayer)layers[PRIMARY_LAYER]);
 
             // Debug start
@@ -91,7 +91,7 @@ namespace _2DGame
             tilesList.Add(null);
             tilesList.Add(tiles);
             tilesList.Add(null);
-            tilesList.Add(null);
+            tilesList.Add(tilesBg);
             tilesList.Add(null);
 
             InitializeLayers("aztec.png", tilesList);
@@ -102,7 +102,7 @@ namespace _2DGame
             level.TrackFilename = "lush.ogg";
             level.InitializeLevel(this);
 
-            TextureManager.InitializeSprites(this, player, (BackgroundLayer)layers[BACKGROUND_LAYER]);
+            TextureManager.InitializeSprites(this, player, (BackgroundLayer)layers[BACKGROUND_LAYER], (DetailLayer)layers[5]);
             SoundManager.SetMusicVolume(settings.MusicVolume);
 
             player.InitializeHitbox();
@@ -119,14 +119,16 @@ namespace _2DGame
             KeyboardManager.Update(player, (SpriteLayer)layers[PRIMARY_LAYER]);
             SoundManager.PlayMusic();
             player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+            foreach (var layer in layers) { layer.Update(player.Camera); }
         }
 
         private void InstantiateLayers()
         {
             for (int i = 0; i < LAYER_COUNT - 1; ++i)
             {
-                layers[i] = new SpriteLayer();
+                layers[i] = new DetailLayer();
             }
+            layers[PRIMARY_LAYER] = new SpriteLayer();
             layers[LAYER_COUNT - 1] = new BackgroundLayer();
         }
 
@@ -134,13 +136,16 @@ namespace _2DGame
         {
             for (int i = 0; i < LAYER_COUNT - 1; ++i)
             {
-                if (i == PRIMARY_LAYER)
+                if (layers[i] != null)
                 {
-                    (layers[i] as SpriteLayer).Initialize(tilesetFilename, tilesList[i], true);
-                }
-                else
-                {
-                    (layers[i] as SpriteLayer).Initialize(tilesetFilename, tilesList[i], false);
+                    if (i == PRIMARY_LAYER)
+                    {
+                        (layers[i] as SpriteLayer).Initialize(tilesetFilename, tilesList[i]);
+                    }
+                    else
+                    {
+                        (layers[i] as DetailLayer).Initialize(tilesetFilename, tilesList[i]);
+                    }
                 }
             }
 

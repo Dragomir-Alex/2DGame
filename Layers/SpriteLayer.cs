@@ -23,16 +23,21 @@ namespace _2DGame.Layers
             LayerTilemap = null;
         }
 
-        public SpriteLayer(string tilesetFilename, TileData tileIDs, bool initializeHitboxDirectory) : base()
+        public SpriteLayer(string tilesetFilename, TileData tileIDs) : base()
         {
-            Initialize(tilesetFilename, tileIDs, initializeHitboxDirectory);
+            Initialize(tilesetFilename, tileIDs);
         }
 
-        public void Initialize(string tilesetFilename, TileData tileIDs, bool initializeHitboxDirectory)
+        public void Initialize(string tilesetFilename, TileData tileIDs)
         {
             TileIDs = tileIDs;
             LayerTilemap = new Tilemap(tilesetFilename);
-            LayerTilemap.Load(tileIDs, initializeHitboxDirectory);
+            LayerTilemap.Load(tileIDs, true);
+        }
+
+        public override void Update(View view)
+        {
+            // Do nothing
         }
 
         public override void Draw(RenderTarget target, RenderStates states)

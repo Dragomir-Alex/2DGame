@@ -18,17 +18,19 @@ namespace _2DGame.Utility
             background.Texture = new Texture(TEXTURES_PATH + "background.png");
         }
 
-        public static void InitializeSprites(Game gameLoop, Player player, BackgroundLayer background)
+        public static void InitializeSprites(Game gameLoop, Player player, BackgroundLayer background, DetailLayer detailLayer)
         {
             player.InitializeSprite();
             background.InitializeSprite();
+            detailLayer.InitializeSprite();
         }
 
-        public static void DrawTextures(GameLoop gameLoop, View view, Player player, BackgroundLayer backgroundLayer)
+        public static void DrawTextures(GameLoop gameLoop, View view, Player player, BackgroundLayer backgroundLayer, DetailLayer detailLayer)
         {
             gameLoop.Window.SetView(gameLoop.Window.DefaultView); // For UI and background only
 
             gameLoop.Window.Draw(backgroundLayer);
+            gameLoop.Window.Draw(detailLayer);
 
             gameLoop.Window.SetView(view); // Player camera
 

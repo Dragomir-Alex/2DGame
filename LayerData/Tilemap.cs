@@ -18,8 +18,10 @@ namespace _2DGame.LayerData
         public const uint TILE_SIZE = 32;
         //public enum MaskShape { Square } // More TBA maybe, too lazy atm
         public Dictionary<(int, int), Hitbox> TileHitboxData { get; }
-        private VertexArray Vertices { get; set; }
-        private Texture? Tileset { get; set; }
+        public VertexArray Vertices { get; set; }
+        public Texture? Tileset { get; set; }
+        public uint PixelWidth { get; private set; }
+        public uint PixelHeight { get; private set; }
 
         public bool Load(TileData tileIDs, bool initializeHitboxDictionary)
         {
@@ -28,6 +30,9 @@ namespace _2DGame.LayerData
 
             int width = tileIDs.Width();
             int height = tileIDs.Height();
+
+            PixelWidth = (uint)width * TILE_SIZE;
+            PixelHeight = (uint)height * TILE_SIZE;
 
             Vertices.PrimitiveType = PrimitiveType.Quads;
             Vertices.Resize((uint)(width * height * 4));

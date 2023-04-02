@@ -23,6 +23,7 @@ namespace _2DGame.Layers
             AutoYSpeed = 0f;
         }
 
+        public abstract void Update(View view);
         public abstract void Draw(RenderTarget target, RenderStates states);
 
         //public abstract void Draw(GameLoop gameLoop);
