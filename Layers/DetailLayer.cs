@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static _2DGame.Layers.BackgroundLayer;
 
 namespace _2DGame.Layers
 {
@@ -32,11 +31,11 @@ namespace _2DGame.Layers
             TileIDs = null;
             LayerTilemap = null;
             XOffset = 0f;
-            YOffset = 355f;
-            RepeatX = true;
+            YOffset = 0f;
+            RepeatX = false;
             RepeatY = false;
-            XSpeed = 200f;
-            YSpeed = 100f;
+            XSpeed = 0f;
+            YSpeed = 0f;
             XCameraOffset = 0f;
             YCameraOffset = 0f;
         }
@@ -124,7 +123,6 @@ namespace _2DGame.Layers
                 target.Draw(LayerSprite);
                 UtilityFunctions.Move(LayerSprite, -XCameraOffset, -YCameraOffset);
             }
-            // target.Draw(Sprite);
         }
     }
 }
