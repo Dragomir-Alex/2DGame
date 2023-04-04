@@ -41,12 +41,12 @@ namespace _2DGame.LayerData
             {
                 for (uint j = 0; j < height; ++j)
                 {
-                    int tileNumber = tileIDs.GetTile(((int, int))(j, i));
+                    int tileNumber = tileIDs.GetTile(((int, int))(i, j));
 
-                    uint tileX = (uint)(tileNumber % (Tileset.Size.X / TILE_SIZE));
-                    uint tileY = (uint)(tileNumber / (Tileset.Size.X / TILE_SIZE));
+                    if (tileNumber == -1)
+                        continue;
 
-                    if (initializeHitboxDictionary && tileNumber != 0) // Initialize hitbox dictionary
+                    if (initializeHitboxDictionary) // Initialize hitbox dictionary
                     {
                         Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(TILE_SIZE, 0), new Vector2(TILE_SIZE, TILE_SIZE), new Vector2(0, TILE_SIZE), new Vector2(0, 0) };
                         Hitbox hitbox = new Hitbox(vector2Arr);
@@ -56,6 +56,9 @@ namespace _2DGame.LayerData
                         hitbox.Transform(transform);
                         TileHitboxData.Add(((int)j, (int)i), hitbox);
                     }
+
+                    uint tileX = (uint)(tileNumber % (Tileset.Size.X / TILE_SIZE));
+                    uint tileY = (uint)(tileNumber / (Tileset.Size.X / TILE_SIZE));
 
                     uint index = (uint)((i + j * width) * 4);
 

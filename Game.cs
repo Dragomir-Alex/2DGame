@@ -83,7 +83,7 @@ namespace _2DGame
         {
             DebugUtility.LoadFont();
             TextureManager.LoadTextures(player);
-            level.LoadData();
+            level.LoadData("test.tmx");
         }
 
         public override void Update(GameTime gameTime)

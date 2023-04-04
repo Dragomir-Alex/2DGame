@@ -111,7 +111,6 @@ namespace _2DGame.Layers
                 YCameraOffset = (int)(-YSpeed * camera.Center.Y / (Game.DEFAULT_WINDOW_HEIGHT / 2));
 
                 UtilityFunctions.Move(LayerSprite, AutoXSpeed, AutoYSpeed);
-                Debug.WriteLine(XCameraOffset + " " + YCameraOffset);
             }
         }
 

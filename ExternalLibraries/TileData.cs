@@ -187,8 +187,8 @@ namespace _2DGame.ExternalLibraries
         #region Backend
         private readonly int[,] tiles;
 
-        public int Width() { return tiles.GetLength(1); }
-        public int Height() { return tiles.GetLength(0); }
+        public int Height() { return tiles.GetLength(1); }
+        public int Width() { return tiles.GetLength(0); }
         public int GetTile((int, int) position)
         {
             var (x, y) = position; 
