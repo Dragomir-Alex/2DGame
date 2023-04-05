@@ -15,8 +15,6 @@ namespace _2DGame.Layers
 {
     public class DetailLayer : Layer, Drawable
     {
-        public TileData? TileIDs { get; set; }
-        public Tilemap LayerTilemap { get; set; }
         public Texture? LayerTexture { get; set; }
         public Sprite? LayerSprite { get; set; }
         public float XOffset { get; set; }
@@ -34,8 +32,6 @@ namespace _2DGame.Layers
             YOffset = 0f;
             RepeatX = false;
             RepeatY = false;
-            XSpeed = 0f;
-            YSpeed = 0f;
             XCameraOffset = 0f;
             YCameraOffset = 0f;
         }
@@ -48,6 +44,8 @@ namespace _2DGame.Layers
         public void Initialize(string tilesetFilename, TileData tileIDs)
         {
             TileIDs = tileIDs;
+            Width = tileIDs.Width();
+            Height = tileIDs.Height();
             LayerTilemap = new Tilemap(tilesetFilename);
             LayerTilemap.Load(tileIDs, false);
 

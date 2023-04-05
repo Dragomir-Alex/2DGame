@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿using _2DGame.ExternalLibraries;
+using _2DGame.LayerData;
+using SFML.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,10 @@ namespace _2DGame.Layers
         public float YSpeed { get; set; }
         public float AutoXSpeed { get; set; }
         public float AutoYSpeed { get; set; }
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
+        public TileData? TileIDs { get; set; }
+        public Tilemap LayerTilemap { get; set; }
 
         public Layer()
         {
@@ -20,6 +26,8 @@ namespace _2DGame.Layers
             YSpeed = 1f;
             AutoXSpeed = 0f;
             AutoYSpeed = 0f;
+            Width = 0;
+            Height = 0;
         }
 
         public abstract void Update(View view);

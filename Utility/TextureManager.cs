@@ -17,17 +17,17 @@ namespace _2DGame.Utility
             player.Texture = new Texture(TEXTURES_PATH + "player.png");
         }
 
-        public static void InitializeSprites(Game gameLoop, Player player, Layer[] layers)
+        public static void InitializeSprites(Game gameLoop, Player player, LayerList layers)
         {
             player.InitializeSprite();
             foreach (var layer in layers)
             {
-                if (layer is DetailLayer)
-                    ((DetailLayer)layer).InitializeSprite();
+                if (layer is DetailLayer detailLayer)
+                    detailLayer.InitializeSprite();
             }
         }
 
-        public static void DrawTextures(GameLoop gameLoop, View view, Player player, Layer[] layers)
+        public static void DrawTextures(GameLoop gameLoop, View view, Player player, LayerList layers)
         {
             foreach (var layer in layers.Reverse())
             {

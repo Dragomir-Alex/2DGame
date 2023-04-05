@@ -14,9 +14,7 @@ namespace _2DGame.Layers
 {
     public class SpriteLayer : Layer, Drawable
     {
-        public TileData? TileIDs { get; set; }
-        public Tilemap LayerTilemap { get; set; }
-
+        public uint[,] EventData { get; private set; }
         public SpriteLayer() : base()
         {
             TileIDs = null;
@@ -33,6 +31,9 @@ namespace _2DGame.Layers
             TileIDs = tileIDs;
             LayerTilemap = new Tilemap(tilesetFilename);
             LayerTilemap.Load(tileIDs, true);
+            Width = tileIDs.Width();
+            Height = tileIDs.Height();
+            EventData = null;
         }
 
         public override void Update(View view)

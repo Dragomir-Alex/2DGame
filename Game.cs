@@ -18,8 +18,6 @@ namespace _2DGame
         public const uint DEFAULT_WINDOW_WIDTH = 1280;
         public const uint DEFAULT_WINDOW_HEIGHT = 720;
         public const string WINDOW_TITLE = "Game";
-        public const uint LAYER_COUNT = 8;
-        public const uint PRIMARY_LAYER = 3;
 
         public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
         private Player player;
@@ -30,7 +28,6 @@ namespace _2DGame
         public override void Draw(GameTime gameTime)
         {
             TextureManager.DrawTextures(this, view, player, level.Layers);
-            // Window.Draw((SpriteLayer)layers[PRIMARY_LAYER]);
 
             // Hitbox debug start
             CircleShape shape = new CircleShape(2);
@@ -55,7 +52,6 @@ namespace _2DGame
         {
             player = new Player();
             level = new Level();
-            level.InstantiateLayers();
             settings = new Settings();
         }
 
@@ -76,7 +72,7 @@ namespace _2DGame
             TextureManager.InitializeSprites(this, player, level.Layers);
 
             // Player hitbox
-            player.InitializeHitbox();
+            player.Initialize(level.TileStartPosition);
         }
 
         public override void LoadContent()
@@ -88,9 +84,9 @@ namespace _2DGame
 
         public override void Update(GameTime gameTime)
         {
-            KeyboardManager.Update(player, (SpriteLayer)level.Layers[PRIMARY_LAYER]);
+            KeyboardManager.Update(player, (SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             SoundManager.PlayMusic();
-            player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+            player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, level);
             level.Update(player);
         }
     }

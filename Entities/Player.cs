@@ -1,5 +1,6 @@
 ﻿using _2DGame.LayerData;
 using _2DGame.Layers;
+using _2DGame.Utility;
 using InstilledBee.SFML.SimpleCollision;
 using SFML.Graphics;
 using SFML.System;
@@ -29,11 +30,17 @@ namespace _2DGame.Entities
         {
             Texture = null;
             CharacterSprite = new Sprite();
-            Position = new Vector2f(100, 200);
+            Position = new Vector2f(0f, 0f);
             Velocity = new Vector2f(0f, 0f);
             MaxVelocity = new Vector2f(5f, 5f);
             Camera = new View();
             TileCoordinates = new TileCoordinates();
+        }
+
+        public void Initialize(Vector2i startPosition)
+        {
+            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE, startPosition.Y * Tilemap.TILE_SIZE);
+            InitializeHitbox();
         }
 
         public void InitializeSprite()
@@ -49,8 +56,7 @@ namespace _2DGame.Entities
                 CollisionTester.AddBitMask(Texture);
             }
         }
-
-        public void InitializeHitbox()
+        private void InitializeHitbox()
         {
             if (CharacterSprite != null)
             {
@@ -66,10 +72,10 @@ namespace _2DGame.Entities
             Camera.Size = size;
         }
 
-        public void UpdatePlayerCamera(uint screenWidth, uint screenHeight)
+        public void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
         {
             if ((int)Position.X + CharacterSprite.Texture.Size.X > screenWidth / 2)
-                Camera.Center = new Vector2f((int)Position.X + CharacterSprite.Texture.Size.X, (int)Position.Y + CharacterSprite.Texture.Size.Y);
+                Camera.Center = new Vector2f((int)Position.X + CharacterSprite.Texture.Size.X, (int)Position.Y + CharacterSprite.Texture.Size.Y);    
             else
                 Camera.Center = new Vector2f(screenWidth / 2, (int)Position.Y + CharacterSprite.Texture.Size.Y);
         }
