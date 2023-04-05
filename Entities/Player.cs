@@ -2,6 +2,7 @@
 using _2DGame.Layers;
 using _2DGame.Utility;
 using InstilledBee.SFML.SimpleCollision;
+using NetTopologySuite.Triangulate;
 using SFML.Graphics;
 using SFML.System;
 using System.Diagnostics;
@@ -107,11 +108,41 @@ namespace _2DGame.Entities
 
             UpdateAllPositionProperties();
 
+            PlayerBorderCollision(spriteLayer);
+
             List<Tuple<Hitbox, int, int>> collidedTiles = PlayerLevelCollision(spriteLayer);
             if (collidedTiles.Count != 0)
             {
                 RemoveCharacterFromSolidTiles(collidedTiles);
             }
+        }
+
+        public void PlayerBorderCollision(SpriteLayer spriteLayer)
+        {
+            bool wasMoved = false;
+            if (Position.X - CharacterSprite.Texture.Size.X / 2 < 0) // Left
+            {
+                Position.X = (float)CharacterSprite.Texture.Size.X / 2;
+                wasMoved = true;
+            }
+            else if (Position.X + CharacterSprite.Texture.Size.X / 2 > spriteLayer.Width) // Right
+            {
+                Position.X = spriteLayer.Width - CharacterSprite.Texture.Size.X / 2;
+                wasMoved = true;
+            }
+
+            if (Position.Y - CharacterSprite.Texture.Size.Y / 2 < 0) // Top
+            {
+                Position.Y = (float)CharacterSprite.Texture.Size.Y / 2;
+                wasMoved = true;
+            }
+            else if (Position.Y + CharacterSprite.Texture.Size.Y / 2 > spriteLayer.Height) // Bottom
+            {
+                Position.Y = spriteLayer.Height - CharacterSprite.Texture.Size.Y / 2;
+                wasMoved = true;
+            }
+
+            if (wasMoved) UpdateAllPositionProperties();
         }
 
         public List<Tuple<Hitbox, int, int>> PlayerLevelCollision(SpriteLayer spriteLayer)
