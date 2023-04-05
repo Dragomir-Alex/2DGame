@@ -44,8 +44,12 @@ namespace _2DGame.Layers
         public void Initialize(string tilesetFilename, TileData tileIDs)
         {
             TileIDs = tileIDs;
-            Width = tileIDs.Width();
-            Height = tileIDs.Height();
+
+            TileWidth = tileIDs.Width();
+            TileHeight = tileIDs.Height();
+            Width = Tilemap.TILE_SIZE * tileIDs.Width();
+            Height = Tilemap.TILE_SIZE * tileIDs.Height();
+
             LayerTilemap = new Tilemap(tilesetFilename);
             LayerTilemap.Load(tileIDs, false);
 

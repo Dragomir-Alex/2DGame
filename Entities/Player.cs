@@ -74,10 +74,30 @@ namespace _2DGame.Entities
 
         public void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
         {
-            if ((int)Position.X + CharacterSprite.Texture.Size.X > screenWidth / 2)
-                Camera.Center = new Vector2f((int)Position.X + CharacterSprite.Texture.Size.X, (int)Position.Y + CharacterSprite.Texture.Size.Y);    
-            else
-                Camera.Center = new Vector2f(screenWidth / 2, (int)Position.Y + CharacterSprite.Texture.Size.Y);
+            float xCenter = (int)Position.X + CharacterSprite.Texture.Size.X;
+            float yCenter = (int)Position.Y + CharacterSprite.Texture.Size.Y;
+
+            if ((int)Position.X + CharacterSprite.Texture.Size.X <= screenWidth / 2) // Left
+            {
+                xCenter = (int)screenWidth / 2;
+
+            }
+            else if ((int)Position.X + CharacterSprite.Texture.Size.X >= level.Width - screenWidth / 2) // Right
+            {
+                xCenter = (int)level.Width - screenWidth / 2;
+            }
+
+            if ((int)Position.Y + CharacterSprite.Texture.Size.Y <= screenHeight / 2) // Top
+            {
+                yCenter = (int)screenHeight / 2;
+
+            }
+            else if ((int)Position.Y + CharacterSprite.Texture.Size.Y >= level.Height - screenHeight / 2) // Bottom
+            {
+                yCenter = (int)level.Height - screenHeight / 2;
+            }
+
+            Camera.Center = new Vector2f(xCenter, yCenter);
         }
 
         public void UpdatePosition(SpriteLayer spriteLayer)

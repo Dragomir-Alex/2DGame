@@ -18,6 +18,8 @@ namespace _2DGame
         public LayerList Layers;
         public string Name { get; private set; }
         public string TrackFilename { get; set; } // Private set after loading is done?
+        public float Width { get; set; }
+        public float Height { get; set; }
         public Sprite Tileset { get; private set; }
         public Vector2i TileStartPosition { get; private set; }
 
@@ -26,6 +28,8 @@ namespace _2DGame
             Layers = new LayerList();
             Name = "Unnamed";
             TrackFilename = null;
+            Width = 0;
+            Height = 0;
             Tileset = null;
             TileStartPosition = new Vector2i(0, 0);
         }
@@ -40,6 +44,8 @@ namespace _2DGame
             TrackFilename = trackFilename;
             SoundManager.SetCurrentTrack(TrackFilename);
             Layers.Initialize(tilesetFilename);
+            Width = Layers[LayerList.PRIMARY_LAYER].Width;
+            Height = Layers[LayerList.PRIMARY_LAYER].Height;
 
             // Test
             TileStartPosition = new Vector2i(4, 6);

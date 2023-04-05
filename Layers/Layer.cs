@@ -15,8 +15,10 @@ namespace _2DGame.Layers
         public float YSpeed { get; set; }
         public float AutoXSpeed { get; set; }
         public float AutoYSpeed { get; set; }
-        public int Width { get; protected set; }
-        public int Height { get; protected set; }
+        public float Width { get; protected set; }
+        public float Height { get; protected set; }
+        public int TileWidth { get; protected set; }
+        public int TileHeight { get; protected set; }
         public TileData? TileIDs { get; set; }
         public Tilemap LayerTilemap { get; set; }
 
@@ -26,8 +28,10 @@ namespace _2DGame.Layers
             YSpeed = 1f;
             AutoXSpeed = 0f;
             AutoYSpeed = 0f;
-            Width = 0;
-            Height = 0;
+            Width = 0f;
+            Height = 0f;
+            TileWidth = 0;
+            TileHeight = 0;
         }
 
         public abstract void Update(View view);

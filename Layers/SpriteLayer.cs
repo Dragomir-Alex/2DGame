@@ -19,6 +19,7 @@ namespace _2DGame.Layers
         {
             TileIDs = null;
             LayerTilemap = null;
+            EventData = null;
         }
 
         public SpriteLayer(string tilesetFilename, TileData tileIDs) : base()
@@ -31,9 +32,11 @@ namespace _2DGame.Layers
             TileIDs = tileIDs;
             LayerTilemap = new Tilemap(tilesetFilename);
             LayerTilemap.Load(tileIDs, true);
-            Width = tileIDs.Width();
-            Height = tileIDs.Height();
-            EventData = null;
+
+            TileWidth = tileIDs.Width();
+            TileHeight = tileIDs.Height();
+            Width = Tilemap.TILE_SIZE * tileIDs.Width();
+            Height = Tilemap.TILE_SIZE * tileIDs.Height();
         }
 
         public override void Update(View view)
