@@ -82,11 +82,18 @@ namespace _2DGame
             level.LoadData("test.tmx");
         }
 
+        public override void ProcessInputs()
+        {
+            KeyboardManager.ProcessMenuKeys(this);
+        }
+
         public override void Update(GameTime gameTime)
         {
-            KeyboardManager.Update(player, (SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             SoundManager.PlayMusic();
-            player.UpdatePlayerCamera(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, level);
+            KeyboardManager.ProcessPlayerKeys(player);
+
+            player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+
             level.Update(player);
         }
     }

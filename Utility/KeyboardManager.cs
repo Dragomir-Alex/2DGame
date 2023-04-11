@@ -7,7 +7,8 @@ namespace _2DGame.Utility
 {
     public static class KeyboardManager
     {
-        public static void HandleKeys(Player player)
+        private static bool previousPauseState;
+        public static void ProcessPlayerKeys(Player player)
         {
             bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.A);
             bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.D);
@@ -25,11 +26,16 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void Update(Player player, SpriteLayer spriteLayer)
+        public static void ProcessMenuKeys(GameLoop gameLoop)
         {
-            HandleKeys(player);
-            player.UpdateVelocity(); // Maybe I shouldn't put these here but for now... /s
-            player.UpdatePosition(spriteLayer);
+            bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
+
+            if (pause && pause != previousPauseState)
+            {
+                gameLoop.TogglePause();
+            }
+
+            previousPauseState = pause;
         }
     }
 }

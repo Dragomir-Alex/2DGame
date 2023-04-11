@@ -11,10 +11,11 @@ namespace _2DGame
         public const float TIME_UNTIL_UPDATE = 1f / TARGET_FPS;
 
         public RenderWindow Window { get; protected set; }
-
         public GameTime GameTime { get; protected set; }
-
         public Color WindowClearColor { get; protected set; }
+        public bool IsPaused { get; protected set; }
+
+
 
         protected GameLoop(uint windowWidth, uint windowHeight, string windowTitle, Color windowClearColor)
         {
@@ -53,7 +54,12 @@ namespace _2DGame
                     GameTime.Update(totalTimeBeforeUpdate, clock.ElapsedTime.AsSeconds());
                     totalTimeBeforeUpdate = 0f;
 
-                    Update(GameTime);
+                    ProcessInputs();
+
+                    if (!IsPaused)
+                    {
+                        Update(GameTime);
+                    }
 
                     Window.Clear(WindowClearColor);
                     Draw(GameTime);
@@ -65,8 +71,14 @@ namespace _2DGame
         public abstract void Instantiate();
         public abstract void LoadContent();
         public abstract void Initialize();
+        public abstract void ProcessInputs();
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);
+
+        public void TogglePause()
+        {
+            IsPaused = !IsPaused;
+        }
 
         private void WindowClosed(object sender, EventArgs e)
         {

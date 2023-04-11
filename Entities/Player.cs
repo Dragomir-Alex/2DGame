@@ -2,6 +2,7 @@
 using _2DGame.Layers;
 using _2DGame.Utility;
 using InstilledBee.SFML.SimpleCollision;
+using NetTopologySuite.Mathematics;
 using NetTopologySuite.Triangulate;
 using SFML.Graphics;
 using SFML.System;
@@ -73,7 +74,7 @@ namespace _2DGame.Entities
             Camera.Size = size;
         }
 
-        public void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
+        private void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
         {
             float xCenter = (int)Position.X + CharacterSprite.Texture.Size.X;
             float yCenter = (int)Position.Y + CharacterSprite.Texture.Size.Y;
@@ -101,7 +102,7 @@ namespace _2DGame.Entities
             Camera.Center = new Vector2f(xCenter, yCenter);
         }
 
-        public void UpdatePosition(SpriteLayer spriteLayer)
+        private void UpdatePosition(SpriteLayer spriteLayer)
         {
             Position.X += (int)Velocity.X;
             Position.Y += (int)Velocity.Y;
@@ -237,7 +238,7 @@ namespace _2DGame.Entities
         public void GainPositiveYVelocity() { Velocity.Y += Y_VELOCITY_GAIN; }
         public void GainNegativeYVelocity() { Velocity.Y -= Y_VELOCITY_GAIN; }
 
-        public void UpdateVelocity()
+        private void UpdateVelocity()
         {
             if (Velocity.X < 0f)
             {
@@ -281,6 +282,13 @@ namespace _2DGame.Entities
 
             if (Velocity.Y < -MaxVelocity.Y)
                 Velocity.Y = -MaxVelocity.Y;
+        }
+
+        public void Update(Level level, uint windowWidth, uint windowHeight)
+        {
+            UpdateVelocity();
+            UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
+            UpdatePlayerCamera(windowWidth, windowHeight, level);
         }
 
         public void Draw(RenderTarget target, RenderStates states)
