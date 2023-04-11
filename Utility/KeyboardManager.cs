@@ -8,6 +8,8 @@ namespace _2DGame.Utility
     public static class KeyboardManager
     {
         private static bool previousPauseState;
+        private static bool previousDebugState;
+
         public static void ProcessPlayerKeys(Player player)
         {
             bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.A);
@@ -26,16 +28,23 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void ProcessMenuKeys(GameLoop gameLoop)
+        public static void ProcessMenuKeys(Game game)
         {
             bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
+            bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
 
             if (pause && pause != previousPauseState)
             {
-                gameLoop.TogglePause();
+                game.TogglePause();
+            }
+
+            if (debug && debug != previousDebugState)
+            {
+                game.ToggleDebugMode();
             }
 
             previousPauseState = pause;
+            previousDebugState = debug;
         }
     }
 }

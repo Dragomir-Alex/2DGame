@@ -10,11 +10,15 @@ namespace _2DGame
         public const int TARGET_FPS = 60;
         public const float TIME_UNTIL_UPDATE = 1f / TARGET_FPS;
 
+        public enum GameState
+        {
+            Loading, Menu, Running, Paused
+        }
+
         public RenderWindow Window { get; protected set; }
         public GameTime GameTime { get; protected set; }
         public Color WindowClearColor { get; protected set; }
-        public bool IsPaused { get; protected set; }
-
+        public GameState CurrentState { get; protected set; }
 
 
         protected GameLoop(uint windowWidth, uint windowHeight, string windowTitle, Color windowClearColor)
@@ -23,6 +27,7 @@ namespace _2DGame
             Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle);
             Window.SetVerticalSyncEnabled(true);
             GameTime = new GameTime();
+            CurrentState = GameState.Running; // Will be Loading at some point ig
 
             Window.Closed += WindowClosed;
         }
@@ -56,11 +61,7 @@ namespace _2DGame
 
                     ProcessInputs();
 
-                    if (!IsPaused)
-                    {
-                        Update(GameTime);
-                    }
-
+                    Update(GameTime);
                     Window.Clear(WindowClearColor);
                     Draw(GameTime);
                     Window.Display();
@@ -77,7 +78,14 @@ namespace _2DGame
 
         public void TogglePause()
         {
-            IsPaused = !IsPaused;
+            if (CurrentState == GameState.Paused) 
+            {
+                CurrentState = GameState.Running;
+            }
+            else if (CurrentState == GameState.Running)
+            {
+                CurrentState = GameState.Paused;
+            }
         }
 
         private void WindowClosed(object sender, EventArgs e)

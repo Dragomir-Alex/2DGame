@@ -11,10 +11,14 @@ namespace _2DGame.Utility
     {
         public const string TEXTURES_PATH = "./Data/Assets/Textures/Sprites/";
         public const string TILESETS_PATH = "./Data/Assets/Textures/Tilesets/";
+        public const string GAME_FONT_PATH = "./Data/Fonts/8bitOperatorPlus-Regular.ttf";
+
+        public static Font GameFont { get; private set; }
 
         public static void LoadTextures(Player player)
         {
             player.Texture = new Texture(TEXTURES_PATH + "player.png");
+            GameFont = new Font(GAME_FONT_PATH);
         }
 
         public static void InitializeSprites(Game gameLoop, Player player, LayerList layers)

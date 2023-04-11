@@ -10,6 +10,8 @@ using System.Diagnostics;
 using InstilledBee.SFML.SimpleCollision;
 using TransformableHitbox2D;
 using _2DGame.ExternalLibraries;
+using System.Drawing;
+using Color = SFML.Graphics.Color;
 
 namespace _2DGame
 {
@@ -24,28 +26,36 @@ namespace _2DGame
         private View view;
         private Level level;
         private Settings settings;
+        private bool debugMode;
 
         public override void Draw(GameTime gameTime)
         {
             TextureManager.DrawTextures(this, view, player, level.Layers);
 
-            // Hitbox debug start
-            CircleShape shape = new CircleShape(2);
-            shape.FillColor = new Color(100, 250, 50);
-            shape.Position = player.Position;
-            Window.Draw(shape);
-
-            foreach (var line in player.CharacterHitbox.Lines)
+            if (CurrentState == GameState.Paused)
             {
-                CircleShape shape2 = new CircleShape(2);
-                shape2.FillColor = new Color(200, 50, 50);
-                shape2.Position = new Vector2f(line.A.X, line.A.Y);
-                Window.Draw(shape2);
+                DrawPausedMenu();
             }
-            // Debug end
 
-            DebugUtility.DrawPerformanceData(this, Color.White);
-            DebugUtility.DrawGameData(this, player, Color.White);
+            if (debugMode)
+            {
+                // Hitbox debug
+                CircleShape shape = new CircleShape(2);
+                shape.FillColor = new Color(100, 250, 50);
+                shape.Position = player.Position;
+                Window.Draw(shape);
+
+                foreach (var line in player.CharacterHitbox.Lines)
+                {
+                    CircleShape shape2 = new CircleShape(2);
+                    shape2.FillColor = new Color(200, 50, 50);
+                    shape2.Position = new Vector2f(line.A.X, line.A.Y);
+                    Window.Draw(shape2);
+                }
+
+                DebugUtility.DrawPerformanceData(this, Color.White);
+                DebugUtility.DrawGameData(this, player, Color.White);
+            }
         }
 
         public override void Instantiate()
@@ -85,16 +95,44 @@ namespace _2DGame
         public override void ProcessInputs()
         {
             KeyboardManager.ProcessMenuKeys(this);
+
+            if (CurrentState == GameState.Running)
+            {
+                KeyboardManager.ProcessPlayerKeys(player);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            SoundManager.PlayMusic();
-            KeyboardManager.ProcessPlayerKeys(player);
+            if (CurrentState == GameState.Running)
+            {
+                SoundManager.PlayMusic();
+                player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+                level.Update(player);
+            }
+        }
 
-            player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        public void ToggleDebugMode()
+        {
+            debugMode = !debugMode;
+        }
 
-            level.Update(player);
+        private void DrawPausedMenu()
+        {
+            Window.SetView(Window.DefaultView);
+
+            RectangleShape rectangleBackground = new RectangleShape(new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+            rectangleBackground.FillColor = new Color(0, 0, 0, 100);
+
+            Text text = new Text("The game is paused\nPress [P] to resume", TextureManager.GameFont);
+            text.CharacterSize = 60;
+            text.Position = new Vector2f((int)(DEFAULT_WINDOW_WIDTH / 2 - text.GetGlobalBounds().Width / 2), (int)(DEFAULT_WINDOW_HEIGHT / 2 - text.GetGlobalBounds().Height));
+            text.FillColor = Color.White;
+
+            Window.Draw(rectangleBackground);
+            Window.Draw(text);
+
+            Window.SetView(view);
         }
     }
 }
