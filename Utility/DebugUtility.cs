@@ -7,7 +7,7 @@ namespace _2DGame.Utility
 {
     public static class DebugUtility
     {
-        public const string DEBUG_FONT_PATH = "./Data/Fonts/8bitOperatorPlus-Regular.ttf";
+        public const string DEBUG_FONT_PATH = "./Data/Assets/Fonts/8bitOperatorPlus-Regular.ttf";
 
         private static Font debugFont;
 

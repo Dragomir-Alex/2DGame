@@ -1,6 +1,7 @@
 ﻿using System;
 using _2DGame.Entities;
 using _2DGame.Layers;
+using _2DGame.MainMenu;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -11,29 +12,43 @@ namespace _2DGame.Utility
     {
         public const string TEXTURES_PATH = "./Data/Assets/Textures/Sprites/";
         public const string TILESETS_PATH = "./Data/Assets/Textures/Tilesets/";
-        public const string GAME_FONT_PATH = "./Data/Fonts/8bitOperatorPlus-Regular.ttf";
+        public const string FONTS_PATH = "./Data/Assets/Fonts/";
 
         public static Font GameFont { get; private set; }
+        public static Font GameFontBold { get; private set; }
 
-        public static void LoadTextures(Player player)
+        public static void LoadTextures(Level level, Menu menu)
         {
-            player.Texture = new Texture(TEXTURES_PATH + "player.png");
-            GameFont = new Font(GAME_FONT_PATH);
+            level.Player.Texture = new Texture(TEXTURES_PATH + "player.png");
+            menu.Pages[Menu.PageName.MainPage].LogoTexture = new Texture(TEXTURES_PATH + "logo.png");
+            GameFont = new Font(FONTS_PATH + "8bitOperatorPlus-Regular.ttf");
+            GameFontBold = new Font(FONTS_PATH + "8bitOperatorPlus-Bold.ttf");
         }
 
-        public static void InitializeSprites(Game gameLoop, Player player, LayerList layers)
+        public static void InitializeSprites(Game gameLoop, Level level, Menu menu)
         {
-            player.InitializeSprite();
-            foreach (var layer in layers)
+            // Level
+            level.Player.InitializeSprite();
+            foreach (var layer in level.Layers)
             {
                 if (layer is DetailLayer detailLayer)
                     detailLayer.InitializeSprite();
             }
+
+            // Menu
+            foreach (var page in menu.Pages)
+            {
+                page.Value.InitializeSprites();
+                if (page.Key == Menu.PageName.MainPage)
+                {
+                    page.Value.LogoSprite.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - page.Value.LogoTexture.Size.X / 2, Game.DEFAULT_WINDOW_HEIGHT / 6f);
+                }
+            }
         }
 
-        public static void DrawTextures(GameLoop gameLoop, View view, Player player, LayerList layers)
+        public static void DrawTextures(GameLoop gameLoop, Level level)
         {
-            foreach (var layer in layers.Reverse())
+            foreach (var layer in level.Layers.Reverse())
             {
                 if (layer is DetailLayer)
                 {
@@ -42,13 +57,13 @@ namespace _2DGame.Utility
                 }
                 else
                 {
-                    gameLoop.Window.SetView(view); // Player camera
-                    gameLoop.Window.Draw(player);
+                    gameLoop.Window.SetView(level.Camera); // Player camera
+                    gameLoop.Window.Draw(level.Player);
                     gameLoop.Window.Draw(layer);
                 }
             }
 
-            gameLoop.Window.SetView(view); // Back to player camera
+            gameLoop.Window.SetView(level.Camera); // Back to player camera
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using _2DGame.Entities;
 using _2DGame.Layers;
+using _2DGame.MainMenu;
+using SFML.System;
 using SFML.Window;
 using System;
+using System.Diagnostics;
 
 namespace _2DGame.Utility
 {
@@ -9,6 +12,7 @@ namespace _2DGame.Utility
     {
         private static bool previousPauseState;
         private static bool previousDebugState;
+        private static bool previousLeftClickState;
 
         public static void ProcessPlayerKeys(Player player)
         {
@@ -28,7 +32,35 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void ProcessMenuKeys(Game game)
+        public static void ProcessMainMenuKeys(GameLoop gameLoop, Menu menu)
+        {
+            bool leftClick = Mouse.IsButtonPressed(Mouse.Button.Left);
+            Vector2i mousePosition = Mouse.GetPosition(gameLoop.Window);
+
+            foreach (var button in menu.Pages[menu.CurrentPage].Buttons)
+            {
+                if (button.ButtonText.Position.X <= mousePosition.X &&
+                    button.ButtonText.Position.X + button.ButtonText.GetGlobalBounds().Width >= mousePosition.X &&
+                    button.ButtonText.Position.Y <= mousePosition.Y &&
+                    button.ButtonText.Position.Y + button.ButtonText.GetGlobalBounds().Height >= mousePosition.Y)
+                {
+                    button.IsSelected = true;
+
+                    if (leftClick && leftClick != previousLeftClickState)
+                    {
+                        menu.ProcessButtonAction(button.OnMouseClick(), gameLoop);
+                    }
+                }
+                else
+                {
+                    button.IsSelected = false;
+                }
+            }
+
+            previousLeftClickState = leftClick;
+        }
+
+        public static void ProcessOtherKeys(Game game)
         {
             bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);

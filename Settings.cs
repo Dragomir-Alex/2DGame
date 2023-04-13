@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace _2DGame
 {
-    public class Settings
+    public static class Settings
     {
-        private uint musicVolume;
-        private uint soundVolume;
+        private static uint musicVolume = 100;
+        private static uint soundVolume = 100;
 
-        public uint MusicVolume
+        public static uint MusicVolume
         {
             get { return musicVolume; }
             set
@@ -28,7 +28,7 @@ namespace _2DGame
             }
         }
 
-        public uint SoundVolume
+        public static uint SoundVolume
         {
             get { return soundVolume; }
             set
@@ -43,12 +43,6 @@ namespace _2DGame
                 }
                 else soundVolume = value;
             }
-        }
-
-        public Settings()
-        {
-            musicVolume = 100;
-            soundVolume = 100;
         }
     }
 }

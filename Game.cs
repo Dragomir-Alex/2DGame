@@ -12,6 +12,7 @@ using TransformableHitbox2D;
 using _2DGame.ExternalLibraries;
 using System.Drawing;
 using Color = SFML.Graphics.Color;
+using _2DGame.MainMenu;
 
 namespace _2DGame
 {
@@ -22,19 +23,18 @@ namespace _2DGame
         public const string WINDOW_TITLE = "Game";
 
         public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
-        private Player player;
-        private View view;
         private Level level;
-        private Settings settings;
+        private Menu menu;
         private bool debugMode;
 
         public override void Draw(GameTime gameTime)
         {
-            TextureManager.DrawTextures(this, view, player, level.Layers);
+            //TextureManager.DrawTextures(this, level);
+            Window.Draw(menu);
 
             if (CurrentState == GameState.Paused)
             {
-                DrawPausedMenu();
+                DrawPauseMenu();
             }
 
             if (debugMode)
@@ -42,10 +42,10 @@ namespace _2DGame
                 // Hitbox debug
                 CircleShape shape = new CircleShape(2);
                 shape.FillColor = new Color(100, 250, 50);
-                shape.Position = player.Position;
+                shape.Position = level.Player.Position;
                 Window.Draw(shape);
 
-                foreach (var line in player.CharacterHitbox.Lines)
+                foreach (var line in level.Player.CharacterHitbox.Lines)
                 {
                     CircleShape shape2 = new CircleShape(2);
                     shape2.FillColor = new Color(200, 50, 50);
@@ -54,61 +54,58 @@ namespace _2DGame
                 }
 
                 DebugUtility.DrawPerformanceData(this, Color.White);
-                DebugUtility.DrawGameData(this, player, Color.White);
+                DebugUtility.DrawGameData(this, level.Player, Color.White);
             }
         }
 
         public override void Instantiate()
         {
-            player = new Player();
+            menu = new Menu();
             level = new Level();
-            settings = new Settings();
         }
 
         public override void Initialize()
         {
+            // Menu
+            menu.Initialize();
+
             // Level
             level.Initialize("aztec.png", "lush.ogg");
 
             // Settings
-            settings.MusicVolume = 0;
-            SoundManager.SetMusicVolume(settings.MusicVolume);
-
-            // Camera
-            player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
-            view = player.Camera;
+            Settings.MusicVolume = 0;
+            SoundManager.SetMusicVolume(Settings.MusicVolume);
 
             // Textures
-            TextureManager.InitializeSprites(this, player, level.Layers);
-
-            // Player hitbox
-            player.Initialize(level.TileStartPosition);
+            TextureManager.InitializeSprites(this, level, menu);
         }
 
         public override void LoadContent()
         {
             DebugUtility.LoadFont();
-            TextureManager.LoadTextures(player);
+            TextureManager.LoadTextures(level, menu);
             level.LoadData("test.tmx");
         }
 
         public override void ProcessInputs()
         {
-            KeyboardManager.ProcessMenuKeys(this);
+            KeyboardManager.ProcessMainMenuKeys(this, menu);
 
-            if (CurrentState == GameState.Running)
+            KeyboardManager.ProcessOtherKeys(this);
+
+            if (CurrentState == GameState.Level)
             {
-                KeyboardManager.ProcessPlayerKeys(player);
+                KeyboardManager.ProcessPlayerKeys(level.Player);
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (CurrentState == GameState.Running)
+            menu.Update(Window.DefaultView);
+            if (CurrentState == GameState.Level)
             {
                 SoundManager.PlayMusic();
-                player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-                level.Update(player);
+                level.Update();
             }
         }
 
@@ -117,7 +114,7 @@ namespace _2DGame
             debugMode = !debugMode;
         }
 
-        private void DrawPausedMenu()
+        private void DrawPauseMenu()
         {
             Window.SetView(Window.DefaultView);
 
@@ -132,7 +129,7 @@ namespace _2DGame
             Window.Draw(rectangleBackground);
             Window.Draw(text);
 
-            Window.SetView(view);
+            Window.SetView(level.Camera);
         }
     }
 }

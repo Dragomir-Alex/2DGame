@@ -36,7 +36,5 @@ namespace _2DGame.Layers
 
         public abstract void Update(View view);
         public abstract void Draw(RenderTarget target, RenderStates states);
-
-        //public abstract void Draw(GameLoop gameLoop);
     }
 }

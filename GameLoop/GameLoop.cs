@@ -12,7 +12,7 @@ namespace _2DGame
 
         public enum GameState
         {
-            Loading, Menu, Running, Paused
+            LoadingMenu, Menu, Level, Paused
         }
 
         public RenderWindow Window { get; protected set; }
@@ -27,7 +27,7 @@ namespace _2DGame
             Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle);
             Window.SetVerticalSyncEnabled(true);
             GameTime = new GameTime();
-            CurrentState = GameState.Running; // Will be Loading at some point ig
+            CurrentState = GameState.Level; // Will be Loading at some point ig
 
             Window.Closed += WindowClosed;
         }
@@ -80,9 +80,9 @@ namespace _2DGame
         {
             if (CurrentState == GameState.Paused) 
             {
-                CurrentState = GameState.Running;
+                CurrentState = GameState.Level;
             }
-            else if (CurrentState == GameState.Running)
+            else if (CurrentState == GameState.Level)
             {
                 CurrentState = GameState.Paused;
             }

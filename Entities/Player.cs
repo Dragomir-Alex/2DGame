@@ -49,15 +49,12 @@ namespace _2DGame.Entities
         {
             if (Texture != null)
             {
-                this.Texture.Smooth = true;
-
-                Sprite playerSprite = new Sprite();
-                playerSprite.Texture = Texture;
-                CharacterSprite = playerSprite;
+                CharacterSprite = new Sprite(Texture);
                 UpdateSpritePosition();
                 CollisionTester.AddBitMask(Texture);
             }
         }
+
         private void InitializeHitbox()
         {
             if (CharacterSprite != null)
