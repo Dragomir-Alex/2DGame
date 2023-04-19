@@ -13,7 +13,7 @@ using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
-    public class Player : Drawable, IDisposable
+    public class Player : Drawable, IDestroyable
     {
         public Texture? CharacterTexture { get; set; }
         public Sprite CharacterSprite { get; set; }
@@ -193,7 +193,7 @@ namespace _2DGame.Entities
                     }
 
                     if (Math.Abs(xDisplacement) <= Math.Abs(yDisplacement))
-                        Position = new Vector2f (Position.X + xDisplacement, Position.Y);
+                        Position = new Vector2f(Position.X + xDisplacement, Position.Y);
                     else
                         Position = new Vector2f(Position.X, Position.Y + yDisplacement);
                 }
@@ -296,24 +296,13 @@ namespace _2DGame.Entities
             target.Draw(CharacterSprite);
         }
 
-        public void Dispose()
+        public void Destroy()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                CharacterTexture.Dispose();
-                CharacterSprite.Dispose();
-                Camera.Dispose();
-                CharacterHitbox = null;
-                TileCoordinates = null;
-                Position = new Vector2f(0, 0);
-                Velocity = new Vector2f(0, 0);
-            }
+            CharacterTexture.Dispose();
+            CharacterSprite.Dispose();
+            Camera.Dispose();
+            CharacterHitbox = null;
+            TileCoordinates = null;
         }
     }
 }

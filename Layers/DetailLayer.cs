@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class DetailLayer : Layer, Drawable, IDisposable
+    public class DetailLayer : Layer, Drawable, IDestroyable
     {
         public Texture? LayerTexture { get; set; }
         public Sprite? LayerSprite { get; set; }
@@ -126,20 +126,11 @@ namespace _2DGame.Layers
             }
         }
 
-        public override void Dispose()
+        public override void Destroy()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                base.Dispose();
-                LayerTexture.Dispose();
-                LayerSprite.Dispose();
-            }
+            base.Destroy();
+            LayerTexture.Dispose();
+            LayerSprite.Dispose();
         }
     }
 }

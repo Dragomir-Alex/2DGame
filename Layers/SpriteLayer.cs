@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class SpriteLayer : Layer, Drawable, IDisposable
+    public class SpriteLayer : Layer, Drawable, IDestroyable
     {
         public uint[,] EventData { get; private set; }
         public SpriteLayer() : base()
@@ -49,19 +49,10 @@ namespace _2DGame.Layers
             LayerTilemap.Draw(target, states);
         }
 
-        public override void Dispose()
+        public override void Destroy()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                base.Dispose();
-                EventData = null;
-            }
+            base.Destroy();
+            EventData = new uint[0, 0];
         }
     }
 }

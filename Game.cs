@@ -139,8 +139,9 @@ namespace _2DGame
                     Draw(gameTime);
                     Window.Display();
 
-                    level.Dispose();
-                    level = new Level(); // Unload level
+                    level.Destroy();
+                    level = null;
+
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
                     CurrentState = GameState.Menu;
                     break;
@@ -149,6 +150,7 @@ namespace _2DGame
                     Draw(gameTime);
                     Window.Display();
 
+                    level = new Level();
                     level.LoadData("test.tmx");
                     TextureManager.LoadLevelTextures(level);
                     level.Initialize("aztec.png", "lush.ogg");

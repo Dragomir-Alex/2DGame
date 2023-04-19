@@ -35,7 +35,7 @@ namespace _2DGame.MainMenu
 
             ButtonAction loadingPageAction = new ButtonAction(ButtonAction.Type.None, "", 0);
             Button loadingPageButton = new Button("Loading...", 60, TextureManager.GameFontBold, Color.White, Color.White, loadingPageAction);
-            loadingPageButton.ButtonText.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - loadingPageButton.ButtonText.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 1.5f);
+            loadingPageButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - loadingPageButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 1.5f));
             LoadingPage.AddButton(loadingPageButton);
         }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class LayerList : IEnumerable<Layer>, IDisposable
+    public class LayerList : IEnumerable<Layer>, IDestroyable
     {
         private Layer[] Layers { get; set; }
         private List<TileData> Map { get; set; }
@@ -101,23 +101,14 @@ namespace _2DGame.Layers
             return GetEnumerator();
         }
 
-        public void Dispose()
+        public void Destroy()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+            foreach (var layer in Layers)
             {
-                foreach (var layer in Layers)
-                {
-                    layer.Dispose();
-                }
-                Layers = Array.Empty<Layer>();
-                Map.Clear();
+                layer.Destroy();
             }
+            Layers = Array.Empty<Layer>();
+            Map.Clear();
         }
     }
 }

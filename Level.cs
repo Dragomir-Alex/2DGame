@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame
 {
-    public class Level : IDisposable
+    public class Level : IDestroyable
     {
         public LayerList Layers { get; set; }
         public Player Player { get; private set; }
@@ -65,25 +65,13 @@ namespace _2DGame
             }
         }
 
-        public void Dispose()
+        public void Destroy()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Player.Dispose();
-                Layers.Dispose();
-                Camera.Dispose();
-                Name = string.Empty;
-                TrackFilename = string.Empty;
-                Width = 0;
-                Height = 0;
-                TileStartPosition = new Vector2i(0, 0);
-            }
+            Player.Destroy();
+            Layers.Destroy();
+            Camera.Dispose();
+            Name = string.Empty;
+            TrackFilename = string.Empty;
         }
     }
 }
