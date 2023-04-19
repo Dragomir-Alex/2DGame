@@ -42,6 +42,7 @@ namespace _2DGame.MainMenu
             TileData tileData = new TileData(tiles);
 
             CreateMainPage(CreateMenuBackground("menu.png", tileData));
+            CreateCreditsPage(CreateMenuBackground("menu.png", tileData));
         }
 
         public static DetailLayer CreateMenuBackground(string tilesetFilename, TileData tileIDs)
@@ -55,10 +56,10 @@ namespace _2DGame.MainMenu
             return background;
         }
 
-        private Page CreateMainPage(DetailLayer background)
+        private void CreateMainPage(DetailLayer background)
         {
             Page mainPage = Pages[PageName.MainPage];
-            mainPage.SetBackground(background);
+            mainPage.Background = background;
 
             ButtonAction startButtonAction = new ButtonAction(ButtonAction.Type.StartLevel, "", 0); // Will need to do something about that last param...
             Button startButton = new Button("START GAME", 30, TextureManager.GameFontBold, Color.White, Color.Red, startButtonAction);
@@ -74,8 +75,29 @@ namespace _2DGame.MainMenu
             Button quitButton = new Button("CLOSE GAME", 30, TextureManager.GameFontBold, Color.White, Color.Red, quitButtonAction);
             quitButton.ButtonText.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 1.5f + 150);
             mainPage.AddButton(quitButton);
+        }
 
-            return mainPage;
+        private Page CreateCreditsPage(DetailLayer background)
+        {
+            Page creditsPage = Pages[PageName.Credits];
+            creditsPage.Background = background;
+
+            Text title = new Text("Credits", TextureManager.GameFontBold, 40);
+            title.FillColor = Color.White;
+            title.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 4);
+            creditsPage.Title = title;
+
+            ButtonAction creditsButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0); 
+            Button creditsButton = new Button("Dodo-Codes - TransformableHitbox2D and TileData libraries, coding help\nBlade - Tileset\n\nMore TBA!", 20, TextureManager.GameFontBold, Color.White, Color.White, creditsButtonAction);
+            creditsButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.5f));
+            creditsPage.AddButton(creditsButton);
+
+            ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
+            Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
+            backButton.ButtonText.Position = new Vector2f(30, (int)(Game.DEFAULT_WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
+            creditsPage.AddButton(backButton);
+
+            return creditsPage;
         }
 
         public void ProcessButtonAction(ButtonAction buttonAction, GameLoop gameLoop)

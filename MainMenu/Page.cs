@@ -12,8 +12,8 @@ namespace _2DGame.MainMenu
 {
     public class Page : Drawable
     {
-        Text Title { get; set; }
-        DetailLayer Background { get; set; }
+        public Text Title { get; set; }
+        public DetailLayer Background { get; set; }
         public List<Button> Buttons { get; set; }
         public Texture? LogoTexture { get; set; }
         public Sprite? LogoSprite { get; set; }
@@ -36,8 +36,6 @@ namespace _2DGame.MainMenu
         {
             Buttons.Add(button);
         }
-
-        public void SetBackground(DetailLayer detailLayer) { Background = detailLayer; }
 
         public void InitializeSprites()
         {
