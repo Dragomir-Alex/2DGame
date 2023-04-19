@@ -14,6 +14,7 @@ namespace _2DGame.MainMenu
 {
     public class Menu : Drawable
     {
+        public const string MENU_MUSIC_FILENAME = "passage.ogg";
         public enum PageName { MainPage, Settings, Credits }
         public Dictionary<PageName, Page> Pages { get; set; }
         public PageName CurrentPage { get; set; }
@@ -31,10 +32,6 @@ namespace _2DGame.MainMenu
         public void Initialize()
         {
             // First menu screen
-            DetailLayer background = new DetailLayer();
-            background.AutoYSpeed = 1;
-            background.RepeatX = true;
-            background.RepeatY = true;
             int[,] tiles =
             {
                 { 1, 1, 0, 0 },
@@ -43,9 +40,19 @@ namespace _2DGame.MainMenu
                 { 0, 0, 1, 1 }
             };
             TileData tileData = new TileData(tiles);
-            background.Initialize("menu.png", tileData);
 
-            CreateMainPage(background);
+            CreateMainPage(CreateMenuBackground("menu.png", tileData));
+        }
+
+        public static DetailLayer CreateMenuBackground(string tilesetFilename, TileData tileIDs)
+        {
+            DetailLayer background = new DetailLayer();
+            background.AutoYSpeed = 1;
+            background.RepeatX = true;
+            background.RepeatY = true;
+            background.Initialize(tilesetFilename, tileIDs);
+
+            return background;
         }
 
         private Page CreateMainPage(DetailLayer background)
@@ -76,6 +83,7 @@ namespace _2DGame.MainMenu
             switch (buttonAction.ActionType)
             {
                 case ButtonAction.Type.StartLevel:
+                    gameLoop.CurrentState = GameLoop.GameState.LoadingLevel;
                     break;
 
                 case ButtonAction.Type.ChangeSetting:

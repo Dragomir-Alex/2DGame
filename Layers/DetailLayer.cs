@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class DetailLayer : Layer, Drawable
+    public class DetailLayer : Layer, Drawable, IDisposable
     {
         public Texture? LayerTexture { get; set; }
         public Sprite? LayerSprite { get; set; }
@@ -123,6 +123,22 @@ namespace _2DGame.Layers
                 UtilityFunctions.Move(LayerSprite, XCameraOffset, YCameraOffset);
                 target.Draw(LayerSprite);
                 UtilityFunctions.Move(LayerSprite, -XCameraOffset, -YCameraOffset);
+            }
+        }
+
+        public override void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                base.Dispose();
+                LayerTexture.Dispose();
+                LayerSprite.Dispose();
             }
         }
     }

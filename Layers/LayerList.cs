@@ -1,4 +1,5 @@
-﻿using _2DGame.ExternalLibraries;
+﻿using _2DGame.Entities;
+using _2DGame.ExternalLibraries;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class LayerList : IEnumerable<Layer>
+    public class LayerList : IEnumerable<Layer>, IDisposable
     {
         private Layer[] Layers { get; set; }
         private List<TileData> Map { get; set; }
@@ -98,6 +99,25 @@ namespace _2DGame.Layers
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var layer in Layers)
+                {
+                    layer.Dispose();
+                }
+                Layers = Array.Empty<Layer>();
+                Map.Clear();
+            }
         }
     }
 }

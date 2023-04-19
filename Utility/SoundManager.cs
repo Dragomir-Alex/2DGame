@@ -31,6 +31,10 @@ namespace _2DGame.Utility
 
         public static void SetCurrentTrack(string trackFilename)
         {
+            if (CurrentTrack != null)
+            {
+                CurrentTrack.Dispose();
+            }
             CurrentTrack = new Music(SoundManager.MUSIC_PATH + trackFilename);
         }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public abstract class Layer : Drawable
+    public abstract class Layer : Drawable, IDisposable
     {
         public float XSpeed { get; set; }
         public float YSpeed { get; set; }
@@ -36,5 +36,26 @@ namespace _2DGame.Layers
 
         public abstract void Update(View view);
         public abstract void Draw(RenderTarget target, RenderStates states);
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                LayerTilemap.Dispose();
+                TileIDs = null;
+                XSpeed = 0;
+                YSpeed = 0;
+                AutoXSpeed = 0;
+                AutoYSpeed = 0;
+                Width = 0;
+                Height = 0;
+                TileWidth = 0;
+                TileHeight = 0;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using _2DGame.ExternalLibraries;
+﻿using _2DGame.Entities;
+using _2DGame.ExternalLibraries;
 using _2DGame.Utility;
 using SFML.Graphics;
 using SFML.System;
@@ -9,11 +10,12 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TransformableHitbox2D;
 
 namespace _2DGame.LayerData
 {
-    public class Tilemap : Drawable
+    public class Tilemap : Drawable, IDisposable
     {
         public const uint TILE_SIZE = 32;
         //public enum MaskShape { Square } // More TBA maybe, too lazy atm
@@ -83,6 +85,24 @@ namespace _2DGame.LayerData
         {
             states.Texture = Tileset;
             target.Draw(Vertices, states);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Vertices.Dispose();
+                TileHitboxData.Clear();
+                Tileset.Dispose();
+                PixelWidth = 0;
+                PixelHeight = 0;
+            }
         }
     }
 }

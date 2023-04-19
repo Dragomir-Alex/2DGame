@@ -13,16 +13,15 @@ using System.Threading.Tasks;
 
 namespace _2DGame
 {
-    public class Level
+    public class Level : IDisposable
     {
         public LayerList Layers { get; set; }
         public Player Player { get; private set; }
         public View Camera { get; private set; }
         public string Name { get; private set; }
-        public string TrackFilename { get; set; } // Private set after loading is done?
+        public string TrackFilename { get; private set; }
         public float Width { get; set; }
         public float Height { get; set; }
-        public Sprite Tileset { get; private set; }
         public Vector2i TileStartPosition { get; private set; }
 
         public Level()
@@ -30,10 +29,9 @@ namespace _2DGame
             Layers = new LayerList();
             Player = new Player();
             Name = "Unnamed";
-            TrackFilename = null;
+            TrackFilename = string.Empty;
             Width = 0;
             Height = 0;
-            Tileset = null;
             TileStartPosition = new Vector2i(0, 0);
         }
 
@@ -64,6 +62,27 @@ namespace _2DGame
             for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
             {
                 Layers[i].Update(Player.Camera);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Player.Dispose();
+                Layers.Dispose();
+                Camera.Dispose();
+                Name = string.Empty;
+                TrackFilename = string.Empty;
+                Width = 0;
+                Height = 0;
+                TileStartPosition = new Vector2i(0, 0);
             }
         }
     }

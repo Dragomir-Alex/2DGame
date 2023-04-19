@@ -8,21 +8,24 @@ using SFML.Graphics;
 using SFML.System;
 using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
-    public class Player : Drawable
+    public class Player : Drawable, IDisposable
     {
-        public Texture? Texture { get; set; }
+        public Texture? CharacterTexture { get; set; }
         public Sprite CharacterSprite { get; set; }
-        public Hitbox CharacterHitbox { get; set; }
-        public Vector2f Position; // Not sure what to do with these at the moment, make them vars?
-        public Vector2f Velocity;
-        public TileCoordinates TileCoordinates; // Ditto
-
-        public Vector2f MaxVelocity { get; set; }
+        public Hitbox? CharacterHitbox { get; set; }
         public View Camera { get; set; }
+        public TileCoordinates? TileCoordinates { get; set; }
+
+        public Vector2f Position { get; set; }
+        public Vector2f Velocity { get; set; }
+
+        public const float X_MAX_VELOCITY = 5f;
+        public const float Y_MAX_VELOCITY = 5f;
         private const float X_VELOCITY_GAIN = 0.3f;
         private const float Y_VELOCITY_GAIN = 0.3f;
         private const float X_VELOCITY_REDUCTION = 0.15f;
@@ -30,11 +33,10 @@ namespace _2DGame.Entities
 
         public Player()
         {
-            Texture = null;
+            CharacterTexture = null;
             CharacterSprite = new Sprite();
             Position = new Vector2f(0f, 0f);
             Velocity = new Vector2f(0f, 0f);
-            MaxVelocity = new Vector2f(5f, 5f);
             Camera = new View();
             TileCoordinates = new TileCoordinates();
         }
@@ -47,11 +49,11 @@ namespace _2DGame.Entities
 
         public void InitializeSprite()
         {
-            if (Texture != null)
+            if (CharacterTexture != null)
             {
-                CharacterSprite = new Sprite(Texture);
+                CharacterSprite = new Sprite(CharacterTexture);
                 UpdateSpritePosition();
-                CollisionTester.AddBitMask(Texture);
+                CollisionTester.AddBitMask(CharacterTexture);
             }
         }
 
@@ -59,7 +61,7 @@ namespace _2DGame.Entities
         {
             if (CharacterSprite != null)
             {
-                Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(Texture.Size.X, 0), new Vector2(Texture.Size.X, Texture.Size.Y), new Vector2(0, Texture.Size.Y), new Vector2(0, 0) };
+                Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(CharacterTexture.Size.X, 0), new Vector2(CharacterTexture.Size.X, CharacterTexture.Size.Y), new Vector2(0, CharacterTexture.Size.Y), new Vector2(0, 0) };
                 CharacterHitbox = new Hitbox(vector2Arr);
                 UpdateHitboxPosition();
             }
@@ -101,8 +103,7 @@ namespace _2DGame.Entities
 
         private void UpdatePosition(SpriteLayer spriteLayer)
         {
-            Position.X += (int)Velocity.X;
-            Position.Y += (int)Velocity.Y;
+            Position = new Vector2f(Position.X + (int)Velocity.X, Position.Y + (int)Velocity.Y);
 
             UpdateAllPositionProperties();
 
@@ -120,23 +121,23 @@ namespace _2DGame.Entities
             bool wasMoved = false;
             if (Position.X - CharacterSprite.Texture.Size.X / 2 < 0) // Left
             {
-                Position.X = (float)CharacterSprite.Texture.Size.X / 2;
+                Position = new Vector2f((float)CharacterSprite.Texture.Size.X / 2, Position.Y);
                 wasMoved = true;
             }
             else if (Position.X + CharacterSprite.Texture.Size.X / 2 > spriteLayer.Width) // Right
             {
-                Position.X = spriteLayer.Width - CharacterSprite.Texture.Size.X / 2;
+                Position = new Vector2f(spriteLayer.Width - CharacterSprite.Texture.Size.X / 2, Position.Y);
                 wasMoved = true;
             }
 
             if (Position.Y - CharacterSprite.Texture.Size.Y / 2 < 0) // Top
             {
-                Position.Y = (float)CharacterSprite.Texture.Size.Y / 2;
+                Position = new Vector2f(Position.X, (float)CharacterSprite.Texture.Size.Y / 2);
                 wasMoved = true;
             }
             else if (Position.Y + CharacterSprite.Texture.Size.Y / 2 > spriteLayer.Height) // Bottom
             {
-                Position.Y = spriteLayer.Height - CharacterSprite.Texture.Size.Y / 2;
+                Position = new Vector2f(Position.X, spriteLayer.Height - CharacterSprite.Texture.Size.Y / 2);
                 wasMoved = true;
             }
 
@@ -175,25 +176,26 @@ namespace _2DGame.Entities
 
                     if (crossPoint.X > Position.X)  // Left collision
                     {
-                        xDisplacement = -(Position.X + Texture.Size.X / 2 - collidedTile.Item3 * Tilemap.TILE_SIZE);
+                        xDisplacement = -(Position.X + CharacterTexture.Size.X / 2 - collidedTile.Item3 * Tilemap.TILE_SIZE);
                     }
                     else                            // Right collision
                     {
-                        xDisplacement = (collidedTile.Item3 + 1) * Tilemap.TILE_SIZE - (Position.X - Texture.Size.X / 2);
+                        xDisplacement = (collidedTile.Item3 + 1) * Tilemap.TILE_SIZE - (Position.X - CharacterTexture.Size.X / 2);
                     }
 
                     if (crossPoint.Y > Position.Y)  // Top collision
                     {
-                        yDisplacement = -(Position.Y + Texture.Size.Y / 2 - collidedTile.Item2 * Tilemap.TILE_SIZE);
+                        yDisplacement = -(Position.Y + CharacterTexture.Size.Y / 2 - collidedTile.Item2 * Tilemap.TILE_SIZE);
                     }
                     else                            // Bottom collision
                     {
-                        yDisplacement = (collidedTile.Item2 + 1) * Tilemap.TILE_SIZE - (Position.Y - Texture.Size.Y / 2);
+                        yDisplacement = (collidedTile.Item2 + 1) * Tilemap.TILE_SIZE - (Position.Y - CharacterTexture.Size.Y / 2);
                     }
 
                     if (Math.Abs(xDisplacement) <= Math.Abs(yDisplacement))
-                        Position.X += xDisplacement;
-                    else Position.Y += yDisplacement;
+                        Position = new Vector2f (Position.X + xDisplacement, Position.Y);
+                    else
+                        Position = new Vector2f(Position.X, Position.Y + yDisplacement);
                 }
             }
 
@@ -202,7 +204,7 @@ namespace _2DGame.Entities
 
         public void UpdateSpritePosition()
         {
-            CharacterSprite.Position = new Vector2f(Position.X - Texture.Size.X / 2, Position.Y - Texture.Size.Y / 2);
+            CharacterSprite.Position = new Vector2f(Position.X - CharacterTexture.Size.X / 2, Position.Y - CharacterTexture.Size.Y / 2);
         }
 
         public void UpdateHitboxPosition()
@@ -230,55 +232,56 @@ namespace _2DGame.Entities
             UpdateTileCoordinates();
         }
 
-        public void GainPositiveXVelocity() { Velocity.X += X_VELOCITY_GAIN; }
-        public void GainNegativeXVelocity() { Velocity.X -= X_VELOCITY_GAIN; }
-        public void GainPositiveYVelocity() { Velocity.Y += Y_VELOCITY_GAIN; }
-        public void GainNegativeYVelocity() { Velocity.Y -= Y_VELOCITY_GAIN; }
+        public void GainPositiveXVelocity() { Velocity = new Vector2f(Velocity.X + X_VELOCITY_GAIN, Velocity.Y); }
+        public void GainNegativeXVelocity() { Velocity = new Vector2f(Velocity.X - X_VELOCITY_GAIN, Velocity.Y); }
+        public void GainPositiveYVelocity() { Velocity = new Vector2f(Velocity.X, Velocity.Y + Y_VELOCITY_GAIN); }
+        public void GainNegativeYVelocity() { Velocity = new Vector2f(Velocity.X, Velocity.Y - Y_VELOCITY_GAIN); }
 
         private void UpdateVelocity()
         {
             if (Velocity.X < 0f)
             {
                 if (Velocity.X + X_VELOCITY_REDUCTION > 0f)
-                    Velocity.X = 0f;
-                else Velocity.X += X_VELOCITY_REDUCTION;
+                    Velocity = new Vector2f(0f, Velocity.Y);
+                else
+                    Velocity = new Vector2f(Velocity.X + X_VELOCITY_REDUCTION, Velocity.Y);
             }
 
             if (Velocity.X > 0f)
             {
                 if (Velocity.X - X_VELOCITY_REDUCTION < 0f)
-                    Velocity.X = 0f;
+                    Velocity = new Vector2f(0f, Velocity.Y);
                 else
-                    Velocity.X -= X_VELOCITY_REDUCTION;
+                    Velocity = new Vector2f(Velocity.X - X_VELOCITY_REDUCTION, Velocity.Y);
             }
 
-            if (Velocity.X > MaxVelocity.X)
-                Velocity.X = MaxVelocity.X;
+            if (Velocity.X > X_MAX_VELOCITY)
+                Velocity = new Vector2f(X_MAX_VELOCITY, Velocity.Y);
 
-            if (Velocity.X < -MaxVelocity.X)
-                Velocity.X = -MaxVelocity.X;
+            if (Velocity.X < -X_MAX_VELOCITY)
+                Velocity = new Vector2f(-X_MAX_VELOCITY, Velocity.Y);
 
             if (Velocity.Y < 0f)
             {
                 if (Velocity.Y + Y_VELOCITY_REDUCTION > 0f)
-                    Velocity.Y = 0f;
+                    Velocity = new Vector2f(Velocity.X, 0);
                 else
-                    Velocity.Y += Y_VELOCITY_REDUCTION;
+                    Velocity = new Vector2f(Velocity.X, Velocity.Y + Y_VELOCITY_REDUCTION);
             }
 
             if (Velocity.Y > 0f)
             {
                 if (Velocity.Y - Y_VELOCITY_REDUCTION < 0f)
-                    Velocity.Y = 0f;
+                    Velocity = new Vector2f(Velocity.X, 0);
                 else
-                    Velocity.Y -= Y_VELOCITY_REDUCTION;
+                    Velocity = new Vector2f(Velocity.X, Velocity.Y - Y_VELOCITY_REDUCTION);
             }
 
-            if (Velocity.Y > MaxVelocity.Y)
-                Velocity.Y = MaxVelocity.Y;
+            if (Velocity.Y > Y_MAX_VELOCITY)
+                Velocity = new Vector2f(Velocity.X, Y_MAX_VELOCITY);
 
-            if (Velocity.Y < -MaxVelocity.Y)
-                Velocity.Y = -MaxVelocity.Y;
+            if (Velocity.Y < -Y_MAX_VELOCITY)
+                Velocity = new Vector2f(Velocity.X, -Y_MAX_VELOCITY);
         }
 
         public void Update(Level level, uint windowWidth, uint windowHeight)
@@ -291,6 +294,26 @@ namespace _2DGame.Entities
         public void Draw(RenderTarget target, RenderStates states)
         {
             target.Draw(CharacterSprite);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                CharacterTexture.Dispose();
+                CharacterSprite.Dispose();
+                Camera.Dispose();
+                CharacterHitbox = null;
+                TileCoordinates = null;
+                Position = new Vector2f(0, 0);
+                Velocity = new Vector2f(0, 0);
+            }
         }
     }
 }

@@ -60,7 +60,7 @@ namespace _2DGame.Utility
             previousLeftClickState = leftClick;
         }
 
-        public static void ProcessOtherKeys(Game game)
+        public static void ProcessLevelKeys(Game game)
         {
             bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
@@ -77,6 +77,18 @@ namespace _2DGame.Utility
 
             previousPauseState = pause;
             previousDebugState = debug;
+        }
+
+        public static void ProcessPauseScreenKeys(Game game)
+        {
+            bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape);
+
+            if (esc)
+            {
+                game.CurrentState = GameLoop.GameState.LoadingMenu;
+            }
+
+            ProcessLevelKeys(game);
         }
     }
 }

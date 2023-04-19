@@ -25,36 +25,53 @@ namespace _2DGame
         public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
         private Level level;
         private Menu menu;
+        private LoadingScreen loadingScreen;
+        private PauseScreen pauseScreen;
         private bool debugMode;
 
         public override void Draw(GameTime gameTime)
         {
-            //TextureManager.DrawTextures(this, level);
-            Window.Draw(menu);
-
-            if (CurrentState == GameState.Paused)
+            switch (CurrentState)
             {
-                DrawPauseMenu();
-            }
+                case GameState.StartingUp:
+                    Window.Draw(loadingScreen);
+                    break;
 
-            if (debugMode)
-            {
-                // Hitbox debug
-                CircleShape shape = new CircleShape(2);
-                shape.FillColor = new Color(100, 250, 50);
-                shape.Position = level.Player.Position;
-                Window.Draw(shape);
+                case GameState.LoadingMenu:
+                    Window.Draw(loadingScreen);
+                    break;
 
-                foreach (var line in level.Player.CharacterHitbox.Lines)
-                {
-                    CircleShape shape2 = new CircleShape(2);
-                    shape2.FillColor = new Color(200, 50, 50);
-                    shape2.Position = new Vector2f(line.A.X, line.A.Y);
-                    Window.Draw(shape2);
-                }
+                case GameState.LoadingLevel:
+                    Window.Draw(loadingScreen);
+                    break;
 
-                DebugUtility.DrawPerformanceData(this, Color.White);
-                DebugUtility.DrawGameData(this, level.Player, Color.White);
+                case GameState.Menu:
+                    Window.Draw(menu);
+                    break;
+
+                case GameState.Level:
+                    TextureManager.DrawLevelTextures(this, level);
+                    if (debugMode)
+                    {
+                        DebugUtility.DrawDebugInfo(this, level);
+                    }
+                    break;
+
+                case GameState.Paused:
+                    TextureManager.DrawLevelTextures(this, level);
+
+                    Window.SetView(Window.DefaultView);
+                    Window.Draw(pauseScreen);
+                    Window.SetView(level.Camera);
+
+                    if (debugMode)
+                    {
+                        DebugUtility.DrawDebugInfo(this, level);
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -62,74 +79,105 @@ namespace _2DGame
         {
             menu = new Menu();
             level = new Level();
+            loadingScreen = new LoadingScreen();
         }
 
         public override void Initialize()
         {
-            // Menu
-            menu.Initialize();
+            loadingScreen.Initialize();
+            pauseScreen = new PauseScreen();
 
-            // Level
-            level.Initialize("aztec.png", "lush.ogg");
-
-            // Settings
-            Settings.MusicVolume = 0;
+            Settings.MusicVolume = 50;
+            SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume(Settings.MusicVolume);
-
-            // Textures
-            TextureManager.InitializeSprites(this, level, menu);
         }
 
         public override void LoadContent()
         {
-            DebugUtility.LoadFont();
-            TextureManager.LoadTextures(level, menu);
-            level.LoadData("test.tmx");
+            TextureManager.LoadFonts();
         }
 
         public override void ProcessInputs()
         {
-            KeyboardManager.ProcessMainMenuKeys(this, menu);
-
-            KeyboardManager.ProcessOtherKeys(this);
-
-            if (CurrentState == GameState.Level)
+            switch (CurrentState)
             {
-                KeyboardManager.ProcessPlayerKeys(level.Player);
+                case GameState.Menu:
+                    KeyboardManager.ProcessMainMenuKeys(this, menu);
+                    break;
+
+                case GameState.Level:
+                    KeyboardManager.ProcessPlayerKeys(level.Player);
+                    KeyboardManager.ProcessLevelKeys(this);
+                    break;
+
+                case GameState.Paused:
+                    KeyboardManager.ProcessPauseScreenKeys(this);
+                    break;
+
+                default:
+                    break;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            menu.Update(Window.DefaultView);
-            if (CurrentState == GameState.Level)
+            SoundManager.PlayMusic();
+
+            switch (CurrentState)
             {
-                SoundManager.PlayMusic();
-                level.Update();
+                case GameState.StartingUp:
+                    Draw(gameTime);
+                    Window.Display();
+
+                    TextureManager.LoadMenuTextures(menu);
+                    menu.Initialize();
+                    TextureManager.InitializeMenuSprites(menu, loadingScreen);
+                    CurrentState = GameState.Menu;
+                    break;
+
+                case GameState.LoadingMenu:
+                    Draw(gameTime);
+                    Window.Display();
+
+                    level.Dispose();
+                    level = new Level(); // Unload level
+                    SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
+                    CurrentState = GameState.Menu;
+                    break;
+
+                case GameState.LoadingLevel:
+                    Draw(gameTime);
+                    Window.Display();
+
+                    level.LoadData("test.tmx");
+                    TextureManager.LoadLevelTextures(level);
+                    level.Initialize("aztec.png", "lush.ogg");
+                    TextureManager.InitializeLevelSprites(level);
+                    CurrentState = GameState.Level;
+                    break;
+
+                case GameState.Menu:
+                    menu.Update(Window.DefaultView);
+                    break;
+
+                case GameState.Level:
+                    SoundManager.SetMusicVolume(Settings.MusicVolume);
+                    SoundManager.PlayMusic();
+                    level.Update();
+                    break;
+
+                case GameState.Paused:
+                    SoundManager.SetMusicVolume(Settings.MusicVolume / 2);
+                    break;
+
+                default:
+                    break;
             }
         }
 
         public void ToggleDebugMode()
         {
             debugMode = !debugMode;
-        }
-
-        private void DrawPauseMenu()
-        {
-            Window.SetView(Window.DefaultView);
-
-            RectangleShape rectangleBackground = new RectangleShape(new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
-            rectangleBackground.FillColor = new Color(0, 0, 0, 100);
-
-            Text text = new Text("The game is paused\nPress [P] to resume", TextureManager.GameFont);
-            text.CharacterSize = 60;
-            text.Position = new Vector2f((int)(DEFAULT_WINDOW_WIDTH / 2 - text.GetGlobalBounds().Width / 2), (int)(DEFAULT_WINDOW_HEIGHT / 2 - text.GetGlobalBounds().Height));
-            text.FillColor = Color.White;
-
-            Window.Draw(rectangleBackground);
-            Window.Draw(text);
-
-            Window.SetView(level.Camera);
         }
     }
 }

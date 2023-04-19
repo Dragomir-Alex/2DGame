@@ -12,13 +12,13 @@ namespace _2DGame
 
         public enum GameState
         {
-            LoadingMenu, Menu, Level, Paused
+            StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused
         }
 
         public RenderWindow Window { get; protected set; }
         public GameTime GameTime { get; protected set; }
         public Color WindowClearColor { get; protected set; }
-        public GameState CurrentState { get; protected set; }
+        public GameState CurrentState { get; set; }
 
 
         protected GameLoop(uint windowWidth, uint windowHeight, string windowTitle, Color windowClearColor)
@@ -27,7 +27,7 @@ namespace _2DGame
             Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle);
             Window.SetVerticalSyncEnabled(true);
             GameTime = new GameTime();
-            CurrentState = GameState.Level; // Will be Loading at some point ig
+            CurrentState = GameState.StartingUp;
 
             Window.Closed += WindowClosed;
         }
