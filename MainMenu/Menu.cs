@@ -6,9 +6,11 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SFML.Window.Mouse;
 
 namespace _2DGame.MainMenu
 {
@@ -43,6 +45,7 @@ namespace _2DGame.MainMenu
 
             CreateMainPage(CreateMenuBackground("menu.png", tileData));
             CreateCreditsPage(CreateMenuBackground("menu.png", tileData));
+            CreateSettingsPage(CreateMenuBackground("menu.png", tileData));
         }
 
         public static DetailLayer CreateMenuBackground(string tilesetFilename, TileData tileIDs)
@@ -63,21 +66,27 @@ namespace _2DGame.MainMenu
 
             ButtonAction startButtonAction = new ButtonAction(ButtonAction.Type.StartLevel, "", 0); // Will need to do something about that last param...
             Button startButton = new Button("START GAME", 30, TextureManager.GameFontBold, Color.White, Color.Red, startButtonAction);
-            startButton.ButtonText.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 1.5f);
+            startButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.2f));
             mainPage.AddButton(startButton);
+            //Debug.WriteLine( "X1: " + startButton.ButtonText.Position.X + "   X2: " + (startButton.ButtonText.Position.X + startButton.ButtonText.GetGlobalBounds().Width) + "   Y1: " + startButton.ButtonText.Position.Y + "   Y2: " + (startButton.ButtonText.Position.Y + startButton.ButtonText.GetGlobalBounds().Height));
+
+            ButtonAction settingsButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "Settings", 0);
+            Button settingsButton = new Button("SETTINGS", 30, TextureManager.GameFontBold, Color.White, Color.Red, settingsButtonAction);
+            settingsButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - settingsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.2f + 70));
+            mainPage.AddButton(settingsButton);
 
             ButtonAction creditsButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "Credits", 0);
             Button creditsButton = new Button("CREDITS", 30, TextureManager.GameFontBold, Color.White, Color.Red, creditsButtonAction);
-            creditsButton.ButtonText.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 1.5f + 75);
+            creditsButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.2f + 140));
             mainPage.AddButton(creditsButton);
 
             ButtonAction quitButtonAction = new ButtonAction(ButtonAction.Type.QuitGame, "", 0);
             Button quitButton = new Button("CLOSE GAME", 30, TextureManager.GameFontBold, Color.White, Color.Red, quitButtonAction);
-            quitButton.ButtonText.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2, Game.DEFAULT_WINDOW_HEIGHT / 1.5f + 150);
+            quitButton.ButtonText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - quitButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.2f + 210));
             mainPage.AddButton(quitButton);
         }
 
-        private Page CreateCreditsPage(DetailLayer background)
+        private void CreateCreditsPage(DetailLayer background)
         {
             Page creditsPage = Pages[PageName.Credits];
             creditsPage.Background = background;
@@ -96,8 +105,48 @@ namespace _2DGame.MainMenu
             Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
             backButton.ButtonText.Position = new Vector2f(30, (int)(Game.DEFAULT_WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
             creditsPage.AddButton(backButton);
+        }
 
-            return creditsPage;
+        private void CreateSettingsPage(DetailLayer background)
+        {
+            Page settingsPage = Pages[PageName.Settings];
+            settingsPage.Background = background;
+
+            Text title = new Text("Settings", TextureManager.GameFontBold, 40);
+            title.FillColor = Color.White;
+            title.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 6));
+            settingsPage.Title = title;
+
+            ButtonAction leftArrowMusicAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "MusicVolume", -10);
+            ButtonAction rightArrowMusicAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "MusicVolume", 10);
+            LeftRightButtons musicVolumeButtons = new LeftRightButtons("Music Volume", "MusicVolume", 30, TextureManager.GameFont, TextureManager.GameFontBold, Color.White, Color.Red, leftArrowMusicAction, rightArrowMusicAction);
+
+            var musicVolumeButtonsSize = musicVolumeButtons.GetSize();
+            musicVolumeButtons.SetPosition(new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - musicVolumeButtonsSize.X / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.5)));
+            musicVolumeButtons.SettingValue.ButtonText.DisplayedString = Settings.MusicVolume.ToString();
+
+            settingsPage.AddButton(musicVolumeButtons.Label);
+            settingsPage.AddButton(musicVolumeButtons.LeftArrow);
+            settingsPage.AddButton(musicVolumeButtons.RightArrow);
+            settingsPage.AddButton(musicVolumeButtons.SettingValue);
+
+            ButtonAction leftArrowSoundAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "SoundVolume", -10);
+            ButtonAction rightArrowSoundAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "SoundVolume", 10);
+            LeftRightButtons soundVolumeButtons = new LeftRightButtons("Sound Volume", "SoundVolume", 30, TextureManager.GameFont, TextureManager.GameFontBold, Color.White, Color.Red, leftArrowSoundAction, rightArrowSoundAction);
+
+            var soundVolumeButtonsSize = soundVolumeButtons.GetSize();
+            soundVolumeButtons.SetPosition(new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - soundVolumeButtonsSize.X / 2), (int)(Game.DEFAULT_WINDOW_HEIGHT / 2.5) + 150));
+            soundVolumeButtons.SettingValue.ButtonText.DisplayedString = Settings.SoundVolume.ToString();
+
+            settingsPage.AddButton(soundVolumeButtons.Label);
+            settingsPage.AddButton(soundVolumeButtons.LeftArrow);
+            settingsPage.AddButton(soundVolumeButtons.RightArrow);
+            settingsPage.AddButton(soundVolumeButtons.SettingValue);
+
+            ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
+            Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
+            backButton.ButtonText.Position = new Vector2f(30, (int)(Game.DEFAULT_WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
+            settingsPage.AddButton(backButton);
         }
 
         public void ProcessButtonAction(ButtonAction buttonAction, GameLoop gameLoop)
@@ -109,18 +158,36 @@ namespace _2DGame.MainMenu
                     break;
 
                 case ButtonAction.Type.ChangeSetting:
-                    if (buttonAction.Target == "Sound")
+                    if (buttonAction.Target == "SoundVolume")
                     {
-                        Settings.SoundVolume += (uint)buttonAction.Parameter;
+                        Settings.SoundVolume += (int)buttonAction.Parameter;
+                        foreach (var button in Pages[CurrentPage].Buttons)
+                        {
+                            if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
+                                button.OnMouseClick().Target == "SoundVolume")
+                            {
+                                button.ButtonText.DisplayedString = Settings.SoundVolume.ToString();
+                                break;
+                            }
+                        }
                     }
-                    else if (buttonAction.Target == "Music")
+                    else if (buttonAction.Target == "MusicVolume")
                     {
-                        Settings.MusicVolume += (uint)buttonAction.Parameter;
+                        Settings.MusicVolume += (int)buttonAction.Parameter;
+                        foreach (var button in Pages[CurrentPage].Buttons)
+                        {
+                            if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
+                                button.OnMouseClick().Target == "MusicVolume")
+                            {
+                                button.ButtonText.DisplayedString = Settings.MusicVolume.ToString();
+                                break;
+                            }
+                        }
                     }
                     break;
 
                 case ButtonAction.Type.ChangePage:
-                    if (Enum.TryParse<PageName>(buttonAction.Target, out PageName pageName))
+                    if (Enum.TryParse(buttonAction.Target, out PageName pageName))
                     {
                         CurrentPage = pageName;
                     }

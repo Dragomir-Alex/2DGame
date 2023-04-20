@@ -34,7 +34,11 @@ namespace _2DGame.MainMenu
 
         public ButtonAction OnMouseClick()
         {
-            return Action;
+            if (IsActive)
+            {
+                return Action;
+            }
+            else return new ButtonAction(ButtonAction.Type.None, "", 0);
         }
 
         public void Update()

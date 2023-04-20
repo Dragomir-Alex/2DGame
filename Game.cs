@@ -46,6 +46,7 @@ namespace _2DGame
                     break;
 
                 case GameState.Menu:
+                    Window.SetView(Window.DefaultView);
                     Window.Draw(menu);
                     break;
 
@@ -89,7 +90,7 @@ namespace _2DGame
 
             Settings.MusicVolume = 50;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
-            SoundManager.SetMusicVolume(Settings.MusicVolume);
+            SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
         }
 
         public override void LoadContent()
@@ -159,17 +160,19 @@ namespace _2DGame
                     break;
 
                 case GameState.Menu:
+                    SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
+                    SoundManager.PlayMusic();
                     menu.Update(Window.DefaultView);
                     break;
 
                 case GameState.Level:
-                    SoundManager.SetMusicVolume(Settings.MusicVolume);
+                    SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.PlayMusic();
                     level.Update();
                     break;
 
                 case GameState.Paused:
-                    SoundManager.SetMusicVolume(Settings.MusicVolume / 2);
+                    SoundManager.SetMusicVolume((uint)Settings.MusicVolume / 2);
                     break;
 
                 default:

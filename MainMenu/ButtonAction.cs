@@ -8,7 +8,7 @@ namespace _2DGame.MainMenu
 {
     public class ButtonAction
     {
-        public enum Type { ChangeSetting, ChangePage, StartLevel, QuitGame, None }
+        public enum Type { ChangeSetting, ChangePage, DisplayVariable, StartLevel, QuitGame, None }
         public Type ActionType { get; private set; }
         public string Target { get; private set; }
         public float Parameter { get; private set; }

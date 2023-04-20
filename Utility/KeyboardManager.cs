@@ -37,12 +37,11 @@ namespace _2DGame.Utility
             bool leftClick = Mouse.IsButtonPressed(Mouse.Button.Left);
             Vector2i mousePosition = Mouse.GetPosition(gameLoop.Window);
 
+            // Debug.WriteLine("Mouse position: " + mousePosition.X.ToString() + "   " + mousePosition.Y.ToString());
+
             foreach (var button in menu.Pages[menu.CurrentPage].Buttons)
             {
-                if (button.ButtonText.Position.X <= mousePosition.X &&
-                    button.ButtonText.Position.X + button.ButtonText.GetGlobalBounds().Width >= mousePosition.X &&
-                    button.ButtonText.Position.Y <= mousePosition.Y &&
-                    button.ButtonText.Position.Y + button.ButtonText.GetGlobalBounds().Height >= mousePosition.Y)
+                if (button.ButtonText.GetGlobalBounds().Contains(mousePosition.X, mousePosition.Y))
                 {
                     button.IsSelected = true;
 
