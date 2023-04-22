@@ -15,6 +15,8 @@ namespace _2DGame.Entities
 {
     public class Player : Drawable
     {
+        private bool canCollide;
+
         public Texture? CharacterTexture { get; set; }
         public Sprite CharacterSprite { get; set; }
         public Hitbox? CharacterHitbox { get; set; }
@@ -37,6 +39,7 @@ namespace _2DGame.Entities
             CharacterSprite = new Sprite();
             Position = new Vector2f(0f, 0f);
             Velocity = new Vector2f(0f, 0f);
+            canCollide = true;
             Camera = new View();
             TileCoordinates = new TileCoordinates();
         }
@@ -108,6 +111,8 @@ namespace _2DGame.Entities
             UpdateAllPositionProperties();
 
             PlayerBorderCollision(spriteLayer);
+
+            if (!canCollide) return;
 
             List<Tuple<Hitbox, int, int>> collidedTiles = PlayerLevelCollision(spriteLayer);
             if (collidedTiles.Count != 0)
@@ -300,6 +305,10 @@ namespace _2DGame.Entities
         {
             Position = new Vector2f(0, 0);
             Velocity = new Vector2f(0, 0);
+        }
+        public void ToggleCollisions()
+        {
+            canCollide = !canCollide;
         }
     }
 }

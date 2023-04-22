@@ -13,6 +13,7 @@ namespace _2DGame.Utility
         private static bool previousPauseState;
         private static bool previousDebugState;
         private static bool previousLeftClickState;
+        private static bool previousToggleCollisionsState;
 
         public static void ProcessPlayerKeys(Player player)
         {
@@ -59,10 +60,11 @@ namespace _2DGame.Utility
             previousLeftClickState = leftClick;
         }
 
-        public static void ProcessLevelKeys(Game game)
+        public static void ProcessLevelKeys(Game game, Player player)
         {
             bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
+            bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2);
 
             if (pause && pause != previousPauseState)
             {
@@ -74,11 +76,17 @@ namespace _2DGame.Utility
                 game.ToggleDebugMode();
             }
 
+            if (toggleCollisions && toggleCollisions != previousToggleCollisionsState)
+            {
+                player.ToggleCollisions();
+            }
+
             previousPauseState = pause;
             previousDebugState = debug;
+            previousToggleCollisionsState = toggleCollisions;
         }
 
-        public static void ProcessPauseScreenKeys(Game game)
+        public static void ProcessPauseScreenKeys(Game game, Player player)
         {
             bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape);
 
@@ -87,7 +95,7 @@ namespace _2DGame.Utility
                 game.CurrentState = GameLoop.GameState.LoadingMenu;
             }
 
-            ProcessLevelKeys(game);
+            ProcessLevelKeys(game, player);
         }
     }
 }

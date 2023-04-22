@@ -113,11 +113,11 @@ namespace _2DGame
 
                 case GameState.Level:
                     KeyboardManager.ProcessPlayerKeys(player);
-                    KeyboardManager.ProcessLevelKeys(this);
+                    KeyboardManager.ProcessLevelKeys(this, player);
                     break;
 
                 case GameState.Paused:
-                    KeyboardManager.ProcessPauseScreenKeys(this);
+                    KeyboardManager.ProcessPauseScreenKeys(this, player);
                     break;
 
                 default:
