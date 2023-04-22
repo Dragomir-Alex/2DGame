@@ -90,7 +90,7 @@ namespace _2DGame
             loadingScreen.Initialize();
             pauseScreen = new PauseScreen();
 
-            Settings.MusicVolume = 50;
+            Settings.MusicVolume = 0;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
 
@@ -158,8 +158,8 @@ namespace _2DGame
                     Window.Display();
 
                     level = new Level();
-                    level.LoadData("test.tmx");
-                    level.Initialize("aztec.png", "lush.ogg");
+                    level.LoadData("level.tmx");
+                    level.Initialize("aztec2.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level);
 
                     player.Initialize(level.TileStartPosition);

@@ -70,19 +70,42 @@ namespace _2DGame.Layers
             }
 
             // Test data
-            ((DetailLayer)Layers[LAYER_COUNT - 1]).AutoXSpeed = -1;
-            ((DetailLayer)Layers[LAYER_COUNT - 1]).AutoYSpeed = -1;
-            ((DetailLayer)Layers[LAYER_COUNT - 1]).RepeatX = true;
-            ((DetailLayer)Layers[LAYER_COUNT - 1]).RepeatY = true;
+            ((DetailLayer)Layers[0]).XSpeed = Game.DEFAULT_WINDOW_WIDTH * 1.25f;
+            ((DetailLayer)Layers[0]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT * 1.25f;
+            ((DetailLayer)Layers[0]).XOffset = 3000;
+            ((DetailLayer)Layers[0]).YOffset = 2200;
 
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).XOffset = 0f;
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).YOffset = 355f;
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).RepeatX = true;
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).RepeatY = false;
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).XSpeed = 200f;
-            ((DetailLayer)Layers[LAYER_COUNT - 2]).YSpeed = 100f;
+            ((DetailLayer)Layers[1]).XSpeed = Game.DEFAULT_WINDOW_WIDTH / 2f;
+            ((DetailLayer)Layers[1]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT / 2f;
+            ((DetailLayer)Layers[1]).XOffset = 1600;
+            ((DetailLayer)Layers[1]).YOffset = 1042;
+
+            ((DetailLayer)Layers[2]).XSpeed = Game.DEFAULT_WINDOW_WIDTH / 2f;
+            ((DetailLayer)Layers[2]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT / 2f;
+            ((DetailLayer)Layers[2]).XOffset = 1600;
+            ((DetailLayer)Layers[2]).YOffset = 1042;
+
+            ((DetailLayer)Layers[4]).YOffset = 700f;
+            ((DetailLayer)Layers[4]).RepeatX = true;
+            ((DetailLayer)Layers[4]).XSpeed = 550f;
+            ((DetailLayer)Layers[4]).YSpeed = 75f;
+
+            ((DetailLayer)Layers[5]).YOffset = 650f;
+            ((DetailLayer)Layers[5]).RepeatX = true;
+            ((DetailLayer)Layers[5]).XSpeed = 350f;
+            ((DetailLayer)Layers[5]).YSpeed = 50f;
+
+            ((DetailLayer)Layers[6]).YOffset = 700f;
+            ((DetailLayer)Layers[6]).RepeatX = true;
+            ((DetailLayer)Layers[6]).XSpeed = 150f;
+            ((DetailLayer)Layers[6]).YSpeed = 25f;
+
+            ((DetailLayer)Layers[7]).YOffset = 160f;
+            ((DetailLayer)Layers[7]).RepeatX = true;
+            ((DetailLayer)Layers[7]).AutoXSpeed = 1f;
             // Test end
         }
+
         IEnumerator<T> Cast<T>(IEnumerator iterator)
         {
             while (iterator.MoveNext())

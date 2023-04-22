@@ -118,7 +118,7 @@ namespace _2DGame.Layers
 
         public override void Draw(RenderTarget target, RenderStates states)
         {
-            if (LayerSprite != null)
+            if (LayerSprite != null && IsVisible)
             {
                 UtilityFunctions.Move(LayerSprite, XCameraOffset, YCameraOffset);
                 target.Draw(LayerSprite);

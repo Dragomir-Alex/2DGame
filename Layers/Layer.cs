@@ -19,6 +19,7 @@ namespace _2DGame.Layers
         public float Height { get; protected set; }
         public int TileWidth { get; protected set; }
         public int TileHeight { get; protected set; }
+        public bool IsVisible { get; set; }
         public TileData? TileIDs { get; set; }
         public Tilemap LayerTilemap { get; set; }
 
@@ -32,6 +33,7 @@ namespace _2DGame.Layers
             Height = 0f;
             TileWidth = 0;
             TileHeight = 0;
+            IsVisible = true;
         }
 
         public abstract void Update(View view);

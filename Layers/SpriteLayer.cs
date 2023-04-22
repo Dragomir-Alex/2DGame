@@ -46,7 +46,10 @@ namespace _2DGame.Layers
 
         public override void Draw(RenderTarget target, RenderStates states)
         {
-            LayerTilemap.Draw(target, states);
+            if (IsVisible)
+            {
+                LayerTilemap.Draw(target, states);
+            }
         }
 
         public override void Destroy()

@@ -46,7 +46,7 @@ namespace _2DGame
             Height = Layers[LayerList.PRIMARY_LAYER].Height;
 
             // Test
-            TileStartPosition = new Vector2i(4, 6);
+            TileStartPosition = new Vector2i(30, 50);
         }
 
         public void Update(Player player)
