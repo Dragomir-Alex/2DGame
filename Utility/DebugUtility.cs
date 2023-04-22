@@ -86,17 +86,17 @@ namespace _2DGame.Utility
             text.Dispose();
         }
 
-        public static void DrawDebugInfo(GameLoop gameLoop, Level level)
+        public static void DrawDebugInfo(GameLoop gameLoop, Player player)
         {
             // Hitbox debug
             CircleShape shape = new CircleShape(2);
             shape.FillColor = new Color(100, 250, 50);
-            shape.Position = level.Player.Position;
+            shape.Position = player.Position;
             gameLoop.Window.Draw(shape);
 
             shape.Dispose();
 
-            foreach (var line in level.Player.CharacterHitbox.Lines)
+            foreach (var line in player.CharacterHitbox.Lines)
             {
                 CircleShape shape2 = new CircleShape(2);
                 shape2.FillColor = new Color(200, 50, 50);
@@ -107,7 +107,7 @@ namespace _2DGame.Utility
             }
 
             DebugUtility.DrawPerformanceData(gameLoop, Color.White);
-            DebugUtility.DrawGameData(gameLoop, level.Player, Color.White);
+            DebugUtility.DrawGameData(gameLoop, player, Color.White);
         }
     }
 }

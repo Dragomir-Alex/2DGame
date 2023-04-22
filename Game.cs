@@ -24,6 +24,7 @@ namespace _2DGame
 
         public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
         private Level level;
+        private Player player;
         private Menu menu;
         private LoadingScreen loadingScreen;
         private PauseScreen pauseScreen;
@@ -51,23 +52,23 @@ namespace _2DGame
                     break;
 
                 case GameState.Level:
-                    TextureManager.DrawLevelTextures(this, level);
+                    TextureManager.DrawLevelTextures(this, level, player);
                     if (debugMode)
                     {
-                        DebugUtility.DrawDebugInfo(this, level);
+                        DebugUtility.DrawDebugInfo(this, player);
                     }
                     break;
 
                 case GameState.Paused:
-                    TextureManager.DrawLevelTextures(this, level);
+                    TextureManager.DrawLevelTextures(this, level, player);
 
                     Window.SetView(Window.DefaultView);
                     Window.Draw(pauseScreen);
-                    Window.SetView(level.Camera);
+                    Window.SetView(player.Camera);
 
                     if (debugMode)
                     {
-                        DebugUtility.DrawDebugInfo(this, level);
+                        DebugUtility.DrawDebugInfo(this, player);
                     }
                     break;
 
@@ -80,6 +81,7 @@ namespace _2DGame
         {
             menu = new Menu();
             level = new Level();
+            player = new Player();
             loadingScreen = new LoadingScreen();
         }
 
@@ -91,11 +93,14 @@ namespace _2DGame
             Settings.MusicVolume = 50;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
+
+            TextureManager.InitializePlayerSprite(player);
         }
 
         public override void LoadContent()
         {
             TextureManager.LoadFonts();
+            TextureManager.LoadPlayerTextures(player);
         }
 
         public override void ProcessInputs()
@@ -107,7 +112,7 @@ namespace _2DGame
                     break;
 
                 case GameState.Level:
-                    KeyboardManager.ProcessPlayerKeys(level.Player);
+                    KeyboardManager.ProcessPlayerKeys(player);
                     KeyboardManager.ProcessLevelKeys(this);
                     break;
 
@@ -142,6 +147,7 @@ namespace _2DGame
 
                     level.Destroy();
                     level = null;
+                    player.Reset();
 
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
                     CurrentState = GameState.Menu;
@@ -153,9 +159,12 @@ namespace _2DGame
 
                     level = new Level();
                     level.LoadData("test.tmx");
-                    TextureManager.LoadLevelTextures(level);
                     level.Initialize("aztec.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level);
+
+                    player.Initialize(level.TileStartPosition);
+                    player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+
                     CurrentState = GameState.Level;
                     break;
 
@@ -168,7 +177,8 @@ namespace _2DGame
                 case GameState.Level:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.PlayMusic();
-                    level.Update();
+                    player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+                    level.Update(player);
                     break;
 
                 case GameState.Paused:

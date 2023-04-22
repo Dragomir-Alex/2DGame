@@ -30,9 +30,9 @@ namespace _2DGame.Utility
             menu.Pages[Menu.PageName.MainPage].LogoTexture = new Texture(TEXTURES_PATH + "logo.png");
         }
 
-        public static void LoadLevelTextures(Level level)
+        public static void LoadPlayerTextures(Player player)
         {
-            level.Player.CharacterTexture = new Texture(TEXTURES_PATH + "player.png");
+            player.CharacterTexture = new Texture(TEXTURES_PATH + "player.png");
         }
 
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
@@ -51,9 +51,13 @@ namespace _2DGame.Utility
             loadingScreen.InitializeSprites();
         }
 
+        public static void InitializePlayerSprite(Player player)
+        {
+            player.InitializeSprite();
+        }
+
         public static void InitializeLevelSprites(Level level)
         {
-            level.Player.InitializeSprite();
             foreach (var layer in level.Layers)
             {
                 if (layer is DetailLayer detailLayer)
@@ -61,7 +65,7 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void DrawLevelTextures(GameLoop gameLoop, Level level)
+        public static void DrawLevelTextures(GameLoop gameLoop, Level level, Player player)
         {
             foreach (var layer in level.Layers.Reverse())
             {
@@ -72,13 +76,13 @@ namespace _2DGame.Utility
                 }
                 else
                 {
-                    gameLoop.Window.SetView(level.Camera); // Player camera
-                    gameLoop.Window.Draw(level.Player);
+                    gameLoop.Window.SetView(player.Camera); // Player camera
+                    gameLoop.Window.Draw(player);
                     gameLoop.Window.Draw(layer);
                 }
             }
 
-            gameLoop.Window.SetView(level.Camera); // Back to player camera
+            gameLoop.Window.SetView(player.Camera); // Back to player camera
         }
     }
 }

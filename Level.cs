@@ -16,8 +16,6 @@ namespace _2DGame
     public class Level : IDestroyable
     {
         public LayerList Layers { get; set; }
-        public Player Player { get; private set; }
-        public View Camera { get; private set; }
         public string Name { get; private set; }
         public string TrackFilename { get; private set; }
         public float Width { get; set; }
@@ -27,7 +25,6 @@ namespace _2DGame
         public Level()
         {
             Layers = new LayerList();
-            Player = new Player();
             Name = "Unnamed";
             TrackFilename = string.Empty;
             Width = 0;
@@ -50,26 +47,19 @@ namespace _2DGame
 
             // Test
             TileStartPosition = new Vector2i(4, 6);
-
-            Player.Initialize(TileStartPosition);
-            Player.SetPlayerCamera(new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2, Game.DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT));
-            Camera = Player.Camera;
         }
 
-        public void Update()
+        public void Update(Player player)
         {
-            Player.Update(this, Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT);
             for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
             {
-                Layers[i].Update(Player.Camera);
+                Layers[i].Update(player.Camera);
             }
         }
 
         public void Destroy()
         {
-            Player.Destroy();
             Layers.Destroy();
-            Camera.Dispose();
             Name = string.Empty;
             TrackFilename = string.Empty;
         }
