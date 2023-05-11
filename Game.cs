@@ -177,7 +177,7 @@ namespace _2DGame
                 case GameState.Level:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.PlayMusic();
-                    player.Update(level, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+                    player.Update(level);
                     level.Update(player);
                     break;
 

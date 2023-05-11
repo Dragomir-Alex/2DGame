@@ -32,7 +32,7 @@ namespace _2DGame.Utility
 
         public static void LoadPlayerTextures(Player player)
         {
-            player.CharacterTexture = new Texture(TEXTURES_PATH + "player.png");
+            player.Texture = new Texture(TEXTURES_PATH + "player.png");
         }
 
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
@@ -77,8 +77,8 @@ namespace _2DGame.Utility
                 else
                 {
                     gameLoop.Window.SetView(player.Camera); // Player camera
-                    gameLoop.Window.Draw(player);
                     gameLoop.Window.Draw(layer);
+                    gameLoop.Window.Draw(player);
                 }
             }
 

@@ -96,7 +96,7 @@ namespace _2DGame.Utility
 
             shape.Dispose();
 
-            foreach (var line in player.CharacterHitbox.Lines)
+            foreach (var line in player.Hitbox.Lines)
             {
                 CircleShape shape2 = new CircleShape(2);
                 shape2.FillColor = new Color(200, 50, 50);
