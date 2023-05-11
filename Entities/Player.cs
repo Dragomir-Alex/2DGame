@@ -18,7 +18,9 @@ namespace _2DGame.Entities
         private bool canCollide;
         public View Camera { get; set; }
         public Vector2f Velocity { get; set; }
+        public Health Health { get; set; }
 
+        public const int MAX_HEALTH = 5;
         public const float X_MAX_VELOCITY = 5f;
         public const float Y_MAX_VELOCITY = 5f;
         private const float X_VELOCITY_GAIN = 0.3f;
@@ -31,6 +33,7 @@ namespace _2DGame.Entities
             Velocity = new Vector2f(0f, 0f);
             canCollide = true;
             Camera = new View();
+            Health = new Health(MAX_HEALTH);
         }
 
         public void SetPlayerCamera(Vector2f center, Vector2f size)
@@ -233,6 +236,7 @@ namespace _2DGame.Entities
         {
             base.Reset();
             Velocity = new Vector2f(0, 0);
+            Health.Reset();
         }
 
         public void ToggleCollisions()
