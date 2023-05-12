@@ -94,13 +94,14 @@ namespace _2DGame
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
 
-            TextureManager.InitializePlayerSprite(player);
+            TextureManager.InitializePlayerSprite(player, this);
         }
 
         public override void LoadContent()
         {
             TextureManager.LoadFonts();
-            TextureManager.LoadPlayerTextures(player);
+            TextureManager.LoadPlayerTextures();
+            TextureManager.LoadMenuTextures();
         }
 
         public override void ProcessInputs()
@@ -135,7 +136,6 @@ namespace _2DGame
                     Draw(gameTime);
                     Window.Display();
 
-                    TextureManager.LoadMenuTextures(menu);
                     menu.Initialize();
                     TextureManager.InitializeMenuSprites(menu, loadingScreen);
                     CurrentState = GameState.Menu;
@@ -177,7 +177,7 @@ namespace _2DGame
                 case GameState.Level:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.PlayMusic();
-                    player.Update(level);
+                    player.Update(level, this);
                     level.Update(player);
                     break;
 

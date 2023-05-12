@@ -15,7 +15,6 @@ namespace _2DGame.MainMenu
         public Text Title { get; set; }
         public DetailLayer Background { get; set; }
         public List<Button> Buttons { get; set; }
-        public Texture? LogoTexture { get; set; }
         public Sprite? LogoSprite { get; set; }
 
         public Page()
@@ -37,12 +36,12 @@ namespace _2DGame.MainMenu
             Buttons.Add(button);
         }
 
-        public void InitializeSprites()
+        public void InitializeSprites(Texture texture)
         {
             Background.InitializeSprite();
-            if (LogoTexture != null)
+            if (texture != null)
             {
-                LogoSprite = new Sprite(LogoTexture);
+                LogoSprite = new Sprite(texture);
             }
         }
 

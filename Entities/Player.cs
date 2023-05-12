@@ -1,4 +1,5 @@
-﻿using _2DGame.LayerData;
+﻿using _2DGame.Animation;
+using _2DGame.LayerData;
 using _2DGame.Layers;
 using _2DGame.Utility;
 using InstilledBee.SFML.SimpleCollision;
@@ -19,8 +20,11 @@ namespace _2DGame.Entities
         public View Camera { get; set; }
         public Vector2f Velocity { get; set; }
         public Health Health { get; set; }
+        public Texture? Texture { get; set; }
+        public AnimatedSprite Sprite { get; set; }
 
         public const int MAX_HEALTH = 5;
+
         public const float X_MAX_VELOCITY = 5f;
         public const float Y_MAX_VELOCITY = 5f;
         private const float X_VELOCITY_GAIN = 0.3f;
@@ -28,12 +32,22 @@ namespace _2DGame.Entities
         private const float X_VELOCITY_REDUCTION = 0.15f;
         private const float Y_VELOCITY_REDUCTION = 0.15f;
 
+        public const int HITBOX_WIDTH = 20;
+        public const int HITBOX_HEIGHT = 40;
+
         public Player() : base()
         {
+            Texture = null;
             Velocity = new Vector2f(0f, 0f);
             canCollide = true;
             Camera = new View();
             Health = new Health(MAX_HEALTH);
+        }
+
+        public override void Initialize(Vector2i startPosition)
+        {
+            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE, startPosition.Y * Tilemap.TILE_SIZE);
+            InitializeHitbox();
         }
 
         public void SetPlayerCamera(Vector2f center, Vector2f size)
@@ -44,25 +58,25 @@ namespace _2DGame.Entities
 
         private void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
         {
-            float xCenter = (int)Position.X + Sprite.Texture.Size.X;
-            float yCenter = (int)Position.Y + Sprite.Texture.Size.Y;
+            float xCenter = (int)Position.X + HITBOX_WIDTH;
+            float yCenter = (int)Position.Y + HITBOX_HEIGHT;
 
-            if ((int)Position.X + Sprite.Texture.Size.X <= screenWidth / 2) // Left
+            if ((int)Position.X + HITBOX_WIDTH <= screenWidth / 2) // Left
             {
                 xCenter = (int)screenWidth / 2;
 
             }
-            else if ((int)Position.X + Sprite.Texture.Size.X >= level.Width - screenWidth / 2) // Right
+            else if ((int)Position.X + HITBOX_WIDTH >= level.Width - screenWidth / 2) // Right
             {
                 xCenter = (int)level.Width - screenWidth / 2;
             }
 
-            if ((int)Position.Y + Sprite.Texture.Size.Y <= screenHeight / 2) // Top
+            if ((int)Position.Y + HITBOX_HEIGHT <= screenHeight / 2) // Top
             {
                 yCenter = (int)screenHeight / 2;
 
             }
-            else if ((int)Position.Y + Sprite.Texture.Size.Y >= level.Height - screenHeight / 2) // Bottom
+            else if ((int)Position.Y + HITBOX_HEIGHT >= level.Height - screenHeight / 2) // Bottom
             {
                 yCenter = (int)level.Height - screenHeight / 2;
             }
@@ -90,25 +104,25 @@ namespace _2DGame.Entities
         public void PlayerBorderCollision(SpriteLayer spriteLayer)
         {
             bool wasMoved = false;
-            if (Position.X - Sprite.Texture.Size.X / 2 < 0) // Left
+            if (Position.X - HITBOX_WIDTH / 2 < 0) // Left
             {
-                Position = new Vector2f((float)Sprite.Texture.Size.X / 2, Position.Y);
+                Position = new Vector2f((float)HITBOX_WIDTH / 2, Position.Y);
                 wasMoved = true;
             }
-            else if (Position.X + Sprite.Texture.Size.X / 2 > spriteLayer.Width) // Right
+            else if (Position.X + HITBOX_WIDTH / 2 > spriteLayer.Width) // Right
             {
-                Position = new Vector2f(spriteLayer.Width - Sprite.Texture.Size.X / 2, Position.Y);
+                Position = new Vector2f(spriteLayer.Width - HITBOX_WIDTH / 2, Position.Y);
                 wasMoved = true;
             }
 
-            if (Position.Y - Sprite.Texture.Size.Y / 2 < 0) // Top
+            if (Position.Y - HITBOX_HEIGHT / 2 < 0) // Top
             {
-                Position = new Vector2f(Position.X, (float)Sprite.Texture.Size.Y / 2);
+                Position = new Vector2f(Position.X, (float)HITBOX_HEIGHT / 2);
                 wasMoved = true;
             }
-            else if (Position.Y + Sprite.Texture.Size.Y / 2 > spriteLayer.Height) // Bottom
+            else if (Position.Y + HITBOX_HEIGHT / 2 > spriteLayer.Height) // Bottom
             {
-                Position = new Vector2f(Position.X, spriteLayer.Height - Sprite.Texture.Size.Y / 2);
+                Position = new Vector2f(Position.X, spriteLayer.Height - HITBOX_HEIGHT / 2);
                 wasMoved = true;
             }
 
@@ -147,20 +161,20 @@ namespace _2DGame.Entities
 
                     if (crossPoint.X > Position.X)  // Left collision
                     {
-                        xDisplacement = -(Position.X + Texture.Size.X / 2 - collidedTile.Item3 * Tilemap.TILE_SIZE);
+                        xDisplacement = -(Position.X + HITBOX_WIDTH / 2 - collidedTile.Item3 * Tilemap.TILE_SIZE);
                     }
                     else                            // Right collision
                     {
-                        xDisplacement = (collidedTile.Item3 + 1) * Tilemap.TILE_SIZE - (Position.X - Texture.Size.X / 2);
+                        xDisplacement = (collidedTile.Item3 + 1) * Tilemap.TILE_SIZE - (Position.X - HITBOX_WIDTH / 2);
                     }
 
                     if (crossPoint.Y > Position.Y)  // Top collision
                     {
-                        yDisplacement = -(Position.Y + Texture.Size.Y / 2 - collidedTile.Item2 * Tilemap.TILE_SIZE);
+                        yDisplacement = -(Position.Y + HITBOX_HEIGHT / 2 - collidedTile.Item2 * Tilemap.TILE_SIZE);
                     }
                     else                            // Bottom collision
                     {
-                        yDisplacement = (collidedTile.Item2 + 1) * Tilemap.TILE_SIZE - (Position.Y - Texture.Size.Y / 2);
+                        yDisplacement = (collidedTile.Item2 + 1) * Tilemap.TILE_SIZE - (Position.Y - HITBOX_HEIGHT / 2);
                     }
 
                     if (Math.Abs(xDisplacement) <= Math.Abs(yDisplacement))
@@ -225,11 +239,18 @@ namespace _2DGame.Entities
                 Velocity = new Vector2f(Velocity.X, -Y_MAX_VELOCITY);
         }
 
-        public override void Update(Level level)
+        public override void Update(Level level, GameLoop gameLoop)
         {
             UpdateVelocity();
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
+        }
+
+        private void UpdateAllPositionProperties()
+        {
+            UpdateSpritePosition();
+            UpdateHitboxPosition();
+            UpdateTileCoordinates();
         }
 
         public override void Reset()
@@ -242,6 +263,37 @@ namespace _2DGame.Entities
         public void ToggleCollisions()
         {
             canCollide = !canCollide;
+        }
+
+        private void InitializeHitbox()
+        {
+            Vector2[] vector2Arr = new Vector2[] {
+                new Vector2(0, 0),
+                new Vector2(HITBOX_WIDTH, 0),
+                new Vector2(HITBOX_WIDTH, HITBOX_HEIGHT),
+                new Vector2(0, HITBOX_HEIGHT),
+                new Vector2(0, 0)
+            };
+            Hitbox = new Hitbox(vector2Arr);
+            UpdateHitboxPosition();
+        }
+
+        private void UpdateSpritePosition()
+        {
+            Sprite.Position = new Vector2f(Position.X - HITBOX_WIDTH - 12, Position.Y - HITBOX_HEIGHT + 8); // Magic numbers
+        }
+
+        protected override void UpdateHitboxPosition()
+        {
+            TransformableHitbox2D.Transform transform = new();
+            transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);
+            Hitbox.Transform(transform);
+        }
+
+        public void InitializeSprite()
+        {
+            Sprite = TextureManager.PlayerAnimations["PlayerJumpUp"];
+            UpdateSpritePosition();
         }
     }
 }

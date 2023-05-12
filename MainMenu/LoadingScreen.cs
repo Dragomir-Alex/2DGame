@@ -41,7 +41,7 @@ namespace _2DGame.MainMenu
 
         public void InitializeSprites()
         {
-            LoadingPage.InitializeSprites();
+            LoadingPage.InitializeSprites(null);
         }
 
         public void Draw(RenderTarget target, RenderStates states)

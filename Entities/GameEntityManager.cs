@@ -29,15 +29,15 @@ namespace _2DGame.Entities
             // TBA
         }
 
-        public void Update(Level level)
+        public void Update(Level level, GameLoop gameLoop)
         {
-            Player.Update(level);
+            Player.Update(level, gameLoop);
 
             UpdateEntityDistanceLists();
 
             foreach (var onScreenGameEntity in OnScreenGameEntities)
             {
-                onScreenGameEntity.Update(level);
+                onScreenGameEntity.Update(level, gameLoop);
             }
             foreach (var offScreenGameEntity in OffScreenGameEntities)
             {
@@ -45,10 +45,10 @@ namespace _2DGame.Entities
             }
         }
 
-        public void InitializeSprites()
+        public void InitializeSprites(RenderTarget renderTarget)
         {
-            foreach (var gameEntity in GameEntities)
-                gameEntity.InitializeSprite();
+/*            foreach (var gameEntity in GameEntities)
+                gameEntity.InitializeSprite(r);*/
         }
 
         public void ResetAllGameEntities()
@@ -86,10 +86,10 @@ namespace _2DGame.Entities
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            foreach (var gameEntity in OnScreenGameEntities)
+/*            foreach (var gameEntity in OnScreenGameEntities)
             {
                 gameEntity.Draw(target, states);
-            }
+            }*/
         }
     }
 }
