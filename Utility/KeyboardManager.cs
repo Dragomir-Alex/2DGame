@@ -26,10 +26,10 @@ namespace _2DGame.Utility
 
             if (isMove)
             {
-                if (moveLeft) player.GainNegativeXVelocity();
-                if (moveRight) player.GainPositiveXVelocity();
-                if (moveUp) player.GainNegativeYVelocity();
-                if (moveDown) player.GainPositiveYVelocity();
+                if (moveLeft) player.LeftButtonAction();
+                if (moveRight) player.RightButtonAction();
+                if (moveUp) player.UpButtonAction();
+                if (moveDown) player.DownButtonAction();
             }
         }
 
@@ -78,7 +78,7 @@ namespace _2DGame.Utility
 
             if (toggleCollisions && toggleCollisions != previousToggleCollisionsState)
             {
-                player.ToggleCollisions();
+                player.ToggleDebugMode();
             }
 
             previousPauseState = pause;

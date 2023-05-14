@@ -47,8 +47,10 @@ namespace _2DGame.Utility
             if (TextureManager.DebugFont == null) return;
 
             string playerPositionStr = "X: " + player.Position.X.ToString() + "  Y: " + player.Position.Y.ToString();
-            string playerVelocityStr = "X-Vel: " + player.Velocity.X.ToString() + "  Y-Vel: " + player.Velocity.Y.ToString();
+            string playerVelocityStr = "X-Vel: " + Math.Round(player.Velocity.X, 2).ToString() + "  Y-Vel: " + Math.Round(player.Velocity.Y, 2).ToString();
             string playerTileCoordinatesStr = "X-Tile: " + player.TileCoordinates.X.ToString() + "  Y-Tile: " + player.TileCoordinates.Y.ToString();
+            string playerState = "Player state: " + player.CurrentState.ToString();
+            string playerDirection = "Player direction: " + player.CurrentDirection.ToString();
 
             Text positionText = new Text(playerPositionStr, TextureManager.DebugFont, 14);
             positionText.Position = new Vector2f(4f, 68f);
@@ -62,13 +64,25 @@ namespace _2DGame.Utility
             tileCoordinatesText.Position = new Vector2f(4f, 108f);
             tileCoordinatesText.FillColor = color;
 
+            Text stateText = new Text(playerState, TextureManager.DebugFont, 14);
+            stateText.Position = new Vector2f(4f, 128f);
+            stateText.FillColor = color;
+
+            Text directionText = new Text(playerDirection, TextureManager.DebugFont, 14);
+            directionText.Position = new Vector2f(4f, 148f);
+            directionText.FillColor = color;
+
             gameLoop.Window.Draw(positionText);
             gameLoop.Window.Draw(velocityText);
             gameLoop.Window.Draw(tileCoordinatesText);
+            gameLoop.Window.Draw(stateText);
+            gameLoop.Window.Draw(directionText);
 
             positionText.Dispose();
             velocityText.Dispose();
             tileCoordinatesText.Dispose();
+            stateText.Dispose();
+            directionText.Dispose();
         }
 
         public static void DrawMessage(GameLoop gameLoop, string message, Color color)

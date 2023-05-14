@@ -80,38 +80,38 @@ namespace _2DGame.Utility
 
             if (PlayerTextures["PlayerIdle"] != null)
             {
-                PlayerAnimations.Add("PlayerIdle", new AnimatedSprite(PlayerTextures["PlayerIdle"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 12, gameLoop.Window, RenderStates.Default, 0, 12, true, true));
+                PlayerAnimations.Add("PlayerIdle", new AnimatedSprite(PlayerTextures["PlayerIdle"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 18, gameLoop.Window, RenderStates.Default, 0, 12, false, true));
             }
 
             if (PlayerTextures["PlayerRun"] != null)
             {
-                PlayerAnimations.Add("PlayerRun", new AnimatedSprite(PlayerTextures["PlayerRun"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 16, gameLoop.Window, RenderStates.Default, 0, 15, true, true));
+                PlayerAnimations.Add("PlayerRun", new AnimatedSprite(PlayerTextures["PlayerRun"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 16, gameLoop.Window, RenderStates.Default, 0, 15, false, true));
             }
 
             if (PlayerTextures["PlayerJump"] != null)
             {
-                PlayerAnimations.Add("PlayerJumpUp", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 9, gameLoop.Window, RenderStates.Default, 0, 8, true, false));
-                PlayerAnimations.Add("PlayerFall", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 6, gameLoop.Window, RenderStates.Default, 9, 14, true, false));
+                PlayerAnimations.Add("PlayerJump", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 30, gameLoop.Window, RenderStates.Default, 0, 8, false, false));
+                PlayerAnimations.Add("PlayerFall", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 25, gameLoop.Window, RenderStates.Default, 9, 13, false, false));
             }
 
             if (PlayerTextures["PlayerAttack"] != null)
             {
-                PlayerAnimations.Add("PlayerAttack", new AnimatedSprite(PlayerTextures["PlayerAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, true, false));
+                PlayerAnimations.Add("PlayerAttack", new AnimatedSprite(PlayerTextures["PlayerAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
             if (PlayerTextures["PlayerJumpAttack"] != null)
             {
-                PlayerAnimations.Add("PlayerJumpAttack", new AnimatedSprite(PlayerTextures["PlayerJumpAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 2, gameLoop.Window, RenderStates.Default, 0, 1, true, false));
+                PlayerAnimations.Add("PlayerJumpAttack", new AnimatedSprite(PlayerTextures["PlayerJumpAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 2, gameLoop.Window, RenderStates.Default, 0, 1, false, false));
             }
 
             if (PlayerTextures["PlayerHit"] != null)
             {
-                PlayerAnimations.Add("PlayerHit", new AnimatedSprite(PlayerTextures["PlayerHit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 4, gameLoop.Window, RenderStates.Default, 0, 3, true, false));
+                PlayerAnimations.Add("PlayerHit", new AnimatedSprite(PlayerTextures["PlayerHit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 4, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
             }
 
             if (PlayerTextures["PlayerDeath"] != null)
             {
-                PlayerAnimations.Add("PlayerDeath", new AnimatedSprite(PlayerTextures["PlayerDeath"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, true, false));
+                PlayerAnimations.Add("PlayerDeath", new AnimatedSprite(PlayerTextures["PlayerDeath"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
             player.InitializeSprite();
@@ -139,7 +139,7 @@ namespace _2DGame.Utility
                 {
                     gameLoop.Window.SetView(player.Camera); // Player cameras
                     gameLoop.Window.Draw(layer);
-                    player.Sprite.Update(gameLoop.GameTime.DeltaTime);
+                    player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection == Player.PlayerDirection.Right ? false : true);
                     //player.Sprite.Scale = new Vector2f(-1f, 1f);
                 }
             }

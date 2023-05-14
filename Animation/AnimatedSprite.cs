@@ -42,7 +42,7 @@ namespace _2DGame.Animation
             return Position;
         }
 
-        public void Update(float deltaTime)
+        public void Update(float deltaTime, bool flipped)
         {
             clock += deltaTime;
 
@@ -60,6 +60,9 @@ namespace _2DGame.Animation
             {
                 isAnimated = false;
             }
+
+            if (flipped) Scale = new SFML.System.Vector2f(-1f, 1f);
+            else Scale = new SFML.System.Vector2f(1f, 1f);
 
             Draw(renderTarget, renderStates);
         }
@@ -79,6 +82,13 @@ namespace _2DGame.Animation
             isAnimated = false;
             currentFrame = 0;
             TextureRect = new IntRect(0, 0, frameWidth, frameHeight);
+        }
+
+        public void Restart()
+        {
+            isAnimated = false;
+            currentFrame = firstFrame;
+            TextureRect = GetFramePosition(currentFrame);
         }
 
         public void SetFrame(int Frame)
