@@ -17,7 +17,7 @@ namespace _2DGame.Entities
     {
         public Hitbox? Hitbox { get; set; }
         public TileCoordinates TileCoordinates { get; set; }
-        public Vector2f Position { get; set; }
+        public virtual Vector2f Position { get; set; }
 
         public GameEntity()
         {
@@ -41,13 +41,16 @@ namespace _2DGame.Entities
 
         protected virtual void UpdateTileCoordinates()
         {
-            TileCoordinates.X = (int)((int)Position.X / Tilemap.TILE_SIZE);
-            if (Position.X < 0)
-                TileCoordinates.X--;
+            if (TileCoordinates != null)
+            {
+                TileCoordinates.X = (int)((int)Position.X / Tilemap.TILE_SIZE);
+                if (Position.X < 0)
+                    TileCoordinates.X--;
 
-            TileCoordinates.Y = (int)((int)Position.Y / Tilemap.TILE_SIZE);
-            if (Position.Y < 0)
-                TileCoordinates.Y--;
+                TileCoordinates.Y = (int)((int)Position.Y / Tilemap.TILE_SIZE);
+                if (Position.Y < 0)
+                    TileCoordinates.Y--;
+            }
         }
 
         public abstract void Update(Level level, GameLoop gameLoop);
