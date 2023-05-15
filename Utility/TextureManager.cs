@@ -42,15 +42,16 @@ namespace _2DGame.Utility
 
         public static void LoadPlayerTextures()
         {
-            PlayerTextures = new Dictionary<string, Texture>();
-
-            PlayerTextures.Add("PlayerIdle", new Texture(TEXTURES_PATH + "PlayerIdle.png"));
-            PlayerTextures.Add("PlayerRun", new Texture(TEXTURES_PATH + "PlayerRun.png"));
-            PlayerTextures.Add("PlayerJump", new Texture(TEXTURES_PATH + "PlayerJump.png"));
-            PlayerTextures.Add("PlayerAttack", new Texture(TEXTURES_PATH + "PlayerAttack.png"));
-            PlayerTextures.Add("PlayerJumpAttack", new Texture(TEXTURES_PATH + "PlayerJumpAttack.png"));
-            PlayerTextures.Add("PlayerHit", new Texture(TEXTURES_PATH + "PlayerHit.png"));
-            PlayerTextures.Add("PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png"));
+            PlayerTextures = new Dictionary<string, Texture>
+            {
+                { "PlayerIdle", new Texture(TEXTURES_PATH + "PlayerIdle.png") },
+                { "PlayerRun", new Texture(TEXTURES_PATH + "PlayerRun.png") },
+                { "PlayerJump", new Texture(TEXTURES_PATH + "PlayerJump.png") },
+                { "PlayerAttack", new Texture(TEXTURES_PATH + "PlayerAttack.png") },
+                { "PlayerJumpAttack", new Texture(TEXTURES_PATH + "PlayerJumpAttack.png") },
+                { "PlayerHit", new Texture(TEXTURES_PATH + "PlayerHit.png") },
+                { "PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png") }
+            };
         }
 
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
@@ -126,7 +127,7 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void DrawLevelTextures(GameLoop gameLoop, Level level, Player player)
+        public static void DrawLevelTextures(GameLoop gameLoop, Level level, Player player, bool isPaused)
         {
             foreach (var layer in level.Layers.Reverse())
             {
@@ -139,8 +140,13 @@ namespace _2DGame.Utility
                 {
                     gameLoop.Window.SetView(player.Camera); // Player cameras
                     gameLoop.Window.Draw(layer);
-                    player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection == Player.PlayerDirection.Right ? false : true);
-                    //player.Sprite.Scale = new Vector2f(-1f, 1f);
+
+                    if (isPaused)
+                        player.Sprite.Pause();
+                    else 
+                        player.Sprite.PlayWithoutLoop();
+
+                    player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection != Player.PlayerDirection.Right);
                 }
             }
 

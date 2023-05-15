@@ -52,7 +52,7 @@ namespace _2DGame
                     break;
 
                 case GameState.Level:
-                    TextureManager.DrawLevelTextures(this, level, player);
+                    TextureManager.DrawLevelTextures(this, level, player, false);
                     if (debugMode)
                     {
                         DebugUtility.DrawDebugInfo(this, player);
@@ -60,7 +60,7 @@ namespace _2DGame
                     break;
 
                 case GameState.Paused:
-                    TextureManager.DrawLevelTextures(this, level, player);
+                    TextureManager.DrawLevelTextures(this, level, player, true);
 
                     Window.SetView(Window.DefaultView);
                     Window.Draw(pauseScreen);
@@ -93,6 +93,7 @@ namespace _2DGame
             Settings.MusicVolume = 0;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
+            SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
 
             TextureManager.InitializePlayerSprite(player, this);
         }
@@ -138,6 +139,8 @@ namespace _2DGame
 
                     menu.Initialize();
                     TextureManager.InitializeMenuSprites(menu, loadingScreen);
+                    SoundManager.LoadSounds();
+                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     CurrentState = GameState.Menu;
                     break;
 
@@ -170,12 +173,14 @@ namespace _2DGame
 
                 case GameState.Menu:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
+                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     SoundManager.PlayMusic();
                     menu.Update(Window.DefaultView);
                     break;
 
                 case GameState.Level:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
+                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     SoundManager.PlayMusic();
                     player.Update(level, this);
                     level.Update(player);
@@ -183,6 +188,7 @@ namespace _2DGame
 
                 case GameState.Paused:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume / 2);
+                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume / 2);
                     break;
 
                 default:

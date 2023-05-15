@@ -72,6 +72,13 @@ namespace _2DGame.Animation
             isAnimated = true;
         }
 
+        public void PlayWithoutLoop()
+        {
+            if (isLooped) { isAnimated = true; }
+            else if (currentFrame == lastFrame) { isAnimated = false; return; }
+            isAnimated = true;
+        }
+
         public void Pause()
         {
             isAnimated = false;
@@ -97,6 +104,10 @@ namespace _2DGame.Animation
             isAnimated = true;
             isLooped = false;
         }
+
+        public int GetCurrentFrame() { return currentFrame; }
+        public int GetLastFrame() { return lastFrame; }
+        public bool IsAnimated() { return isAnimated; }
 
         public void SetFPS(int FPS) { interval = 1f / FPS; }
     }

@@ -21,6 +21,7 @@ namespace _2DGame.Entities
 
         public PlayerDirection CurrentDirection { get; private set; }
         public PlayerState CurrentState { get; private set; }
+        public PlayerState PreviousFrameState { get; private set; }
 
         private bool debugMode;
         private bool isGrounded;
@@ -61,6 +62,7 @@ namespace _2DGame.Entities
             isGrounded = false;
 
             CurrentState = PlayerState.Falling;
+            PreviousFrameState = PlayerState.Falling;
             CurrentDirection = PlayerDirection.Right;
 
             Texture = null;
@@ -307,6 +309,8 @@ namespace _2DGame.Entities
 
         public void UpdateCurrentState()
         {
+            PreviousFrameState = CurrentState;
+
             if (Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
             {
                 CurrentState = PlayerState.Idle;
@@ -323,6 +327,12 @@ namespace _2DGame.Entities
             {
                 CurrentState = PlayerState.Falling;
             }
+
+            if ((PreviousFrameState == PlayerState.Falling || PreviousFrameState == PlayerState.Jumping)
+                && (CurrentState == PlayerState.Idle || CurrentState == PlayerState.Walking))
+            {
+                SoundManager.PlaySound("Land");
+            }
         }
 
         public void UpdateAnimatedSprite()
@@ -338,8 +348,14 @@ namespace _2DGame.Entities
             {
                 currentAnimation.Restart();
                 Sprite.Play();
+
             }
             else if (CurrentState == PlayerState.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
+
+            if (CurrentState == PlayerState.Walking && (Sprite.GetCurrentFrame() == 1 || Sprite.GetCurrentFrame() == 9)) // Steps
+            {
+                SoundManager.PlaySound("Step");
+            }
 
             UpdateSpritePosition();
         }
@@ -421,6 +437,7 @@ namespace _2DGame.Entities
             {
                 GainNegativeYVelocity();
                 isGrounded = false;
+                SoundManager.PlaySound("Jump");
             }
         }
 
