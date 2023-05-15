@@ -6,14 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
     public class LayerList : IEnumerable<Layer>, IDestroyable
     {
-        private Layer[] Layers { get; set; }
-        private List<TileData> Map { get; set; }
+        private DetailLayer[] loadedLayerData;
+        private Layer[] layers;
+        private List<TileData> map;
 
         public const int LAYER_COUNT = 8;
         public const int PRIMARY_LAYER = 3;
@@ -21,8 +23,8 @@ namespace _2DGame.Layers
 
         public Layer this[int i]
         {
-            get { return Layers[i]; }
-            set { Layers[i] = value; }
+            get { return layers[i]; }
+            set { layers[i] = value; }
         }
 
         public LayerList()
@@ -30,80 +32,61 @@ namespace _2DGame.Layers
             Instantiate();
         }
 
-        public void Load(string mapFilename)
+        public void Load(string mapFilename, string layerDataFilename)
         {
-            Map = new();
-            for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
+            // Map = new();
+
+            for (int i = 0; i < LAYER_COUNT; ++i)
             {
                 TileData tileData = new TileData(MAPS_PATH + mapFilename, (i + 1).ToString());
-                Map.Add(tileData);
+                map.Add(tileData);
             }
+
+            string fileName = MAPS_PATH + layerDataFilename;
+            string jsonString = File.ReadAllText(fileName);
+            loadedLayerData = JsonSerializer.Deserialize<DetailLayer[]>(jsonString)!; // Can't deserialize abstract class :(
         }
 
         public void Instantiate()
         {
-            Layers = new Layer[LAYER_COUNT];
-            Map = new();
+            layers = new Layer[LAYER_COUNT];
+            map = new();
 
             for (int i = 0; i < LAYER_COUNT; ++i)
             {
-                Layers[i] = new DetailLayer();
+                layers[i] = new DetailLayer();
             }
-            Layers[PRIMARY_LAYER] = new SpriteLayer();
+            layers[PRIMARY_LAYER] = new SpriteLayer();
         }
 
         public void Initialize(string tilesetFilename)
         {
-            for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
+            for (int i = 0; i < LAYER_COUNT; ++i)
             {
-                if (Layers[i] != null)
+                if (layers[i] != null)
                 {
-                    if (i == LayerList.PRIMARY_LAYER)
+                    if (i == PRIMARY_LAYER)
                     {
-                        ((SpriteLayer)Layers[i]).Initialize(tilesetFilename, Map[i]);
+                        ((SpriteLayer)layers[i]).Initialize(tilesetFilename, map[i]);
                     }
                     else
                     {
-                        ((DetailLayer)Layers[i]).Initialize(tilesetFilename, Map[i]);
+                        ((DetailLayer)layers[i]).Initialize(tilesetFilename, map[i]);
+
+                        ((DetailLayer)layers[i]).XOffset = loadedLayerData[i].XOffset;
+                        ((DetailLayer)layers[i]).YOffset = loadedLayerData[i].YOffset;
+                        ((DetailLayer)layers[i]).RepeatX = loadedLayerData[i].RepeatX;
+                        ((DetailLayer)layers[i]).RepeatY = loadedLayerData[i].RepeatY;
+                        ((DetailLayer)layers[i]).XSpeed = Game.DEFAULT_WINDOW_WIDTH * loadedLayerData[i].XSpeed;
+                        ((DetailLayer)layers[i]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT * loadedLayerData[i].YSpeed;
+                        ((DetailLayer)layers[i]).AutoXSpeed = loadedLayerData[i].AutoXSpeed;
+                        ((DetailLayer)layers[i]).AutoYSpeed = loadedLayerData[i].AutoYSpeed;
+                        ((DetailLayer)layers[i]).IsVisible = loadedLayerData[i].IsVisible;
                     }
                 }
             }
 
-            // Test data
-            ((DetailLayer)Layers[0]).XSpeed = Game.DEFAULT_WINDOW_WIDTH * 1.25f;
-            ((DetailLayer)Layers[0]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT * 1.25f;
-            ((DetailLayer)Layers[0]).XOffset = 3000;
-            ((DetailLayer)Layers[0]).YOffset = 2200;
-
-            ((DetailLayer)Layers[1]).XSpeed = Game.DEFAULT_WINDOW_WIDTH / 2f;
-            ((DetailLayer)Layers[1]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT / 2f;
-            ((DetailLayer)Layers[1]).XOffset = 1600;
-            ((DetailLayer)Layers[1]).YOffset = 1042;
-
-            ((DetailLayer)Layers[2]).XSpeed = Game.DEFAULT_WINDOW_WIDTH / 2f;
-            ((DetailLayer)Layers[2]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT / 2f;
-            ((DetailLayer)Layers[2]).XOffset = 1600;
-            ((DetailLayer)Layers[2]).YOffset = 1042;
-
-            ((DetailLayer)Layers[4]).YOffset = 700f;
-            ((DetailLayer)Layers[4]).RepeatX = true;
-            ((DetailLayer)Layers[4]).XSpeed = 550f;
-            ((DetailLayer)Layers[4]).YSpeed = 75f;
-
-            ((DetailLayer)Layers[5]).YOffset = 650f;
-            ((DetailLayer)Layers[5]).RepeatX = true;
-            ((DetailLayer)Layers[5]).XSpeed = 350f;
-            ((DetailLayer)Layers[5]).YSpeed = 50f;
-
-            ((DetailLayer)Layers[6]).YOffset = 700f;
-            ((DetailLayer)Layers[6]).RepeatX = true;
-            ((DetailLayer)Layers[6]).XSpeed = 150f;
-            ((DetailLayer)Layers[6]).YSpeed = 25f;
-
-            ((DetailLayer)Layers[7]).YOffset = 160f;
-            ((DetailLayer)Layers[7]).RepeatX = true;
-            ((DetailLayer)Layers[7]).AutoXSpeed = 1f;
-            // Test end
+            loadedLayerData = null;
         }
 
         IEnumerator<T> Cast<T>(IEnumerator iterator)
@@ -116,7 +99,7 @@ namespace _2DGame.Layers
 
         public IEnumerator<Layer> GetEnumerator()
         {
-            return Cast<Layer>(Layers.GetEnumerator());
+            return Cast<Layer>(layers.GetEnumerator());
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -126,12 +109,12 @@ namespace _2DGame.Layers
 
         public void Destroy()
         {
-            foreach (var layer in Layers)
+            foreach (var layer in layers)
             {
                 layer.Destroy();
             }
-            Layers = Array.Empty<Layer>();
-            Map.Clear();
+            layers = Array.Empty<Layer>();
+            map.Clear();
         }
     }
 }

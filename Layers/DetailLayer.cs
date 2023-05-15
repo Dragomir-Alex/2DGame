@@ -9,13 +9,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
     public class DetailLayer : Layer, Drawable, IDestroyable
     {
+        [JsonIgnore]
         public Texture? LayerTexture { get; set; }
+        [JsonIgnore]
         public Sprite? LayerSprite { get; set; }
         public float XOffset { get; set; }
         public float YOffset { get; set; }

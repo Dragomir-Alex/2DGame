@@ -97,5 +97,7 @@ namespace _2DGame.Animation
             isAnimated = true;
             isLooped = false;
         }
+
+        public void SetFPS(int FPS) { interval = 1f / FPS; }
     }
 }

@@ -85,7 +85,7 @@ namespace _2DGame.Utility
 
             if (PlayerTextures["PlayerRun"] != null)
             {
-                PlayerAnimations.Add("PlayerRun", new AnimatedSprite(PlayerTextures["PlayerRun"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 16, gameLoop.Window, RenderStates.Default, 0, 15, false, true));
+                PlayerAnimations.Add("PlayerRun", new AnimatedSprite(PlayerTextures["PlayerRun"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 22, gameLoop.Window, RenderStates.Default, 0, 15, false, true));
             }
 
             if (PlayerTextures["PlayerJump"] != null)

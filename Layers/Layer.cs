@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _2DGame.Layers
@@ -15,12 +16,19 @@ namespace _2DGame.Layers
         public float YSpeed { get; set; }
         public float AutoXSpeed { get; set; }
         public float AutoYSpeed { get; set; }
-        public float Width { get; protected set; }
-        public float Height { get; protected set; }
-        public int TileWidth { get; protected set; }
-        public int TileHeight { get; protected set; }
         public bool IsVisible { get; set; }
+
+        [JsonIgnore]
+        public float Width { get; protected set; }
+        [JsonIgnore]
+        public float Height { get; protected set; }
+        [JsonIgnore]
+        public int TileWidth { get; protected set; }
+        [JsonIgnore]
+        public int TileHeight { get; protected set; }
+        [JsonIgnore]
         public TileData? TileIDs { get; set; }
+        [JsonIgnore]
         public Tilemap LayerTilemap { get; set; }
 
         public Layer()

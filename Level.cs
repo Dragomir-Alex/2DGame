@@ -32,9 +32,9 @@ namespace _2DGame
             TileStartPosition = new Vector2i(0, 0);
         }
 
-        public void LoadData(string mapFilename)
+        public void LoadData(string mapFilename, string layerDataFilename)
         {
-            Layers.Load(mapFilename);
+            Layers.Load(mapFilename, layerDataFilename);
         }
 
         public void Initialize(string tilesetFilename, string trackFilename)

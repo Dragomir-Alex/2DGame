@@ -330,16 +330,16 @@ namespace _2DGame.Entities
             var currentAnimation = Sprite;
 
             if (CurrentState == PlayerState.Idle) { Sprite = TextureManager.PlayerAnimations["PlayerIdle"]; }
-            if (CurrentState == PlayerState.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
             if (CurrentState == PlayerState.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
             if (CurrentState == PlayerState.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
+            if (CurrentState == PlayerState.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
 
             if (currentAnimation != Sprite)
             {
                 currentAnimation.Restart();
                 Sprite.Play();
             }
-
+            else if (CurrentState == PlayerState.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
 
             UpdateSpritePosition();
         }
@@ -390,7 +390,7 @@ namespace _2DGame.Entities
             if (Sprite != null)
             {
                 int sign = (CurrentDirection == PlayerDirection.Left) ? 1 : -1;
-                Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 8); // Magic numbers :)
+                Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 7); // Magic numbers :)
             }
         }
 
@@ -415,7 +415,7 @@ namespace _2DGame.Entities
         {
             if (debugMode)
             {
-                SetYVelocity(-Player.Y_MAX_VELOCITY - 1);
+                SetYVelocity(-Y_MAX_VELOCITY - 1);
             }
             else if (isGrounded)
             {
@@ -428,7 +428,7 @@ namespace _2DGame.Entities
         {
             if (debugMode)
             {
-                SetYVelocity(Player.Y_MAX_VELOCITY + 1);
+                SetYVelocity(Y_MAX_VELOCITY + 1);
             }
         }
 
@@ -436,11 +436,18 @@ namespace _2DGame.Entities
         {
             if (debugMode)
             {
-                SetXVelocity(-Player.X_MAX_VELOCITY - 1);
+                SetXVelocity(-X_MAX_VELOCITY - 1);
             }
             else
             {
-                GainNegativeXVelocity();
+                if (Velocity.X > 0f)
+                {
+                    Velocity = new Vector2f(-Velocity.X / 1.5f, Velocity.Y);
+                }
+                else
+                {
+                    GainNegativeXVelocity();
+                }
             }
             CurrentDirection = PlayerDirection.Left;
         }
@@ -449,11 +456,18 @@ namespace _2DGame.Entities
         {
             if (debugMode)
             {
-                SetXVelocity(Player.X_MAX_VELOCITY + 1);
+                SetXVelocity(X_MAX_VELOCITY + 1);
             }
             else
             {
-                GainPositiveXVelocity();
+                if (Velocity.X < 0f)
+                {
+                    Velocity = new Vector2f(-Velocity.X / 1.5f, Velocity.Y);
+                }
+                else
+                {
+                    GainPositiveXVelocity();
+                }
             }
             CurrentDirection = PlayerDirection.Right;
         }

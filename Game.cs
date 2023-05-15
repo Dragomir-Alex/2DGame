@@ -158,7 +158,7 @@ namespace _2DGame
                     Window.Display();
 
                     level = new Level();
-                    level.LoadData("level.tmx");
+                    level.LoadData("level.tmx", "level_layerdata.json");
                     level.Initialize("aztec2.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level);
 
