@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2DGame.MainMenu
+namespace _2DGame.LevelUI
 {
     public class PauseScreen : Drawable
     {

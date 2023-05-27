@@ -8,10 +8,8 @@ namespace _2DGame.Utility
 {
     public static class DebugUtility
     {
-        public static void DrawPerformanceData(GameLoop gameLoop, Color color)
+        private static void DrawPerformanceData(GameLoop gameLoop, Color color)
         {
-            gameLoop.Window.SetView(gameLoop.Window.DefaultView);
-
             if (TextureManager.DebugFont == null) return;
 
             string totalTimeElapsedStr = gameLoop.GameTime.TotalTimeElapsed.ToString("0.000");
@@ -40,10 +38,8 @@ namespace _2DGame.Utility
             textC.Dispose();
         }
 
-        public static void DrawGameData(GameLoop gameLoop, Player player, Color color)
+        private static void DrawGameData(GameLoop gameLoop, Player player, Color color)
         {
-            gameLoop.Window.SetView(gameLoop.Window.DefaultView);
-
             if (TextureManager.DebugFont == null) return;
 
             string playerPositionStr = "X: " + player.Position.X.ToString() + "  Y: " + player.Position.Y.ToString();
@@ -107,7 +103,6 @@ namespace _2DGame.Utility
             shape.FillColor = new Color(100, 250, 50);
             shape.Position = player.Position;
             gameLoop.Window.Draw(shape);
-
             shape.Dispose();
 
             foreach (var line in player.Hitbox.Lines)
@@ -120,8 +115,16 @@ namespace _2DGame.Utility
                 shape2.Dispose();
             }
 
-            DebugUtility.DrawPerformanceData(gameLoop, Color.White);
-            DebugUtility.DrawGameData(gameLoop, player, Color.White);
+            gameLoop.Window.SetView(gameLoop.Window.DefaultView);
+
+            RectangleShape rectangleBackground = new RectangleShape(new Vector2f(175f, 175f));
+            rectangleBackground.FillColor = new Color(0, 0, 0, 100);
+            gameLoop.Window.Draw(rectangleBackground);
+            rectangleBackground.Dispose();
+
+            DrawPerformanceData(gameLoop, Color.White);
+            DrawGameData(gameLoop, player, Color.White);
+
         }
     }
 }

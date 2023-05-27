@@ -1,5 +1,4 @@
 ﻿using _2DGame.Entities;
-using _2DGame.ExternalLibraries;
 using _2DGame.Utility;
 using SFML.Graphics;
 using SFML.System;

@@ -435,6 +435,7 @@ namespace _2DGame.Entities
             }
             else if (isGrounded)
             {
+                SetYVelocity(0);
                 GainNegativeYVelocity();
                 isGrounded = false;
                 SoundManager.PlaySound("Jump");

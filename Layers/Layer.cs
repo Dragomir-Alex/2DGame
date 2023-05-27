@@ -1,5 +1,4 @@
-﻿using _2DGame.ExternalLibraries;
-using _2DGame.LayerData;
+﻿using _2DGame.LayerData;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using System.IO.Compression;
 using System.Xml;
 
-namespace _2DGame.ExternalLibraries
+namespace _2DGame.LayerData
 {
     /// <summary>
     /// Stores the data for a map full of tiles in the form of tile IDs. Can be treated as a two
@@ -191,7 +191,7 @@ namespace _2DGame.ExternalLibraries
         public int Width() { return tiles.GetLength(0); }
         public int GetTile((int, int) position)
         {
-            var (x, y) = position; 
+            var (x, y) = position;
             return tiles[x, y];
         }
 

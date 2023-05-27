@@ -9,10 +9,11 @@ using _2DGame.Layers;
 using System.Diagnostics;
 using InstilledBee.SFML.SimpleCollision;
 using TransformableHitbox2D;
-using _2DGame.ExternalLibraries;
+using _2DGame.LayerData;
 using System.Drawing;
 using Color = SFML.Graphics.Color;
 using _2DGame.MainMenu;
+using _2DGame.LevelUI;
 
 namespace _2DGame
 {
@@ -28,6 +29,7 @@ namespace _2DGame
         private Menu menu;
         private LoadingScreen loadingScreen;
         private PauseScreen pauseScreen;
+        private Scoreboard scoreboard;
         private bool debugMode;
 
         public override void Draw(GameTime gameTime)
@@ -53,6 +55,11 @@ namespace _2DGame
 
                 case GameState.Level:
                     TextureManager.DrawLevelTextures(this, level, player, false);
+
+                    Window.SetView(Window.DefaultView);
+                    Window.Draw(scoreboard);
+                    Window.SetView(player.Camera);
+
                     if (debugMode)
                     {
                         DebugUtility.DrawDebugInfo(this, player);
@@ -63,6 +70,7 @@ namespace _2DGame
                     TextureManager.DrawLevelTextures(this, level, player, true);
 
                     Window.SetView(Window.DefaultView);
+                    Window.Draw(scoreboard);
                     Window.Draw(pauseScreen);
                     Window.SetView(player.Camera);
 
@@ -89,6 +97,7 @@ namespace _2DGame
         {
             loadingScreen.Initialize();
             pauseScreen = new PauseScreen();
+            scoreboard = new Scoreboard();
 
             Settings.MusicVolume = 0;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
@@ -152,6 +161,8 @@ namespace _2DGame
                     level = null;
                     player.Reset();
 
+                    Score.Reset();
+
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
                     CurrentState = GameState.Menu;
                     break;
@@ -184,6 +195,7 @@ namespace _2DGame
                     SoundManager.PlayMusic();
                     player.Update(level, this);
                     level.Update(player);
+                    scoreboard.Update();
                     break;
 
                 case GameState.Paused:
