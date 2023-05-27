@@ -131,12 +131,25 @@ namespace _2DGame.Utility
             player.InitializeSprite();
         }
 
-        public static void InitializeLevelSprites(Level level)
+        public static void InitializeLevelSprites(Level level, GameLoop gameLoop)
         {
             foreach (var layer in level.Layers)
             {
                 if (layer is DetailLayer detailLayer)
                     detailLayer.InitializeSprite();
+            }
+
+            foreach (var entity in level.GameEntityManager.GameEntities)
+            {
+                switch (entity.ID)
+                {
+                    case 1:
+                        (entity as IAnimated).Sprite = new AnimatedSprite(GemTexture, Gem.WIDTH, Gem.HEIGHT, 8, gameLoop.Window, RenderStates.Default, 0, 6, true, true);
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 
@@ -163,7 +176,7 @@ namespace _2DGame.Utility
                     else player.Sprite.PlayWithoutLoop();
                     player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection != IAnimated.Direction.Right);
 
-                    foreach (var gameEntity in level.GameEntities.OnScreenGameEntities)
+                    foreach (var gameEntity in level.GameEntityManager.OnScreenGameEntities)
                     {
                         if (gameEntity.IsActive)
                         {

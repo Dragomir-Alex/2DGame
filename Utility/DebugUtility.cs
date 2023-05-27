@@ -96,7 +96,7 @@ namespace _2DGame.Utility
             text.Dispose();
         }
 
-        public static void DrawDebugInfo(GameLoop gameLoop, Player player)
+        public static void DrawDebugInfo(GameLoop gameLoop, Player player, Level level)
         {
             // Hitbox debug
             CircleShape shape = new CircleShape(2);
@@ -113,6 +113,25 @@ namespace _2DGame.Utility
                 gameLoop.Window.Draw(shape2);
 
                 shape2.Dispose();
+            }
+
+            foreach (var entity in level.GameEntityManager.OnScreenGameEntities) 
+            {
+                CircleShape shape3 = new CircleShape(2);
+                shape3.FillColor = new Color(100, 250, 50);
+                shape3.Position = entity.Position;
+                gameLoop.Window.Draw(shape3);
+                shape3.Dispose();
+
+                foreach (var line in entity.Hitbox.Lines)
+                {
+                    CircleShape shape4 = new CircleShape(2);
+                    shape4.FillColor = new Color(200, 50, 50);
+                    shape4.Position = new Vector2f(line.A.X, line.A.Y);
+                    gameLoop.Window.Draw(shape4);
+
+                    shape4.Dispose();
+                }
             }
 
             gameLoop.Window.SetView(gameLoop.Window.DefaultView);

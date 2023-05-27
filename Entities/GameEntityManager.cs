@@ -1,8 +1,10 @@
 ﻿using _2DGame.LayerData;
 using _2DGame.Layers;
 using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -39,16 +41,27 @@ namespace _2DGame.Entities
             { 
                 switch (entity.ID)
                 {
-                    case 2:
+                    case 1:
                         GameEntities.Add(new Gem() {
                             TileCoordinates = entity.TileCoordinates,
-                            Position = new SFML.System.Vector2f(entity.TileCoordinates.X * Tilemap.TILE_SIZE, entity.TileCoordinates.Y * Tilemap.TILE_SIZE)
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
                         });
+
                         break;
 
                     default:
                         break;
                 }
+            }
+        }
+
+        public void Initialize()
+        {
+            foreach (var gameEntity in GameEntities)
+            {
+                gameEntity.Initialize(new Vector2i(gameEntity.TileCoordinates.X, gameEntity.TileCoordinates.Y));
             }
         }
 
@@ -58,7 +71,8 @@ namespace _2DGame.Entities
 
             foreach (var onScreenGameEntity in OnScreenGameEntities)
             {
-                onScreenGameEntity.Update(level, gameLoop);
+                if (onScreenGameEntity.IsActive)
+                    onScreenGameEntity.Update(level, gameLoop);
             }
             foreach (var offScreenGameEntity in OffScreenGameEntities)
             {
@@ -92,8 +106,8 @@ namespace _2DGame.Entities
             {
                 if (gameEntity.TileCoordinates.X >= player.TileCoordinates.X - xArea &&
                     gameEntity.TileCoordinates.X <= player.TileCoordinates.X + xArea &&
-                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.X - yArea &&
-                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.X + yArea)
+                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.Y - yArea &&
+                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.Y + yArea)
                 {
                     OnScreenGameEntities.Add(gameEntity);
                 }
@@ -101,7 +115,11 @@ namespace _2DGame.Entities
                 {
                     OffScreenGameEntities.Add(gameEntity);
                 }
+
+                // Debug.WriteLine("Entity - X: " + gameEntity.TileCoordinates.X + ";   Y: " + gameEntity.TileCoordinates.Y);
             }
+
+            // Debug.WriteLine(OnScreenGameEntities.Count);
         }
     }
 }

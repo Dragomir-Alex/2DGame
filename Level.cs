@@ -21,7 +21,7 @@ namespace _2DGame
         public float Width { get; set; }
         public float Height { get; set; }
         public Vector2i TileStartPosition { get; private set; }
-        public GameEntityManager GameEntities { get; set; }
+        public GameEntityManager GameEntityManager { get; set; }
 
         public Level()
         {
@@ -31,13 +31,13 @@ namespace _2DGame
             Width = 0;
             Height = 0;
             TileStartPosition = new Vector2i(0, 0);
-            GameEntities = new();
+            GameEntityManager = new();
         }
 
         public void LoadData(string mapFilename, string entityDataFilename, string layerDataFilename)
         {
             Layers.Load(mapFilename, layerDataFilename);
-            GameEntities.Load(entityDataFilename);
+            GameEntityManager.Load(entityDataFilename);
         }
 
         public void Initialize(string tilesetFilename, string trackFilename)
@@ -47,6 +47,7 @@ namespace _2DGame
             Layers.Initialize(tilesetFilename);
             Width = Layers[LayerList.PRIMARY_LAYER].Width;
             Height = Layers[LayerList.PRIMARY_LAYER].Height;
+            GameEntityManager.Initialize();
 
             // Test
             TileStartPosition = new Vector2i(30, 50);
@@ -58,7 +59,7 @@ namespace _2DGame
             {
                 Layers[i].Update(player.Camera);
             }
-            GameEntities.Update(this, player, gameLoop);
+            GameEntityManager.Update(this, player, gameLoop);
         }
 
         public void Destroy()

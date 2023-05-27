@@ -234,6 +234,20 @@ namespace _2DGame.Entities
             return collidedTiles;
         }
 
+        public void PlayerGameEntityCollision(GameEntityManager gameEntityManager)
+        {
+            foreach (var entity in gameEntityManager.OnScreenGameEntities)
+            {
+                if (entity.IsActive && entity.Hitbox != null)
+                {
+                    if (entity.Hitbox.Overlaps(Hitbox))
+                    {
+                        entity.OnPlayerCollision(this);
+                    }
+                }
+            }
+        }
+
         public void GainPositiveXVelocity() { Velocity = new Vector2f(Velocity.X + X_VELOCITY_GAIN, Velocity.Y); }
         public void GainNegativeXVelocity() { Velocity = new Vector2f(Velocity.X - X_VELOCITY_GAIN, Velocity.Y); }
         public void GainPositiveYVelocity() { Velocity = new Vector2f(Velocity.X, Velocity.Y + Y_VELOCITY_GAIN); }
@@ -361,6 +375,7 @@ namespace _2DGame.Entities
         {
             UpdateVelocity();
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
+            PlayerGameEntityCollision(level.GameEntityManager);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
             UpdateCurrentState();
             UpdateAnimatedSprite();
@@ -486,5 +501,7 @@ namespace _2DGame.Entities
             }
             CurrentDirection = IAnimated.Direction.Right;
         }
+
+        public override void OnPlayerCollision(Player player) { }
     }
 }

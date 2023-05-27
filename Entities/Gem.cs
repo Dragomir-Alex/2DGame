@@ -5,6 +5,7 @@ using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -26,6 +27,7 @@ namespace _2DGame.Entities
                 UpdateAllPositionProperties();
             }
         }
+        public Vector2f Origin { get; private set; }
         public AnimatedSprite Sprite { get; set; }
         public IAnimated.Direction CurrentDirection { get; set; }
 
@@ -37,23 +39,40 @@ namespace _2DGame.Entities
 
         public override void Initialize(Vector2i startPosition)
         {
-            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE, startPosition.Y * Tilemap.TILE_SIZE);
+            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2, startPosition.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2);
+            Origin = Position;
             InitializeHitbox();
         }
 
         public override void Update(Level level, GameLoop gameLoop)
         {
-            // Nothing yet
+            Position = new Vector2f(Origin.X, Origin.Y + (int)(5 * (float)Math.Sin(2 * (gameLoop.GameTime.TotalTimeElapsed + (Origin.X % 3)))));
+            // Debug.WriteLine(Position.X + " " + Position.Y);
         }
 
-        public void OnPlayerCollision()
+        public override void OnPlayerCollision(Player player)
         {
-            if (IsActive) 
+            if (IsActive)
             {
                 IsActive = false;
                 Score.Add(SCORE_VALUE);
                 SoundManager.PlaySound("Collect Gem");
             }
+        }
+
+        protected override void UpdateHitboxPosition()
+        {
+            if (Hitbox != null && Sprite != null)
+            {
+                TransformableHitbox2D.Transform transform = new();
+                transform.Position = new Vector2(Position.X - Sprite.GetGlobalBounds().Width / 2, Position.Y - Sprite.GetGlobalBounds().Height / 2);
+                Hitbox.Transform(transform);
+            }
+        }
+
+        public override void Reset()
+        {
+            Position = Origin;
         }
 
         private void UpdateAllPositionProperties()
@@ -67,7 +86,7 @@ namespace _2DGame.Entities
         {
             if (Sprite != null)
             {
-                Sprite.Position = new Vector2f(Position.X - Sprite.GetGlobalBounds().Width / 2, Position.Y - Sprite.GetGlobalBounds().Height / 2);
+                Sprite.Position = new Vector2f(Position.X + Sprite.GetGlobalBounds().Width / 2, Position.Y - Sprite.GetGlobalBounds().Height / 2);
             }
         }
 

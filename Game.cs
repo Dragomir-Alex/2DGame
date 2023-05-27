@@ -64,7 +64,7 @@ namespace _2DGame
 
                     if (debugMode)
                     {
-                        DebugUtility.DrawDebugInfo(this, player);
+                        DebugUtility.DrawDebugInfo(this, player, level);
                     }
                     break;
 
@@ -79,7 +79,7 @@ namespace _2DGame
 
                     if (debugMode)
                     {
-                        DebugUtility.DrawDebugInfo(this, player);
+                        DebugUtility.DrawDebugInfo(this, player, level);
                     }
                     break;
 
@@ -118,6 +118,7 @@ namespace _2DGame
             TextureManager.LoadPlayerTextures();
             TextureManager.LoadMenuTextures();
             TextureManager.LoadHealthTexture();
+            TextureManager.LoadGemTexture();
         }
 
         public override void ProcessInputs()
@@ -180,7 +181,7 @@ namespace _2DGame
                     level = new Level();
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
                     level.Initialize("aztec2.png", "lush.ogg");
-                    TextureManager.InitializeLevelSprites(level);
+                    TextureManager.InitializeLevelSprites(level, this);
 
                     player.Initialize(level.TileStartPosition);
                     player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
