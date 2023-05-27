@@ -25,6 +25,7 @@ namespace _2DGame.Utility
 
         public static Texture LogoTexture { get; private set; }
         public static Texture HealthTexture { get; private set; }
+        public static Texture GemTexture { get; private set; }
 
         public static Font GameFont { get; private set; }
         public static Font GameFontBold { get; private set; }
@@ -59,6 +60,11 @@ namespace _2DGame.Utility
         public static void LoadHealthTexture()
         {
             HealthTexture = new Texture(TEXTURES_PATH + "Heart.png");
+        }
+
+        public static void LoadGemTexture()
+        {
+            GemTexture = new Texture(TEXTURES_PATH + "Gem.png");
         }
 
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
@@ -153,12 +159,22 @@ namespace _2DGame.Utility
                     gameLoop.Window.SetView(player.Camera); // Player cameras
                     gameLoop.Window.Draw(layer);
 
-                    if (isPaused)
-                        player.Sprite.Pause();
-                    else
-                        player.Sprite.PlayWithoutLoop();
+                    if (isPaused) player.Sprite.Pause();
+                    else player.Sprite.PlayWithoutLoop();
+                    player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection != IAnimated.Direction.Right);
 
-                    player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection != Player.PlayerDirection.Right);
+                    foreach (var gameEntity in level.GameEntities.OnScreenGameEntities)
+                    {
+                        if (gameEntity.IsActive)
+                        {
+                            if (gameEntity is IAnimated)
+                            {
+                                if (isPaused) (gameEntity as IAnimated).Sprite.Pause();
+                                else (gameEntity as IAnimated).Sprite.PlayWithoutLoop();
+                                (gameEntity as IAnimated).Sprite.Update(gameLoop.GameTime.DeltaTime, (gameEntity as IAnimated).CurrentDirection != IAnimated.Direction.Right);
+                            }
+                        }
+                    }
                 }
             }
 

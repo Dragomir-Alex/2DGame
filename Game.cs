@@ -178,7 +178,7 @@ namespace _2DGame
                     Window.Display();
 
                     level = new Level();
-                    level.LoadData("level.tmx", "level_layerdata.json");
+                    level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
                     level.Initialize("aztec2.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level);
 
@@ -200,7 +200,7 @@ namespace _2DGame
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     SoundManager.PlayMusic();
                     player.Update(level, this);
-                    level.Update(player);
+                    level.Update(player, this);
                     scoreboard.Update();
                     healthBar.Update(player);
                     break;

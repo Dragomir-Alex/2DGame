@@ -1,39 +1,60 @@
-﻿using _2DGame.Layers;
+﻿using _2DGame.LayerData;
+using _2DGame.Layers;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
-    public class GameEntityManager : Drawable
+    public class GameEntityManager
     {
+
         public List<GameEntity> GameEntities { get; set; }
+        [JsonIgnore]
         public List<GameEntity> OnScreenGameEntities { get; set; }
+        [JsonIgnore]
         public List<GameEntity> OffScreenGameEntities { get; set; }
-        public Player Player { get; set; }
+        public const string LEVELS_PATH = "./Data/Levels/";
 
         public GameEntityManager()
         {
-            Player = new Player();
             GameEntities = new();
             OnScreenGameEntities = new();
             OffScreenGameEntities = new();
         }
 
-        public void Load()
+        public void Load(string entityDataFilename)
         {
-            // TBA
+            string fileName = LEVELS_PATH + entityDataFilename;
+            string jsonString = File.ReadAllText(fileName);
+            var loadedData = JsonSerializer.Deserialize<Gem[]>(jsonString)!;
+
+            foreach (var entity in loadedData) 
+            { 
+                switch (entity.ID)
+                {
+                    case 2:
+                        GameEntities.Add(new Gem() {
+                            TileCoordinates = entity.TileCoordinates,
+                            Position = new SFML.System.Vector2f(entity.TileCoordinates.X * Tilemap.TILE_SIZE, entity.TileCoordinates.Y * Tilemap.TILE_SIZE)
+                        });
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
-        public void Update(Level level, GameLoop gameLoop)
+        public void Update(Level level, Player player, GameLoop gameLoop)
         {
-            Player.Update(level, gameLoop);
-
-            UpdateEntityDistanceLists();
+            UpdateEntityDistanceLists(player);
 
             foreach (var onScreenGameEntity in OnScreenGameEntities)
             {
@@ -53,14 +74,13 @@ namespace _2DGame.Entities
 
         public void ResetAllGameEntities()
         {
-            Player.Reset();
             foreach (var gameEntity in GameEntities)
             {
                 gameEntity.Reset();
             }
         }
 
-        private void UpdateEntityDistanceLists()
+        private void UpdateEntityDistanceLists(Player player)
         {
             OnScreenGameEntities.Clear();
             OffScreenGameEntities.Clear();
@@ -70,10 +90,10 @@ namespace _2DGame.Entities
 
             foreach (var gameEntity in GameEntities)
             {
-                if (gameEntity.TileCoordinates.X >= Player.TileCoordinates.X - xArea &&
-                    gameEntity.TileCoordinates.X <= Player.TileCoordinates.X + xArea &&
-                    gameEntity.TileCoordinates.Y >= Player.TileCoordinates.X - yArea &&
-                    gameEntity.TileCoordinates.Y <= Player.TileCoordinates.X + yArea)
+                if (gameEntity.TileCoordinates.X >= player.TileCoordinates.X - xArea &&
+                    gameEntity.TileCoordinates.X <= player.TileCoordinates.X + xArea &&
+                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.X - yArea &&
+                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.X + yArea)
                 {
                     OnScreenGameEntities.Add(gameEntity);
                 }
@@ -82,14 +102,6 @@ namespace _2DGame.Entities
                     OffScreenGameEntities.Add(gameEntity);
                 }
             }
-        }
-
-        public void Draw(RenderTarget target, RenderStates states)
-        {
-/*            foreach (var gameEntity in OnScreenGameEntities)
-            {
-                gameEntity.Draw(target, states);
-            }*/
         }
     }
 }

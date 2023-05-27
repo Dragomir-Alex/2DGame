@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TransformableHitbox2D;
 
@@ -14,14 +15,21 @@ namespace _2DGame.Entities
 {
     public abstract class GameEntity
     {
+        public uint ID { get; }
+        [JsonIgnore]
         public Hitbox? Hitbox { get; set; }
         public TileCoordinates TileCoordinates { get; set; }
+        [JsonIgnore]
         public virtual Vector2f Position { get; set; }
+        [JsonIgnore]
+        public bool IsActive { get; set; }
 
-        public GameEntity()
+        public GameEntity(uint ID)
         {
             Position = new Vector2f(0f, 0f);
             TileCoordinates = new TileCoordinates();
+            IsActive = true;
+            this.ID = ID;
         }
 
         public abstract void Initialize(Vector2i startPosition);
@@ -33,9 +41,12 @@ namespace _2DGame.Entities
 
         protected virtual void UpdateHitboxPosition()
         {
-            TransformableHitbox2D.Transform transform = new();
-            transform.Position = new Vector2(Position.X, Position.Y);
-            Hitbox.Transform(transform);
+            if (Hitbox != null)
+            {
+                TransformableHitbox2D.Transform transform = new();
+                transform.Position = new Vector2(Position.X, Position.Y);
+                Hitbox.Transform(transform);
+            }
         }
 
         protected virtual void UpdateTileCoordinates()

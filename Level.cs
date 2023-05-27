@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace _2DGame
@@ -20,6 +21,7 @@ namespace _2DGame
         public float Width { get; set; }
         public float Height { get; set; }
         public Vector2i TileStartPosition { get; private set; }
+        public GameEntityManager GameEntities { get; set; }
 
         public Level()
         {
@@ -29,11 +31,13 @@ namespace _2DGame
             Width = 0;
             Height = 0;
             TileStartPosition = new Vector2i(0, 0);
+            GameEntities = new();
         }
 
-        public void LoadData(string mapFilename, string layerDataFilename)
+        public void LoadData(string mapFilename, string entityDataFilename, string layerDataFilename)
         {
             Layers.Load(mapFilename, layerDataFilename);
+            GameEntities.Load(entityDataFilename);
         }
 
         public void Initialize(string tilesetFilename, string trackFilename)
@@ -48,12 +52,13 @@ namespace _2DGame
             TileStartPosition = new Vector2i(30, 50);
         }
 
-        public void Update(Player player)
+        public void Update(Player player, GameLoop gameLoop)
         {
             for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
             {
                 Layers[i].Update(player.Camera);
             }
+            GameEntities.Update(this, player, gameLoop);
         }
 
         public void Destroy()

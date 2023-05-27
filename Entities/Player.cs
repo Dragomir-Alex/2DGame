@@ -14,14 +14,13 @@ using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
-    public class Player : GameEntity
+    public class Player : GameEntity, IAnimated
     {
-        public enum PlayerDirection { Left, Right };
-        public enum PlayerState { Idle, Jumping, Falling, Walking }
+        public enum State { Idle, Jumping, Falling, Walking }
 
-        public PlayerDirection CurrentDirection { get; private set; }
-        public PlayerState CurrentState { get; private set; }
-        public PlayerState PreviousFrameState { get; private set; }
+        public IAnimated.Direction CurrentDirection { get; set; }
+        public State CurrentState { get; private set; }
+        public State PreviousFrameState { get; private set; }
 
         private bool debugMode;
         private bool isGrounded;
@@ -31,7 +30,6 @@ namespace _2DGame.Entities
         public View Camera { get; set; }
         public Vector2f Velocity { get; set; }
         public Health Health { get; set; }
-        public Texture? Texture { get; set; }
         public AnimatedSprite Sprite { get; set; }
         public override Vector2f Position
         {
@@ -56,16 +54,15 @@ namespace _2DGame.Entities
         public const int HITBOX_WIDTH = 20;
         public const int HITBOX_HEIGHT = 40;
 
-        public Player() : base()
+        public Player() : base(0)
         {
             debugMode = false;
             isGrounded = false;
 
-            CurrentState = PlayerState.Falling;
-            PreviousFrameState = PlayerState.Falling;
-            CurrentDirection = PlayerDirection.Right;
+            CurrentState = State.Falling;
+            PreviousFrameState = State.Falling;
+            CurrentDirection = IAnimated.Direction.Right;
 
-            Texture = null;
             Velocity = new Vector2f(0f, 0f);
             Camera = new View();
             Health = new Health(MAX_HEALTH);
@@ -313,23 +310,23 @@ namespace _2DGame.Entities
 
             if (Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
             {
-                CurrentState = PlayerState.Idle;
+                CurrentState = State.Idle;
             }
             else if (Velocity.X != 0f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
             {
-                CurrentState = PlayerState.Walking;
+                CurrentState = State.Walking;
             }
             else if (Velocity.Y <= -1f)
             {
-                CurrentState = PlayerState.Jumping;
+                CurrentState = State.Jumping;
             }
             else if (Velocity.Y >= 1f)
             {
-                CurrentState = PlayerState.Falling;
+                CurrentState = State.Falling;
             }
 
-            if ((PreviousFrameState == PlayerState.Falling || PreviousFrameState == PlayerState.Jumping)
-                && (CurrentState == PlayerState.Idle || CurrentState == PlayerState.Walking))
+            if ((PreviousFrameState == State.Falling || PreviousFrameState == State.Jumping)
+                && (CurrentState == State.Idle || CurrentState == State.Walking))
             {
                 SoundManager.PlaySound("Land");
             }
@@ -339,10 +336,10 @@ namespace _2DGame.Entities
         {
             var currentAnimation = Sprite;
 
-            if (CurrentState == PlayerState.Idle) { Sprite = TextureManager.PlayerAnimations["PlayerIdle"]; }
-            if (CurrentState == PlayerState.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
-            if (CurrentState == PlayerState.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
-            if (CurrentState == PlayerState.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
+            if (CurrentState == State.Idle) { Sprite = TextureManager.PlayerAnimations["PlayerIdle"]; }
+            if (CurrentState == State.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
+            if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
+            if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
 
             if (currentAnimation != Sprite)
             {
@@ -350,9 +347,9 @@ namespace _2DGame.Entities
                 Sprite.Play();
 
             }
-            else if (CurrentState == PlayerState.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
+            else if (CurrentState == State.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
 
-            if (CurrentState == PlayerState.Walking && (Sprite.GetCurrentFrame() == 1 || Sprite.GetCurrentFrame() == 9)) // Steps
+            if (CurrentState == State.Walking && (Sprite.GetCurrentFrame() == 1 || Sprite.GetCurrentFrame() == 9)) // Steps
             {
                 SoundManager.PlaySound("Step");
             }
@@ -405,7 +402,7 @@ namespace _2DGame.Entities
         {
             if (Sprite != null)
             {
-                int sign = (CurrentDirection == PlayerDirection.Left) ? 1 : -1;
+                int sign = (CurrentDirection == IAnimated.Direction.Left) ? 1 : -1;
                 Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 7); // Magic numbers :)
             }
         }
@@ -467,7 +464,7 @@ namespace _2DGame.Entities
                     GainNegativeXVelocity();
                 }
             }
-            CurrentDirection = PlayerDirection.Left;
+            CurrentDirection = IAnimated.Direction.Left;
         }
 
         public void RightButtonAction()
@@ -487,7 +484,7 @@ namespace _2DGame.Entities
                     GainPositiveXVelocity();
                 }
             }
-            CurrentDirection = PlayerDirection.Right;
+            CurrentDirection = IAnimated.Direction.Right;
         }
     }
 }

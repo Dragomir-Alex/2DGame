@@ -35,9 +35,13 @@ namespace _2DGame.LevelUI
             for (int i = 1; i <= player.Health.MaxHealth; ++i)
             {
                 if (i <= player.Health.CurrentHealth)
+                {
                     heartSprites[i - 1].Color = new Color(heartSpriteCopy.Color.R, heartSpriteCopy.Color.G, heartSpriteCopy.Color.B, 255);
+                }
                 else
+                {
                     heartSprites[i - 1].Color = new Color(0, 0, 0, 150);
+                }
             }
         }
 

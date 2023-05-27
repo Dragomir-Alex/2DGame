@@ -19,7 +19,7 @@ namespace _2DGame.Layers
 
         public const int LAYER_COUNT = 8;
         public const int PRIMARY_LAYER = 3;
-        public const string MAPS_PATH = "./Data/Maps/";
+        public const string LEVELS_PATH = "./Data/Levels/";
 
         public Layer this[int i]
         {
@@ -38,11 +38,11 @@ namespace _2DGame.Layers
 
             for (int i = 0; i < LAYER_COUNT; ++i)
             {
-                TileData tileData = new TileData(MAPS_PATH + mapFilename, (i + 1).ToString());
+                TileData tileData = new TileData(LEVELS_PATH + mapFilename, (i + 1).ToString());
                 map.Add(tileData);
             }
 
-            string fileName = MAPS_PATH + layerDataFilename;
+            string fileName = LEVELS_PATH + layerDataFilename;
             string jsonString = File.ReadAllText(fileName);
             loadedLayerData = JsonSerializer.Deserialize<DetailLayer[]>(jsonString)!; // Can't deserialize abstract class :(
         }
