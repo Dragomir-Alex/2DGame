@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using _2DGame.Animation;
 using _2DGame.Entities;
 using _2DGame.Layers;
+using _2DGame.LevelUI;
 using _2DGame.MainMenu;
 using SFML.Graphics;
 using SFML.System;
@@ -23,6 +24,7 @@ namespace _2DGame.Utility
         public static Dictionary<string, AnimatedSprite> PlayerAnimations { get; private set; }
 
         public static Texture LogoTexture { get; private set; }
+        public static Texture HealthTexture { get; private set; }
 
         public static Font GameFont { get; private set; }
         public static Font GameFontBold { get; private set; }
@@ -37,7 +39,7 @@ namespace _2DGame.Utility
 
         public static void LoadMenuTextures()
         {
-            LogoTexture = new Texture(TEXTURES_PATH + "logo.png");
+            LogoTexture = new Texture(TEXTURES_PATH + "Logo.png");
         }
 
         public static void LoadPlayerTextures()
@@ -54,12 +56,17 @@ namespace _2DGame.Utility
             };
         }
 
+        public static void LoadHealthTexture()
+        {
+            HealthTexture = new Texture(TEXTURES_PATH + "Heart.png");
+        }
+
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
         {
             // Menu
             foreach (var page in menu.Pages)
             {
-                
+
                 if (page.Key == Menu.PageName.MainPage)
                 {
                     page.Value.InitializeSprites(LogoTexture);
@@ -127,6 +134,11 @@ namespace _2DGame.Utility
             }
         }
 
+        public static void InitializeHealthBarSprites(HealthBar healthBar, Player player)
+        {
+            healthBar.Initialize(HealthTexture, player);
+        }
+
         public static void DrawLevelTextures(GameLoop gameLoop, Level level, Player player, bool isPaused)
         {
             foreach (var layer in level.Layers.Reverse())
@@ -143,7 +155,7 @@ namespace _2DGame.Utility
 
                     if (isPaused)
                         player.Sprite.Pause();
-                    else 
+                    else
                         player.Sprite.PlayWithoutLoop();
 
                     player.Sprite.Update(gameLoop.GameTime.DeltaTime, player.CurrentDirection != Player.PlayerDirection.Right);

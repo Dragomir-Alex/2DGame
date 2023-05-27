@@ -30,6 +30,7 @@ namespace _2DGame
         private LoadingScreen loadingScreen;
         private PauseScreen pauseScreen;
         private Scoreboard scoreboard;
+        private HealthBar healthBar;
         private bool debugMode;
 
         public override void Draw(GameTime gameTime)
@@ -58,6 +59,7 @@ namespace _2DGame
 
                     Window.SetView(Window.DefaultView);
                     Window.Draw(scoreboard);
+                    Window.Draw(healthBar);
                     Window.SetView(player.Camera);
 
                     if (debugMode)
@@ -71,6 +73,7 @@ namespace _2DGame
 
                     Window.SetView(Window.DefaultView);
                     Window.Draw(scoreboard);
+                    Window.Draw(healthBar);
                     Window.Draw(pauseScreen);
                     Window.SetView(player.Camera);
 
@@ -91,6 +94,7 @@ namespace _2DGame
             level = new Level();
             player = new Player();
             loadingScreen = new LoadingScreen();
+            healthBar = new HealthBar();
         }
 
         public override void Initialize()
@@ -105,6 +109,7 @@ namespace _2DGame
             SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
 
             TextureManager.InitializePlayerSprite(player, this);
+            TextureManager.InitializeHealthBarSprites(healthBar, player);
         }
 
         public override void LoadContent()
@@ -112,6 +117,7 @@ namespace _2DGame
             TextureManager.LoadFonts();
             TextureManager.LoadPlayerTextures();
             TextureManager.LoadMenuTextures();
+            TextureManager.LoadHealthTexture();
         }
 
         public override void ProcessInputs()
@@ -196,6 +202,7 @@ namespace _2DGame
                     player.Update(level, this);
                     level.Update(player);
                     scoreboard.Update();
+                    healthBar.Update(player);
                     break;
 
                 case GameState.Paused:
