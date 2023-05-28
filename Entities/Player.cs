@@ -16,7 +16,7 @@ namespace _2DGame.Entities
 {
     public class Player : GameEntity, IAnimated
     {
-        public enum State { Idle, Jumping, Falling, Walking }
+        public enum State { Idle, Jumping, Falling, Walking, Attacking }
 
         public IAnimated.Direction CurrentDirection { get; set; }
         public State CurrentState { get; private set; }
@@ -322,11 +322,12 @@ namespace _2DGame.Entities
         {
             PreviousFrameState = CurrentState;
 
-            if (Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
+            if ((CurrentState != State.Attacking && Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
+                || (CurrentState == State.Attacking && !Sprite.IsAnimated()))
             {
                 CurrentState = State.Idle;
             }
-            else if (Velocity.X != 0f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
+            else if (CurrentState != State.Attacking && Velocity.X != 0f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
             {
                 CurrentState = State.Walking;
             }
@@ -340,7 +341,7 @@ namespace _2DGame.Entities
             }
 
             if ((PreviousFrameState == State.Falling || PreviousFrameState == State.Jumping)
-                && (CurrentState == State.Idle || CurrentState == State.Walking))
+                && (CurrentState == State.Idle || CurrentState == State.Walking || CurrentState == State.Attacking))
             {
                 SoundManager.PlaySound("Land");
             }
@@ -351,9 +352,10 @@ namespace _2DGame.Entities
             var currentAnimation = Sprite;
 
             if (CurrentState == State.Idle) { Sprite = TextureManager.PlayerAnimations["PlayerIdle"]; }
-            if (CurrentState == State.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
-            if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
-            if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
+            else if (CurrentState == State.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
+            else if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
+            else if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
+            else if (CurrentState == State.Attacking) { Sprite = TextureManager.PlayerAnimations["PlayerAttack"]; }
 
             if (currentAnimation != Sprite)
             {
@@ -445,7 +447,7 @@ namespace _2DGame.Entities
             {
                 SetYVelocity(-Y_MAX_VELOCITY - 1);
             }
-            else if (isGrounded)
+            else if (isGrounded && CurrentState != State.Attacking)
             {
                 SetYVelocity(0);
                 GainNegativeYVelocity();
@@ -468,7 +470,7 @@ namespace _2DGame.Entities
             {
                 SetXVelocity(-X_MAX_VELOCITY - 1);
             }
-            else
+            else if (CurrentState != State.Attacking)
             {
                 if (Velocity.X > 0f)
                 {
@@ -479,6 +481,7 @@ namespace _2DGame.Entities
                     GainNegativeXVelocity();
                 }
             }
+
             CurrentDirection = IAnimated.Direction.Left;
         }
 
@@ -488,7 +491,7 @@ namespace _2DGame.Entities
             {
                 SetXVelocity(X_MAX_VELOCITY + 1);
             }
-            else
+            else if (CurrentState != State.Attacking)
             {
                 if (Velocity.X < 0f)
                 {
@@ -499,7 +502,17 @@ namespace _2DGame.Entities
                     GainPositiveXVelocity();
                 }
             }
+
             CurrentDirection = IAnimated.Direction.Right;
+        }
+
+        public void AttackButtonAction()
+        {
+            if (CurrentState != State.Attacking && isGrounded)
+            {
+                CurrentState = State.Attacking;
+                SetXVelocity(Velocity.X / 2.5f);
+            }
         }
 
         public override void OnPlayerCollision(Player player) { }

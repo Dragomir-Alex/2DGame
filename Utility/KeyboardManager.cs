@@ -17,10 +17,11 @@ namespace _2DGame.Utility
 
         public static void ProcessPlayerKeys(Player player)
         {
-            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.A);
-            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.D);
-            bool moveUp = Keyboard.IsKeyPressed(Keyboard.Key.W);
-            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.S);
+            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left);
+            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right);
+            bool moveUp = (Keyboard.IsKeyPressed(Keyboard.Key.Up) || Keyboard.IsKeyPressed(Keyboard.Key.X));
+            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.Down);
+            bool attack = Keyboard.IsKeyPressed(Keyboard.Key.Z);
 
             bool isMove = moveLeft || moveRight || moveUp || moveDown;
 
@@ -30,6 +31,11 @@ namespace _2DGame.Utility
                 if (moveRight) player.RightButtonAction();
                 if (moveUp) player.UpButtonAction();
                 if (moveDown) player.DownButtonAction();
+            }
+
+            if (attack)
+            {
+                player.AttackButtonAction();
             }
         }
 

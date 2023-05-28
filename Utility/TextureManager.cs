@@ -51,7 +51,6 @@ namespace _2DGame.Utility
                 { "PlayerRun", new Texture(TEXTURES_PATH + "PlayerRun.png") },
                 { "PlayerJump", new Texture(TEXTURES_PATH + "PlayerJump.png") },
                 { "PlayerAttack", new Texture(TEXTURES_PATH + "PlayerAttack.png") },
-                { "PlayerJumpAttack", new Texture(TEXTURES_PATH + "PlayerJumpAttack.png") },
                 { "PlayerHit", new Texture(TEXTURES_PATH + "PlayerHit.png") },
                 { "PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png") }
             };
@@ -110,12 +109,7 @@ namespace _2DGame.Utility
 
             if (PlayerTextures["PlayerAttack"] != null)
             {
-                PlayerAnimations.Add("PlayerAttack", new AnimatedSprite(PlayerTextures["PlayerAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
-            }
-
-            if (PlayerTextures["PlayerJumpAttack"] != null)
-            {
-                PlayerAnimations.Add("PlayerJumpAttack", new AnimatedSprite(PlayerTextures["PlayerJumpAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 2, gameLoop.Window, RenderStates.Default, 0, 1, false, false));
+                PlayerAnimations.Add("PlayerAttack", new AnimatedSprite(PlayerTextures["PlayerAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
             if (PlayerTextures["PlayerHit"] != null)
