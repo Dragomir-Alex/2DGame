@@ -59,6 +59,13 @@ namespace _2DGame
             {
                 Layers[i].Update(player.Camera);
             }
+
+            if (player.IsSpawningProjectile)
+            {
+                GameEntityManager.GameEntities.Add(new PlayerProjectile(new Vector2f(player.Position.X + PlayerProjectile.PROJECTILE_X_OFFSET * (player.CurrentDirection == Animation.IAnimated.Direction.Right ? 1 : -1.25f), player.Position.Y + PlayerProjectile.PROJECTILE_Y_OFFSET), player.CurrentDirection));
+                SoundManager.PlaySound("Shoot");
+            }
+
             GameEntityManager.Update(this, player, gameLoop);
         }
 

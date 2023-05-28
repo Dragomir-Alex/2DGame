@@ -1,5 +1,6 @@
 ﻿using _2DGame.LayerData;
 using _2DGame.Layers;
+using NetTopologySuite.Algorithm;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -67,6 +68,7 @@ namespace _2DGame.Entities
 
         public void Update(Level level, Player player, GameLoop gameLoop)
         {
+            DeleteInactiveGameEntities();
             UpdateEntityDistanceLists(player);
 
             foreach (var onScreenGameEntity in OnScreenGameEntities)
@@ -91,6 +93,17 @@ namespace _2DGame.Entities
             foreach (var gameEntity in GameEntities)
             {
                 gameEntity.Reset();
+            }
+        }
+
+        private void DeleteInactiveGameEntities()
+        {
+            foreach (var gameEntity in GameEntities.ToList())
+            {
+                if (!gameEntity.IsActive)
+                {
+                    GameEntities.Remove(gameEntity);
+                }
             }
         }
 
@@ -119,7 +132,7 @@ namespace _2DGame.Entities
                 // Debug.WriteLine("Entity - X: " + gameEntity.TileCoordinates.X + ";   Y: " + gameEntity.TileCoordinates.Y);
             }
 
-            // Debug.WriteLine(OnScreenGameEntities.Count);
+            // Debug.WriteLine(GameEntities.Count);
         }
     }
 }

@@ -24,9 +24,11 @@ namespace _2DGame.Entities
 
         private bool debugMode;
         private bool isGrounded;
+        private bool attackedInCurrentAnimation;
 
         private Vector2f position = new();
 
+        public bool IsSpawningProjectile { get; private set; }
         public View Camera { get; set; }
         public Vector2f Velocity { get; set; }
         public Health Health { get; set; }
@@ -58,6 +60,8 @@ namespace _2DGame.Entities
         {
             debugMode = false;
             isGrounded = false;
+            attackedInCurrentAnimation = false;
+            IsSpawningProjectile = false;
 
             CurrentState = State.Falling;
             PreviousFrameState = State.Falling;
@@ -127,14 +131,14 @@ namespace _2DGame.Entities
             }
 
             // X Axis test
-            collidedTiles = PlayerLevelCollision(spriteLayer);
+            collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
             if (collidedTiles.Count != 0)
             {
                 for (int i = Math.Abs((int)Velocity.X); i >= 0; i--)
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X + i * Math.Sign(Velocity.X), crtPos.Y);
                     Position = interpolatedPosition;
-                    List<Tuple<Hitbox, int, int>> newCollidedTiles = PlayerLevelCollision(spriteLayer);
+                    List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
                         finalVelocity.X = i * Math.Sign(Velocity.X);
@@ -147,14 +151,14 @@ namespace _2DGame.Entities
             Position = new Vector2f(crtPos.X + finalVelocity.X, crtPos.Y + (int)Velocity.Y);
 
             // Y Axis test
-            collidedTiles = PlayerLevelCollision(spriteLayer);
+            collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
             if (collidedTiles.Count != 0)
             {
                 for (int i = Math.Abs((int)Velocity.Y); i >= 0; i--)
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X, crtPos.Y + i * Math.Sign(Velocity.Y));
                     Position = interpolatedPosition;
-                    List<Tuple<Hitbox, int, int>> newCollidedTiles = PlayerLevelCollision(spriteLayer);
+                    List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
                         finalVelocity.Y = i * Math.Sign(Velocity.Y);
@@ -170,14 +174,14 @@ namespace _2DGame.Entities
             Position = new Vector2f(crtPos.X + finalVelocity.X, crtPos.Y + finalVelocity.Y);
 
             // Corner test
-            collidedTiles = PlayerLevelCollision(spriteLayer);
+            collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
             if (collidedTiles.Count != 0)
             {
                 for (int i = Math.Min(Math.Abs((int)Velocity.X), Math.Abs((int)Velocity.Y)); i >= 0; i--)
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X + i * Math.Sign(Velocity.X), crtPos.Y + i * Math.Sign(Velocity.Y));
                     Position = interpolatedPosition;
-                    List<Tuple<Hitbox, int, int>> newCollidedTiles = PlayerLevelCollision(spriteLayer);
+                    List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
                         finalVelocity.X = i * Math.Sign(Velocity.X);
@@ -212,29 +216,7 @@ namespace _2DGame.Entities
             }
         }
 
-        public List<Tuple<Hitbox, int, int>> PlayerLevelCollision(SpriteLayer spriteLayer)
-        {
-            List<Tuple<Hitbox, int, int>> collidedTiles = new();
-
-            for (int i = TileCoordinates.X - 2; i <= TileCoordinates.X + 2; ++i)
-            {
-                for (int j = TileCoordinates.Y - 2; j <= TileCoordinates.Y + 2; ++j)
-                {
-                    if (spriteLayer.LayerTilemap.TileHitboxData.ContainsKey((j, i)))
-                    {
-                        if (spriteLayer.LayerTilemap.TileHitboxData[(j, i)].Overlaps(Hitbox))
-                        {
-                            var newTile = new Tuple<Hitbox, int, int>(spriteLayer.LayerTilemap.TileHitboxData[(j, i)], j, i);
-                            collidedTiles.Add(newTile);
-                        }
-                    }
-                }
-            }
-
-            return collidedTiles;
-        }
-
-        public void PlayerGameEntityCollision(GameEntityManager gameEntityManager)
+        public void GameEntityCollision(GameEntityManager gameEntityManager)
         {
             foreach (var entity in gameEntityManager.OnScreenGameEntities)
             {
@@ -242,7 +224,7 @@ namespace _2DGame.Entities
                 {
                     if (entity.Hitbox.Overlaps(Hitbox))
                     {
-                        entity.OnPlayerCollision(this);
+                        entity.OnEntityCollision(this);
                     }
                 }
             }
@@ -323,7 +305,7 @@ namespace _2DGame.Entities
             PreviousFrameState = CurrentState;
 
             if ((CurrentState != State.Attacking && Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
-                || (CurrentState == State.Attacking && !Sprite.IsAnimated()))
+                || (CurrentState == State.Attacking && Sprite.IsFinished()))
             {
                 CurrentState = State.Idle;
             }
@@ -365,6 +347,21 @@ namespace _2DGame.Entities
             }
             else if (CurrentState == State.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
 
+            if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 6 && !attackedInCurrentAnimation)
+            {
+                IsSpawningProjectile = true;
+                attackedInCurrentAnimation = true;
+            }
+            else
+            {
+                IsSpawningProjectile = false;
+            }
+
+            if (CurrentState != State.Attacking)
+            {
+                attackedInCurrentAnimation = false;
+            }
+
             if (CurrentState == State.Walking && (Sprite.GetCurrentFrame() == 1 || Sprite.GetCurrentFrame() == 9)) // Steps
             {
                 SoundManager.PlaySound("Step");
@@ -377,7 +374,7 @@ namespace _2DGame.Entities
         {
             UpdateVelocity();
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
-            PlayerGameEntityCollision(level.GameEntityManager);
+            GameEntityCollision(level.GameEntityManager);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
             UpdateCurrentState();
             UpdateAnimatedSprite();
@@ -515,6 +512,6 @@ namespace _2DGame.Entities
             }
         }
 
-        public override void OnPlayerCollision(Player player) { }
+        public override void OnEntityCollision(GameEntity entity) { }
     }
 }

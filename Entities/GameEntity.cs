@@ -63,7 +63,7 @@ namespace _2DGame.Entities
             }
         }
 
-        public abstract void OnPlayerCollision(Player player);
+        public abstract void OnEntityCollision(GameEntity gameEntity);
         public abstract void Update(Level level, GameLoop gameLoop);
     }
 }

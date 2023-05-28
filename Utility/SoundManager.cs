@@ -60,8 +60,9 @@ namespace _2DGame.Utility
                 { "Jump", new Sound(new SoundBuffer(SOUNDS_PATH + "jump.wav")) },
                 { "Land", new Sound(new SoundBuffer(SOUNDS_PATH + "land.wav")) },
                 { "Shoot", new Sound(new SoundBuffer(SOUNDS_PATH + "shoot.wav")) },
+                { "Poof", new Sound(new SoundBuffer(SOUNDS_PATH + "poof.wav")) },
                 { "Hurt", new Sound(new SoundBuffer(SOUNDS_PATH + "hurt.wav")) },
-                { "Step", new Sound (new SoundBuffer(SOUNDS_PATH + "step.wav")) },
+                { "Step", new Sound(new SoundBuffer(SOUNDS_PATH + "step.wav")) },
                 { "Collect Gem", new Sound (new SoundBuffer(SOUNDS_PATH + "collect_gem.wav")) }
             };
         }

@@ -50,13 +50,16 @@ namespace _2DGame.Entities
             // Debug.WriteLine(Position.X + " " + Position.Y);
         }
 
-        public override void OnPlayerCollision(Player player)
+        public override void OnEntityCollision(GameEntity entity)
         {
             if (IsActive)
             {
-                IsActive = false;
-                Score.Add(SCORE_VALUE);
-                SoundManager.PlaySound("Collect Gem");
+                if (entity is Player)
+                {
+                    IsActive = false;
+                    Score.Add(SCORE_VALUE);
+                    SoundManager.PlaySound("Collect Gem");
+                }
             }
         }
 

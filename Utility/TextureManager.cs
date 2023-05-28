@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using _2DGame.Animation;
 using _2DGame.Entities;
@@ -19,6 +20,8 @@ namespace _2DGame.Utility
 
         public const int PLAYER_SPRITE_WIDTH = 69;
         public const int PLAYER_SPRITE_HEIGHT = 56;
+        public const int PROJECTILE_SPRITE_WIDTH = 27;
+        public const int PROJECTILE_SPRITE_HEIGHT = 16;
 
         public static Dictionary<string, Texture> PlayerTextures { get; private set; }
         public static Dictionary<string, AnimatedSprite> PlayerAnimations { get; private set; }
@@ -52,7 +55,8 @@ namespace _2DGame.Utility
                 { "PlayerJump", new Texture(TEXTURES_PATH + "PlayerJump.png") },
                 { "PlayerAttack", new Texture(TEXTURES_PATH + "PlayerAttack.png") },
                 { "PlayerHit", new Texture(TEXTURES_PATH + "PlayerHit.png") },
-                { "PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png") }
+                { "PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png") },
+                { "PlayerProjectile", new Texture(TEXTURES_PATH + "MagicSpell.png") }
             };
         }
 
@@ -122,6 +126,13 @@ namespace _2DGame.Utility
                 PlayerAnimations.Add("PlayerDeath", new AnimatedSprite(PlayerTextures["PlayerDeath"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
+            if (PlayerTextures["PlayerProjectile"] != null)
+            {
+                PlayerAnimations.Add("PlayerProjectileStart", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                PlayerAnimations.Add("PlayerProjectileMiddle", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 1, gameLoop.Window, RenderStates.Default, 3, 3, false, true));
+                PlayerAnimations.Add("PlayerProjectileEnd", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 3, 7, false, false));
+            }
+
             player.InitializeSprite();
         }
 
@@ -139,6 +150,7 @@ namespace _2DGame.Utility
                 {
                     case 1:
                         (entity as IAnimated).Sprite = new AnimatedSprite(GemTexture, Gem.WIDTH, Gem.HEIGHT, 8, gameLoop.Window, RenderStates.Default, 0, 6, true, true);
+                        (entity as IAnimated).Sprite.Color = new Color((entity as IAnimated).Sprite.Color.R, (entity as IAnimated).Sprite.Color.G, (entity as IAnimated).Sprite.Color.B, 210);
                         break;
 
                     default:
@@ -182,6 +194,8 @@ namespace _2DGame.Utility
                             }
                         }
                     }
+
+
                 }
             }
 

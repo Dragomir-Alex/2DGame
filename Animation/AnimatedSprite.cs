@@ -10,7 +10,7 @@ namespace _2DGame.Animation
     {
         RenderTarget renderTarget;
         RenderStates renderStates;
-        private int frameWidth, frameHeight, currentFrame, firstFrame, lastFrame;
+        int frameWidth, frameHeight, currentFrame, firstFrame, lastFrame;
         float interval, clock;
         bool isAnimated, isLooped;
 
@@ -27,6 +27,26 @@ namespace _2DGame.Animation
 
             clock = 0;
             interval = 1f / FPS;
+            currentFrame = firstFrame;
+
+            TextureRect = GetFramePosition(currentFrame);
+        }
+
+        public AnimatedSprite(AnimatedSprite animatedSprite) : base(animatedSprite.Texture)
+        {
+            renderTarget = animatedSprite.renderTarget;
+            renderStates = animatedSprite.renderStates;
+            frameWidth = animatedSprite.frameWidth;
+            frameHeight = animatedSprite.frameHeight;
+            currentFrame = animatedSprite.currentFrame;
+            firstFrame = animatedSprite.firstFrame;
+            lastFrame = animatedSprite.lastFrame;
+            interval = animatedSprite.interval;
+            clock = animatedSprite.clock;
+            isAnimated = animatedSprite.isAnimated;
+            isLooped = animatedSprite.isLooped;
+
+            clock = 0;
             currentFrame = firstFrame;
 
             TextureRect = GetFramePosition(currentFrame);
@@ -108,6 +128,7 @@ namespace _2DGame.Animation
         public int GetCurrentFrame() { return currentFrame; }
         public int GetLastFrame() { return lastFrame; }
         public bool IsAnimated() { return isAnimated; }
+        public bool IsFinished() { return (currentFrame == lastFrame && !isLooped); }
 
         public void SetFPS(int FPS) { interval = 1f / FPS; }
     }
