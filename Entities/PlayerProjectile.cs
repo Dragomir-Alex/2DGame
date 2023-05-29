@@ -15,7 +15,7 @@ using TransformableHitbox2D;
 
 namespace _2DGame.Entities
 {
-    public class PlayerProjectile : GameEntity, IAnimated
+    public class Projectile : GameEntity, IAnimated
     {
         private Vector2f position = new();
         public override Vector2f Position
@@ -40,14 +40,14 @@ namespace _2DGame.Entities
         public const int PROJECTILE_Y_OFFSET = 3;
 
 
-        public PlayerProjectile() : base(2)
+        public Projectile() : base(2)
         {
             CurrentState = State.Starting;
             CurrentDirection = IAnimated.Direction.Right;
-            Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["PlayerProjectileStart"]);
+            Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["ProjectileStart"]);
         }
 
-        public PlayerProjectile(Vector2f startPosition, IAnimated.Direction direction) : this()
+        public Projectile(Vector2f startPosition, IAnimated.Direction direction) : this()
         {
             CurrentDirection = direction;
             InitializeFloatPosition(startPosition);
@@ -135,11 +135,11 @@ namespace _2DGame.Entities
             else if (CurrentState == State.Starting && Sprite.IsFinished())
             {
                 CurrentState = State.Active;
-                Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["PlayerProjectileMiddle"]);
+                Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["ProjectileMiddle"]);
             }
-            else if (CurrentState == State.Disappearing && Sprite.GetLastFrame() != TextureManager.PlayerAnimations["PlayerProjectileEnd"].GetLastFrame())
+            else if (CurrentState == State.Disappearing && Sprite.GetLastFrame() != TextureManager.PlayerAnimations["ProjectileEnd"].GetLastFrame())
             {
-                Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["PlayerProjectileEnd"]);
+                Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["ProjectileEnd"]);
             }
 
             if (currentAnimation != Sprite)

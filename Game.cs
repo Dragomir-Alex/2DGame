@@ -108,8 +108,9 @@ namespace _2DGame
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
             SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
 
-            TextureManager.InitializePlayerSprite(player, this);
+            TextureManager.InitializePlayerSprites(player, this);
             TextureManager.InitializeHealthBarSprites(healthBar, player);
+            TextureManager.InitializeFlyingEyeSprites(this);
         }
 
         public override void LoadContent()
@@ -119,6 +120,7 @@ namespace _2DGame
             TextureManager.LoadMenuTextures();
             TextureManager.LoadHealthTexture();
             TextureManager.LoadGemTexture();
+            TextureManager.LoadFlyingEyeTextures();
         }
 
         public override void ProcessInputs()

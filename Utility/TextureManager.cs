@@ -22,9 +22,13 @@ namespace _2DGame.Utility
         public const int PLAYER_SPRITE_HEIGHT = 56;
         public const int PROJECTILE_SPRITE_WIDTH = 27;
         public const int PROJECTILE_SPRITE_HEIGHT = 16;
+        public const int FLYING_EYE_SPRITE_WIDTH = 50;
+        public const int FLYING_EYE_SPRITE_HEIGHT = 50;
 
         public static Dictionary<string, Texture> PlayerTextures { get; private set; }
         public static Dictionary<string, AnimatedSprite> PlayerAnimations { get; private set; }
+        public static Dictionary<string, Texture> FlyingEyeTextures { get; private set; }
+        public static Dictionary<string, AnimatedSprite> FlyingEyeAnimations { get; private set; }
 
         public static Texture LogoTexture { get; private set; }
         public static Texture HealthTexture { get; private set; }
@@ -50,13 +54,24 @@ namespace _2DGame.Utility
         {
             PlayerTextures = new Dictionary<string, Texture>
             {
-                { "PlayerIdle", new Texture(TEXTURES_PATH + "PlayerIdle.png") },
-                { "PlayerRun", new Texture(TEXTURES_PATH + "PlayerRun.png") },
-                { "PlayerJump", new Texture(TEXTURES_PATH + "PlayerJump.png") },
-                { "PlayerAttack", new Texture(TEXTURES_PATH + "PlayerAttack.png") },
-                { "PlayerHit", new Texture(TEXTURES_PATH + "PlayerHit.png") },
-                { "PlayerDeath", new Texture(TEXTURES_PATH + "PlayerDeath.png") },
-                { "PlayerProjectile", new Texture(TEXTURES_PATH + "MagicSpell.png") }
+                { "Idle", new Texture(TEXTURES_PATH + "PlayerIdle.png") },
+                { "Run", new Texture(TEXTURES_PATH + "PlayerRun.png") },
+                { "Jump", new Texture(TEXTURES_PATH + "PlayerJump.png") },
+                { "Attack", new Texture(TEXTURES_PATH + "PlayerAttack.png") },
+                { "Hit", new Texture(TEXTURES_PATH + "PlayerHit.png") },
+                { "Death", new Texture(TEXTURES_PATH + "PlayerDeath.png") },
+                { "Projectile", new Texture(TEXTURES_PATH + "MagicSpell.png") }
+            };
+        }
+
+        public static void LoadFlyingEyeTextures()
+        {
+            FlyingEyeTextures = new Dictionary<string, Texture>
+            {
+                { "Fly", new Texture(TEXTURES_PATH + "FlyingEyeFly.png") },
+                { "Attack", new Texture(TEXTURES_PATH + "FlyingEyeAttack.png") },
+                { "Hit", new Texture(TEXTURES_PATH + "FlyingEyeHit.png") },
+                { "Death", new Texture(TEXTURES_PATH + "FlyingEyeDeath.png") }
             };
         }
 
@@ -91,49 +106,74 @@ namespace _2DGame.Utility
             loadingScreen.InitializeSprites();
         }
 
-        public static void InitializePlayerSprite(Player player, GameLoop gameLoop)
+        public static void InitializePlayerSprites(Player player, GameLoop gameLoop)
         {
             PlayerAnimations = new Dictionary<string, AnimatedSprite>();
 
-            if (PlayerTextures["PlayerIdle"] != null)
+            if (PlayerTextures["Idle"] != null)
             {
-                PlayerAnimations.Add("PlayerIdle", new AnimatedSprite(PlayerTextures["PlayerIdle"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 18, gameLoop.Window, RenderStates.Default, 0, 12, false, true));
+                PlayerAnimations.Add("Idle", new AnimatedSprite(PlayerTextures["Idle"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 18, gameLoop.Window, RenderStates.Default, 0, 12, false, true));
             }
 
-            if (PlayerTextures["PlayerRun"] != null)
+            if (PlayerTextures["Run"] != null)
             {
-                PlayerAnimations.Add("PlayerRun", new AnimatedSprite(PlayerTextures["PlayerRun"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 22, gameLoop.Window, RenderStates.Default, 0, 15, false, true));
+                PlayerAnimations.Add("Run", new AnimatedSprite(PlayerTextures["Run"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 22, gameLoop.Window, RenderStates.Default, 0, 15, false, true));
             }
 
-            if (PlayerTextures["PlayerJump"] != null)
+            if (PlayerTextures["Jump"] != null)
             {
-                PlayerAnimations.Add("PlayerJump", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 30, gameLoop.Window, RenderStates.Default, 0, 8, false, false));
-                PlayerAnimations.Add("PlayerFall", new AnimatedSprite(PlayerTextures["PlayerJump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 25, gameLoop.Window, RenderStates.Default, 9, 13, false, false));
+                PlayerAnimations.Add("Jump", new AnimatedSprite(PlayerTextures["Jump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 30, gameLoop.Window, RenderStates.Default, 0, 8, false, false));
+                PlayerAnimations.Add("Fall", new AnimatedSprite(PlayerTextures["Jump"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 25, gameLoop.Window, RenderStates.Default, 9, 13, false, false));
             }
 
-            if (PlayerTextures["PlayerAttack"] != null)
+            if (PlayerTextures["Attack"] != null)
             {
-                PlayerAnimations.Add("PlayerAttack", new AnimatedSprite(PlayerTextures["PlayerAttack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
+                PlayerAnimations.Add("Attack", new AnimatedSprite(PlayerTextures["Attack"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
-            if (PlayerTextures["PlayerHit"] != null)
+            if (PlayerTextures["Hit"] != null)
             {
-                PlayerAnimations.Add("PlayerHit", new AnimatedSprite(PlayerTextures["PlayerHit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 4, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                PlayerAnimations.Add("Hit", new AnimatedSprite(PlayerTextures["Hit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 4, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
             }
 
-            if (PlayerTextures["PlayerDeath"] != null)
+            if (PlayerTextures["Death"] != null)
             {
-                PlayerAnimations.Add("PlayerDeath", new AnimatedSprite(PlayerTextures["PlayerDeath"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
+                PlayerAnimations.Add("Death", new AnimatedSprite(PlayerTextures["Death"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
             }
 
-            if (PlayerTextures["PlayerProjectile"] != null)
+            if (PlayerTextures["Projectile"] != null)
             {
-                PlayerAnimations.Add("PlayerProjectileStart", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
-                PlayerAnimations.Add("PlayerProjectileMiddle", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 1, gameLoop.Window, RenderStates.Default, 3, 3, false, true));
-                PlayerAnimations.Add("PlayerProjectileEnd", new AnimatedSprite(PlayerTextures["PlayerProjectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 3, 7, false, false));
+                PlayerAnimations.Add("ProjectileStart", new AnimatedSprite(PlayerTextures["Projectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                PlayerAnimations.Add("ProjectileMiddle", new AnimatedSprite(PlayerTextures["Projectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 1, gameLoop.Window, RenderStates.Default, 3, 3, false, true));
+                PlayerAnimations.Add("ProjectileEnd", new AnimatedSprite(PlayerTextures["Projectile"], PROJECTILE_SPRITE_WIDTH, PROJECTILE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 3, 7, false, false));
             }
 
             player.InitializeSprite();
+        }
+
+        public static void InitializeFlyingEyeSprites(GameLoop gameLoop)
+        {
+            FlyingEyeAnimations = new Dictionary<string, AnimatedSprite>();
+
+            if (FlyingEyeTextures["Fly"] != null)
+            {
+                FlyingEyeAnimations.Add("Fly", new AnimatedSprite(FlyingEyeTextures["Fly"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 7, false, true));
+            }
+
+            if (FlyingEyeTextures["Attack"] != null)
+            {
+                FlyingEyeAnimations.Add("Attack", new AnimatedSprite(FlyingEyeTextures["Attack"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 7, false, false));
+            }
+
+            if (FlyingEyeTextures["Hit"] != null)
+            {
+                FlyingEyeAnimations.Add("Hit", new AnimatedSprite(FlyingEyeTextures["Hit"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 6, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+            }
+
+            if (FlyingEyeTextures["Death"] != null)
+            {
+                FlyingEyeAnimations.Add("Death", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 6, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+            }
         }
 
         public static void InitializeLevelSprites(Level level, GameLoop gameLoop)
@@ -151,6 +191,10 @@ namespace _2DGame.Utility
                     case 1:
                         (entity as IAnimated).Sprite = new AnimatedSprite(GemTexture, Gem.WIDTH, Gem.HEIGHT, 8, gameLoop.Window, RenderStates.Default, 0, 6, true, true);
                         (entity as IAnimated).Sprite.Color = new Color((entity as IAnimated).Sprite.Color.R, (entity as IAnimated).Sprite.Color.G, (entity as IAnimated).Sprite.Color.B, 210);
+                        break;
+
+                    case 3:
+                        (entity as IAnimated).Sprite = new AnimatedSprite(FlyingEyeAnimations["Fly"]);
                         break;
 
                     default:

@@ -333,11 +333,11 @@ namespace _2DGame.Entities
         {
             var currentAnimation = Sprite;
 
-            if (CurrentState == State.Idle) { Sprite = TextureManager.PlayerAnimations["PlayerIdle"]; }
-            else if (CurrentState == State.Jumping) { Sprite = TextureManager.PlayerAnimations["PlayerJump"]; }
-            else if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["PlayerFall"]; }
-            else if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["PlayerRun"]; }
-            else if (CurrentState == State.Attacking) { Sprite = TextureManager.PlayerAnimations["PlayerAttack"]; }
+            if (CurrentState == State.Idle) { Sprite = TextureManager.PlayerAnimations["Idle"]; }
+            else if (CurrentState == State.Jumping) { Sprite = TextureManager.PlayerAnimations["Jump"]; }
+            else if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["Fall"]; }
+            else if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["Run"]; }
+            else if (CurrentState == State.Attacking) { Sprite = TextureManager.PlayerAnimations["Attack"]; }
 
             if (currentAnimation != Sprite)
             {
@@ -433,7 +433,7 @@ namespace _2DGame.Entities
 
         public void InitializeSprite()
         {
-            Sprite = TextureManager.PlayerAnimations["PlayerFall"];
+            Sprite = TextureManager.PlayerAnimations["Fall"];
             Sprite.Play();
             UpdateSpritePosition();
         }
