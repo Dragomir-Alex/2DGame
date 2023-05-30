@@ -37,5 +37,54 @@ namespace _2DGame.Utility
 
             return collidedTiles;
         }
+
+        public static Vector2f UpdateVelocity(Vector2f velocity, float xVelocityReduction, float yVelocityReduction, float xMaxVelocity, float yMaxVelocity)
+        {
+            if (velocity.X < 0f)
+            {
+                if (velocity.X + xVelocityReduction > 0f)
+                    velocity = new Vector2f(0f, velocity.Y);
+                else
+                    velocity = new Vector2f(velocity.X + xVelocityReduction, velocity.Y);
+            }
+
+            if (velocity.X > 0f)
+            {
+                if (velocity.X - xVelocityReduction < 0f)
+                    velocity = new Vector2f(0f, velocity.Y);
+                else
+                    velocity = new Vector2f(velocity.X - xVelocityReduction, velocity.Y);
+            }
+
+            if (velocity.X >= xMaxVelocity)
+                velocity = new Vector2f(xMaxVelocity, velocity.Y);
+
+            if (velocity.X <= -xMaxVelocity)
+                velocity = new Vector2f(-xMaxVelocity, velocity.Y);
+
+            if (velocity.Y < 0f)
+            {
+                if (velocity.Y + yVelocityReduction > 0f)
+                    velocity = new Vector2f(velocity.X, 0);
+                else
+                    velocity = new Vector2f(velocity.X, velocity.Y + yVelocityReduction);
+            }
+
+            if (velocity.Y > 0f)
+            {
+                if (velocity.Y - yVelocityReduction < 0f)
+                    velocity = new Vector2f(velocity.X, 0);
+                else
+                    velocity = new Vector2f(velocity.X, velocity.Y - yVelocityReduction);
+            }
+
+            if (velocity.Y >= yMaxVelocity)
+                velocity = new Vector2f(velocity.X, yMaxVelocity);
+
+            if (velocity.Y <= -yMaxVelocity)
+                velocity = new Vector2f(velocity.X, -yMaxVelocity);
+
+            return velocity;
+        }
     }
 }

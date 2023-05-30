@@ -13,9 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TransformableHitbox2D;
 
-namespace _2DGame.Entities
+namespace _2DGame.Entities.Players
 {
-    public class Projectile : GameEntity, IAnimated
+    public class PlayerProjectile : GameEntity, IAnimated
     {
         private Vector2f position = new();
         public override Vector2f Position
@@ -28,26 +28,26 @@ namespace _2DGame.Entities
             }
         }
         public enum State { Starting, Active, Disappearing }
-        public State CurrentState { get; private set; }
+        public State CurrentState { get; set; }
         public AnimatedSprite Sprite { get; set; }
         public IAnimated.Direction CurrentDirection { get; set; }
 
-        public const int HITBOX_WIDTH = 8;
+        public const int HITBOX_WIDTH = 10;
         public const int HITBOX_HEIGHT = 6;
         public const int SPEED = 7;
         public const int DAMAGE = 1;
-        public const int PROJECTILE_X_OFFSET = 50;
+        public const int PROJECTILE_X_OFFSET = 40;
         public const int PROJECTILE_Y_OFFSET = 3;
 
 
-        public Projectile() : base(2)
+        public PlayerProjectile() : base(2)
         {
             CurrentState = State.Starting;
             CurrentDirection = IAnimated.Direction.Right;
             Sprite = new AnimatedSprite(TextureManager.PlayerAnimations["ProjectileStart"]);
         }
 
-        public Projectile(Vector2f startPosition, IAnimated.Direction direction) : this()
+        public PlayerProjectile(Vector2f startPosition, IAnimated.Direction direction) : this()
         {
             CurrentDirection = direction;
             InitializeFloatPosition(startPosition);
@@ -162,7 +162,7 @@ namespace _2DGame.Entities
         {
             if (Sprite != null)
             {
-                Sprite.Position = new Vector2f(Position.X - (CurrentDirection == IAnimated.Direction.Right ? 1 : -1) * (CurrentDirection == IAnimated.Direction.Right ? Sprite.GetGlobalBounds().Width / 1.5f : Sprite.GetGlobalBounds().Width), Position.Y - Sprite.GetGlobalBounds().Height / 2);
+                Sprite.Position = new Vector2f(Position.X, Position.Y);
             }
         }
 
@@ -171,7 +171,7 @@ namespace _2DGame.Entities
             if (Hitbox != null && Sprite != null)
             {
                 TransformableHitbox2D.Transform transform = new();
-                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);
+                transform.Position = new Vector2(Position.X - (CurrentDirection == IAnimated.Direction.Left ? HITBOX_WIDTH : 0), Position.Y - HITBOX_HEIGHT / 2);
                 Hitbox.Transform(transform);
             }
         }

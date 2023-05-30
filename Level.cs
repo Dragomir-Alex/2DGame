@@ -1,4 +1,5 @@
 ﻿using _2DGame.Entities;
+using _2DGame.Entities.Players;
 using _2DGame.Layers;
 using _2DGame.Utility;
 using SFML.Audio;
@@ -62,7 +63,7 @@ namespace _2DGame
 
             if (player.IsSpawningProjectile)
             {
-                GameEntityManager.GameEntities.Add(new Projectile(new Vector2f(player.Position.X + Projectile.PROJECTILE_X_OFFSET * (player.CurrentDirection == Animation.IAnimated.Direction.Right ? 1 : -1.25f), player.Position.Y + Projectile.PROJECTILE_Y_OFFSET), player.CurrentDirection));
+                GameEntityManager.GameEntities.Add(new PlayerProjectile(new Vector2f(player.Position.X + PlayerProjectile.PROJECTILE_X_OFFSET * (player.CurrentDirection == Animation.IAnimated.Direction.Right ? 1f : -1f), player.Position.Y + PlayerProjectile.PROJECTILE_Y_OFFSET), player.CurrentDirection));
                 SoundManager.PlaySound("Shoot");
             }
 

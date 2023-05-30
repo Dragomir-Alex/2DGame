@@ -1,4 +1,4 @@
-﻿using _2DGame.Entities;
+﻿using _2DGame.Entities.Players;
 using SFML.Graphics;
 using SFML.System;
 using System;

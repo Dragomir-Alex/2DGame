@@ -1,5 +1,6 @@
 ﻿using _2DGame.LayerData;
 using _2DGame.Layers;
+using _2DGame.MainMenu.Buttons;
 using _2DGame.Utility;
 using SFML.Graphics;
 using SFML.System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SFML.Window.Mouse;
+using Button = _2DGame.MainMenu.Buttons.Button;
 
 namespace _2DGame.MainMenu
 {

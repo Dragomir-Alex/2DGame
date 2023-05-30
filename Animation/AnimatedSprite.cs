@@ -30,6 +30,7 @@ namespace _2DGame.Animation
             currentFrame = firstFrame;
 
             TextureRect = GetFramePosition(currentFrame);
+            Origin = new SFML.System.Vector2f(frameWidth / 2, frameHeight / 2);
         }
 
         public AnimatedSprite(AnimatedSprite animatedSprite) : base(animatedSprite.Texture)
@@ -50,6 +51,7 @@ namespace _2DGame.Animation
             currentFrame = firstFrame;
 
             TextureRect = GetFramePosition(currentFrame);
+            Origin = new SFML.System.Vector2f(frameWidth / 2, frameHeight / 2);
         }
 
         public IntRect GetFramePosition(int frame)
@@ -129,7 +131,19 @@ namespace _2DGame.Animation
         public int GetLastFrame() { return lastFrame; }
         public bool IsAnimated() { return isAnimated; }
         public bool IsFinished() { return (currentFrame == lastFrame && !isLooped); }
-
+        public bool IsLoopFinished() { return (currentFrame == lastFrame && isLooped); }
         public void SetFPS(int FPS) { interval = 1f / FPS; }
+
+        public bool NotEqual(AnimatedSprite animatedSprite)
+        {
+            return
+                (renderTarget != animatedSprite.renderTarget ||
+            frameWidth != animatedSprite.frameWidth ||
+            frameHeight != animatedSprite.frameHeight ||
+            firstFrame != animatedSprite.firstFrame ||
+            lastFrame != animatedSprite.lastFrame ||
+            interval != animatedSprite.interval ||
+            isLooped != animatedSprite.isLooped);
+        }
     }
 }

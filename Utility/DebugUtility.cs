@@ -1,5 +1,5 @@
 ﻿using System;
-using _2DGame.Entities;
+using _2DGame.Entities.Players;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -100,6 +100,7 @@ namespace _2DGame.Utility
         {
             // Hitbox debug
             CircleShape shape = new CircleShape(2);
+            shape.Origin = new Vector2f(2, 2);
             shape.FillColor = new Color(100, 250, 50);
             shape.Position = player.Position;
             gameLoop.Window.Draw(shape);
@@ -108,6 +109,7 @@ namespace _2DGame.Utility
             foreach (var line in player.Hitbox.Lines)
             {
                 CircleShape shape2 = new CircleShape(2);
+                shape2.Origin = new Vector2f(2, 2);
                 shape2.FillColor = new Color(200, 50, 50);
                 shape2.Position = new Vector2f(line.A.X, line.A.Y);
                 gameLoop.Window.Draw(shape2);
@@ -118,6 +120,7 @@ namespace _2DGame.Utility
             foreach (var entity in level.GameEntityManager.OnScreenGameEntities) 
             {
                 CircleShape shape3 = new CircleShape(2);
+                shape3.Origin = new Vector2f(2, 2);
                 shape3.FillColor = new Color(100, 250, 50);
                 shape3.Position = entity.Position;
                 gameLoop.Window.Draw(shape3);
@@ -126,6 +129,7 @@ namespace _2DGame.Utility
                 foreach (var line in entity.Hitbox.Lines)
                 {
                     CircleShape shape4 = new CircleShape(2);
+                    shape4.Origin = new Vector2f(2, 2);
                     shape4.FillColor = new Color(200, 50, 50);
                     shape4.Position = new Vector2f(line.A.X, line.A.Y);
                     gameLoop.Window.Draw(shape4);

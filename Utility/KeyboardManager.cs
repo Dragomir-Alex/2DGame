@@ -1,4 +1,4 @@
-﻿using _2DGame.Entities;
+﻿using _2DGame.Entities.Players;
 using _2DGame.Layers;
 using _2DGame.MainMenu;
 using SFML.System;

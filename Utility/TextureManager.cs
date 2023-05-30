@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using _2DGame.Animation;
-using _2DGame.Entities;
+using _2DGame.Entities.Collectibles;
+using _2DGame.Entities.Players;
 using _2DGame.Layers;
 using _2DGame.LevelUI;
 using _2DGame.MainMenu;
@@ -133,7 +134,7 @@ namespace _2DGame.Utility
 
             if (PlayerTextures["Hit"] != null)
             {
-                PlayerAnimations.Add("Hit", new AnimatedSprite(PlayerTextures["Hit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 4, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                PlayerAnimations.Add("Hit", new AnimatedSprite(PlayerTextures["Hit"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 15, gameLoop.Window, RenderStates.Default, 0, 4, false, false));
             }
 
             if (PlayerTextures["Death"] != null)
@@ -162,17 +163,18 @@ namespace _2DGame.Utility
 
             if (FlyingEyeTextures["Attack"] != null)
             {
-                FlyingEyeAnimations.Add("Attack", new AnimatedSprite(FlyingEyeTextures["Attack"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 7, false, false));
+                FlyingEyeAnimations.Add("Attack", new AnimatedSprite(FlyingEyeTextures["Attack"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 15, gameLoop.Window, RenderStates.Default, 0, 7, false, true));
             }
 
             if (FlyingEyeTextures["Hit"] != null)
             {
-                FlyingEyeAnimations.Add("Hit", new AnimatedSprite(FlyingEyeTextures["Hit"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 6, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                FlyingEyeAnimations.Add("Hit", new AnimatedSprite(FlyingEyeTextures["Hit"], FLYING_EYE_SPRITE_WIDTH, FLYING_EYE_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 4, false, false));
             }
 
             if (FlyingEyeTextures["Death"] != null)
             {
-                FlyingEyeAnimations.Add("Death", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 6, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                FlyingEyeAnimations.Add("DeathFall", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                FlyingEyeAnimations.Add("DeathLand", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 3, 5, false, false));
             }
         }
 

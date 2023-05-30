@@ -12,11 +12,11 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using TransformableHitbox2D;
 
-namespace _2DGame.Entities
+namespace _2DGame.Entities.Players
 {
     public class Player : GameEntity, IAnimated
     {
-        public enum State { Idle, Jumping, Falling, Walking, Attacking }
+        public enum State { Idle, Jumping, Falling, Walking, Attacking, Hit }
 
         public IAnimated.Direction CurrentDirection { get; set; }
         public State CurrentState { get; private set; }
@@ -27,6 +27,7 @@ namespace _2DGame.Entities
         private bool attackedInCurrentAnimation;
 
         private Vector2f position = new();
+        private FrameTimer invincibilityFrames;
 
         public bool IsSpawningProjectile { get; private set; }
         public View Camera { get; set; }
@@ -44,6 +45,8 @@ namespace _2DGame.Entities
         }
 
         public const int MAX_HEALTH = 5;
+        public const int PROJECTILE_SPAWN_FRAME = 7;
+        public const uint INVINCIBILITY_FRAME_COUNT = 120;
 
         public const float X_MAX_VELOCITY = 5f;
         public const float Y_MAX_VELOCITY = 12f;
@@ -51,6 +54,8 @@ namespace _2DGame.Entities
         private const float Y_VELOCITY_GAIN = 12f;
         private const float X_VELOCITY_REDUCTION = 0.15f;
         private const float Y_VELOCITY_REDUCTION = 0.15f;
+        private const float X_KNOCKBACK_VELOCITY = 5f;
+        private const float Y_KNOCKBACK_VELOCITY = 3f;
         private const float GRAVITY = 0.5f;
 
         public const int HITBOX_WIDTH = 20;
@@ -62,6 +67,8 @@ namespace _2DGame.Entities
             isGrounded = false;
             attackedInCurrentAnimation = false;
             IsSpawningProjectile = false;
+
+            invincibilityFrames = new FrameTimer(INVINCIBILITY_FRAME_COUNT);
 
             CurrentState = State.Falling;
             PreviousFrameState = State.Falling;
@@ -238,53 +245,18 @@ namespace _2DGame.Entities
         public void SetXVelocity(float xVelocity) { Velocity = new Vector2f(xVelocity, Velocity.Y); }
         public void SetYVelocity(float yVelocity) { Velocity = new Vector2f(Velocity.X, yVelocity); }
 
-        private void UpdateVelocity()
+        public void Hurt(int damageAmount)
         {
-            ApplyGravity();
-
-            if (Velocity.X < 0f)
+            if (CurrentState != State.Hit && !invincibilityFrames.IsRunning && !debugMode)
             {
-                if (Velocity.X + X_VELOCITY_REDUCTION > 0f)
-                    Velocity = new Vector2f(0f, Velocity.Y);
-                else
-                    Velocity = new Vector2f(Velocity.X + X_VELOCITY_REDUCTION, Velocity.Y);
+                Health.Damage(damageAmount);
+                CurrentState = State.Hit;
+                invincibilityFrames.Reset();
+                invincibilityFrames.Start();
+                SoundManager.PlaySound("Hurt");
+                Velocity = new Vector2f((int)((Velocity.X < 0 ? 1 : -1) * X_KNOCKBACK_VELOCITY),
+                    (int)((Velocity.Y < 0 ? 1 : -1) * Y_KNOCKBACK_VELOCITY));
             }
-
-            if (Velocity.X > 0f)
-            {
-                if (Velocity.X - X_VELOCITY_REDUCTION < 0f)
-                    Velocity = new Vector2f(0f, Velocity.Y);
-                else
-                    Velocity = new Vector2f(Velocity.X - X_VELOCITY_REDUCTION, Velocity.Y);
-            }
-
-            if (Velocity.X >= X_MAX_VELOCITY)
-                Velocity = new Vector2f(X_MAX_VELOCITY, Velocity.Y);
-
-            if (Velocity.X <= -X_MAX_VELOCITY)
-                Velocity = new Vector2f(-X_MAX_VELOCITY, Velocity.Y);
-
-            if (Velocity.Y < 0f)
-            {
-                if (Velocity.Y + Y_VELOCITY_REDUCTION > 0f)
-                    Velocity = new Vector2f(Velocity.X, 0);
-                else
-                    Velocity = new Vector2f(Velocity.X, Velocity.Y + Y_VELOCITY_REDUCTION);
-            }
-
-            if (Velocity.Y > 0f)
-            {
-                if (Velocity.Y - Y_VELOCITY_REDUCTION < 0f)
-                    Velocity = new Vector2f(Velocity.X, 0);
-                else
-                    Velocity = new Vector2f(Velocity.X, Velocity.Y - Y_VELOCITY_REDUCTION);
-            }
-
-            if (Velocity.Y >= Y_MAX_VELOCITY)
-                Velocity = new Vector2f(Velocity.X, Y_MAX_VELOCITY);
-
-            if (Velocity.Y <= -Y_MAX_VELOCITY)
-                Velocity = new Vector2f(Velocity.X, -Y_MAX_VELOCITY);
         }
 
         private void ApplyGravity()
@@ -304,8 +276,14 @@ namespace _2DGame.Entities
         {
             PreviousFrameState = CurrentState;
 
-            if ((CurrentState != State.Attacking && Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded)
-                || (CurrentState == State.Attacking && Sprite.IsFinished()))
+            if (CurrentState == State.Hit
+                && invincibilityFrames.CurrentTime >= INVINCIBILITY_FRAME_COUNT - INVINCIBILITY_FRAME_COUNT / 4)
+            {
+                return;
+            }
+
+            if (CurrentState != State.Attacking && Velocity.X < 1f && Velocity.X > -1f && Velocity.Y < 1f && Velocity.Y > -1f && isGrounded
+                || CurrentState == State.Attacking && Sprite.IsFinished())
             {
                 CurrentState = State.Idle;
             }
@@ -338,6 +316,7 @@ namespace _2DGame.Entities
             else if (CurrentState == State.Falling) { Sprite = TextureManager.PlayerAnimations["Fall"]; }
             else if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["Run"]; }
             else if (CurrentState == State.Attacking) { Sprite = TextureManager.PlayerAnimations["Attack"]; }
+            else if (CurrentState == State.Hit) { Sprite = TextureManager.PlayerAnimations["Hit"]; }
 
             if (currentAnimation != Sprite)
             {
@@ -347,7 +326,7 @@ namespace _2DGame.Entities
             }
             else if (CurrentState == State.Walking) { Sprite.SetFPS((int)Math.Abs(Velocity.X) * 5); }
 
-            if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 6 && !attackedInCurrentAnimation)
+            if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == PROJECTILE_SPAWN_FRAME && !attackedInCurrentAnimation)
             {
                 IsSpawningProjectile = true;
                 attackedInCurrentAnimation = true;
@@ -372,12 +351,14 @@ namespace _2DGame.Entities
 
         public override void Update(Level level, GameLoop gameLoop)
         {
-            UpdateVelocity();
+            ApplyGravity();
+            Velocity = UtilityFunctions.UpdateVelocity(Velocity, X_VELOCITY_REDUCTION, Y_VELOCITY_REDUCTION, X_MAX_VELOCITY, Y_MAX_VELOCITY);
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             GameEntityCollision(level.GameEntityManager);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
             UpdateCurrentState();
             UpdateAnimatedSprite();
+            invincibilityFrames.Update();
         }
 
         private void UpdateAllPositionProperties()
@@ -416,8 +397,9 @@ namespace _2DGame.Entities
         {
             if (Sprite != null)
             {
-                int sign = (CurrentDirection == IAnimated.Direction.Left) ? 1 : -1;
-                Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 7); // Magic numbers :)
+                /*int sign = CurrentDirection == IAnimated.Direction.Left ? 1 : -1;
+                Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 7); // Magic numbers :)*/
+                Sprite.Position = new Vector2f(Position.X, Position.Y - 6); // Magic numbers :)
             }
         }
 
@@ -444,7 +426,7 @@ namespace _2DGame.Entities
             {
                 SetYVelocity(-Y_MAX_VELOCITY - 1);
             }
-            else if (isGrounded && CurrentState != State.Attacking)
+            else if (isGrounded && CurrentState != State.Attacking && CurrentState != State.Hit)
             {
                 SetYVelocity(0);
                 GainNegativeYVelocity();
@@ -467,7 +449,7 @@ namespace _2DGame.Entities
             {
                 SetXVelocity(-X_MAX_VELOCITY - 1);
             }
-            else if (CurrentState != State.Attacking)
+            else if (CurrentState != State.Attacking && CurrentState != State.Hit)
             {
                 if (Velocity.X > 0f)
                 {
@@ -488,7 +470,7 @@ namespace _2DGame.Entities
             {
                 SetXVelocity(X_MAX_VELOCITY + 1);
             }
-            else if (CurrentState != State.Attacking)
+            else if (CurrentState != State.Attacking && CurrentState != State.Hit)
             {
                 if (Velocity.X < 0f)
                 {
@@ -505,7 +487,7 @@ namespace _2DGame.Entities
 
         public void AttackButtonAction()
         {
-            if (CurrentState != State.Attacking && isGrounded)
+            if (CurrentState != State.Attacking && CurrentState != State.Hit && isGrounded)
             {
                 CurrentState = State.Attacking;
                 SetXVelocity(Velocity.X / 2.5f);

@@ -1,4 +1,7 @@
-﻿using _2DGame.LayerData;
+﻿using _2DGame.Entities.Collectibles;
+using _2DGame.Entities.Enemies;
+using _2DGame.Entities.Players;
+using _2DGame.LayerData;
 using _2DGame.Layers;
 using NetTopologySuite.Algorithm;
 using SFML.Graphics;
@@ -23,7 +26,10 @@ namespace _2DGame.Entities
         public List<GameEntity> OnScreenGameEntities { get; set; }
         [JsonIgnore]
         public List<GameEntity> OffScreenGameEntities { get; set; }
+
         public const string LEVELS_PATH = "./Data/Levels/";
+        public const int X_AREA = 22;
+        public const int Y_AREA = 12;
 
         public GameEntityManager()
         {
@@ -36,7 +42,7 @@ namespace _2DGame.Entities
         {
             string fileName = LEVELS_PATH + entityDataFilename;
             string jsonString = File.ReadAllText(fileName);
-            var loadedData = JsonSerializer.Deserialize<Gem[]>(jsonString)!;
+            var loadedData = JsonSerializer.Deserialize<JsonEntity[]>(jsonString)!;
 
             foreach (var entity in loadedData) 
             { 
@@ -44,6 +50,17 @@ namespace _2DGame.Entities
                 {
                     case 1:
                         GameEntities.Add(new Gem() {
+                            TileCoordinates = entity.TileCoordinates,
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+
+                        break;
+
+                    case 3:
+                        GameEntities.Add( new FlyingEye()
+                        {
                             TileCoordinates = entity.TileCoordinates,
                             Position = new Vector2f(
                                 entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
@@ -74,7 +91,13 @@ namespace _2DGame.Entities
             foreach (var onScreenGameEntity in OnScreenGameEntities)
             {
                 if (onScreenGameEntity.IsActive)
+                {
                     onScreenGameEntity.Update(level, gameLoop);
+                    if (onScreenGameEntity is IEnemy)
+                    {
+                        (onScreenGameEntity as IEnemy).OnPlayerDetection(player);
+                    }
+                }
             }
             foreach (var offScreenGameEntity in OffScreenGameEntities)
             {
@@ -112,15 +135,12 @@ namespace _2DGame.Entities
             OnScreenGameEntities.Clear();
             OffScreenGameEntities.Clear();
 
-            int xArea = 25;
-            int yArea = 25;
-
             foreach (var gameEntity in GameEntities)
             {
-                if (gameEntity.TileCoordinates.X >= player.TileCoordinates.X - xArea &&
-                    gameEntity.TileCoordinates.X <= player.TileCoordinates.X + xArea &&
-                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.Y - yArea &&
-                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.Y + yArea)
+                if (gameEntity.TileCoordinates.X >= player.TileCoordinates.X - X_AREA &&
+                    gameEntity.TileCoordinates.X <= player.TileCoordinates.X + X_AREA &&
+                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.Y - Y_AREA &&
+                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.Y + Y_AREA)
                 {
                     OnScreenGameEntities.Add(gameEntity);
                 }

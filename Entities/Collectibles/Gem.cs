@@ -1,4 +1,5 @@
 ﻿using _2DGame.Animation;
+using _2DGame.Entities.Players;
 using _2DGame.LayerData;
 using _2DGame.Utility;
 using SFML.Graphics;
@@ -11,9 +12,8 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TransformableHitbox2D;
-using static _2DGame.Entities.Player;
 
-namespace _2DGame.Entities
+namespace _2DGame.Entities.Collectibles
 {
     public class Gem : GameEntity, IAnimated
     {
@@ -46,7 +46,7 @@ namespace _2DGame.Entities
 
         public override void Update(Level level, GameLoop gameLoop)
         {
-            Position = new Vector2f(Origin.X, Origin.Y + (int)(5 * (float)Math.Sin(2 * (gameLoop.GameTime.TotalTimeElapsed + (Origin.X % 3)))));
+            Position = new Vector2f(Origin.X, Origin.Y + (int)(5 * (float)Math.Sin(2 * (gameLoop.GameTime.TotalTimeElapsed + Origin.X % 3))));
             // Debug.WriteLine(Position.X + " " + Position.Y);
         }
 
@@ -89,7 +89,7 @@ namespace _2DGame.Entities
         {
             if (Sprite != null)
             {
-                Sprite.Position = new Vector2f(Position.X + Sprite.GetGlobalBounds().Width / 2, Position.Y - Sprite.GetGlobalBounds().Height / 2);
+                Sprite.Position = new Vector2f(Position.X, Position.Y);
             }
         }
 

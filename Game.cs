@@ -1,19 +1,9 @@
-﻿using System;
-using SFML.Graphics;
-using SFML.Window;
-using SFML.System;
-using SFML.Audio;
+﻿using SFML.System;
 using _2DGame.Utility;
-using _2DGame.Entities;
-using _2DGame.Layers;
-using System.Diagnostics;
-using InstilledBee.SFML.SimpleCollision;
-using TransformableHitbox2D;
-using _2DGame.LayerData;
-using System.Drawing;
 using Color = SFML.Graphics.Color;
 using _2DGame.MainMenu;
 using _2DGame.LevelUI;
+using _2DGame.Entities.Players;
 
 namespace _2DGame
 {
