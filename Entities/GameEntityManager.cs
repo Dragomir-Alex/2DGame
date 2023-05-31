@@ -28,8 +28,8 @@ namespace _2DGame.Entities
         public List<GameEntity> OffScreenGameEntities { get; set; }
 
         public const string LEVELS_PATH = "./Data/Levels/";
-        public const int X_AREA = 22;
-        public const int Y_AREA = 12;
+        public const int X_AREA = 26;
+        public const int Y_AREA = 18;
 
         public GameEntityManager()
         {

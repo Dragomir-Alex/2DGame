@@ -87,8 +87,19 @@ namespace _2DGame.Entities.Enemies
                     if (CurrentState != State.Hit && CurrentState != State.Dead)
                     {
                         Health.Damage(PlayerProjectile.DAMAGE);
-                        CurrentState = State.Hit;
                         Velocity = new Vector2f();
+
+                        if (Health.CurrentHealth > 0)
+                        {
+                            CurrentState = State.Hit;
+                            SoundManager.PlaySound("Hiss");
+                        }
+                        else
+                        {
+                            CurrentState = State.Dead;
+                            SoundManager.PlaySound("Low Hiss");
+                        }
+
                         invincibilityFrames.Reset();
                         invincibilityFrames.Start();
                     }
@@ -199,7 +210,7 @@ namespace _2DGame.Entities.Enemies
 
         private void ApplyGravity()
         {
-            if (CurrentState == State.Dead)
+            if (CurrentState == State.Dead && Sprite.GetCurrentFrame() > 2)
             {
                 if (Velocity.Y + GRAVITY >= FALL_MAX_VELOCITY)
                     Velocity = new Vector2f(Velocity.X, FALL_MAX_VELOCITY);
@@ -374,12 +385,24 @@ namespace _2DGame.Entities.Enemies
                 Sprite.Play();
             }
 
+            if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 6)
+            {
+                SoundManager.PlaySound("Bite");
+            }
+            else if (CurrentState == State.Flying && Sprite.GetCurrentFrame() == 6)
+            {
+                SoundManager.PlaySound("Flap");
+            }
+
             UpdateSpritePosition();
         }
 
         public override void Reset()
         {
-            Position = Origin;
+            if (CurrentState != State.Dead)
+            {
+                Position = Origin;
+            }
         }
     }
 }
