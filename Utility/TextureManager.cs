@@ -25,14 +25,19 @@ namespace _2DGame.Utility
         public const int PROJECTILE_SPRITE_HEIGHT = 16;
         public const int FLYING_EYE_SPRITE_WIDTH = 50;
         public const int FLYING_EYE_SPRITE_HEIGHT = 50;
+        public const int MUSHROOM_SPRITE_WIDTH = 100;
+        public const int MUSHROOM_SPRITE_HEIGHT = 50;
 
         public static Dictionary<string, Texture> PlayerTextures { get; private set; }
         public static Dictionary<string, AnimatedSprite> PlayerAnimations { get; private set; }
         public static Dictionary<string, Texture> FlyingEyeTextures { get; private set; }
         public static Dictionary<string, AnimatedSprite> FlyingEyeAnimations { get; private set; }
+        public static Dictionary<string, Texture> MushroomTextures { get; private set; }
+        public static Dictionary<string, AnimatedSprite> MushroomAnimations { get; private set; }
 
         public static Texture LogoTexture { get; private set; }
         public static Texture HealthTexture { get; private set; }
+        public static Texture HeartCollectibleTexture { get; private set; }
         public static Texture GemTexture { get; private set; }
 
         public static Font GameFont { get; private set; }
@@ -76,9 +81,26 @@ namespace _2DGame.Utility
             };
         }
 
+        public static void LoadMushroomTextures()
+        {
+            MushroomTextures = new Dictionary<string, Texture>
+            {
+                { "Idle", new Texture(TEXTURES_PATH + "MushroomIdle.png") },
+                { "Run", new Texture(TEXTURES_PATH + "MushroomRun.png") },
+                { "Attack", new Texture(TEXTURES_PATH + "MushroomAttack.png") },
+                { "Hit", new Texture(TEXTURES_PATH + "MushroomHit.png") },
+                { "Death", new Texture(TEXTURES_PATH + "MushroomDeath.png") }
+            };
+        }
+
         public static void LoadHealthTexture()
         {
             HealthTexture = new Texture(TEXTURES_PATH + "Heart.png");
+        }
+
+        public static void LoadHeartCollectibleTexture()
+        {
+            HeartCollectibleTexture = new Texture(TEXTURES_PATH + "HeartCollectible.png");
         }
 
         public static void LoadGemTexture()
@@ -173,8 +195,38 @@ namespace _2DGame.Utility
 
             if (FlyingEyeTextures["Death"] != null)
             {
-                FlyingEyeAnimations.Add("DeathFall", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
+                FlyingEyeAnimations.Add("DeathFall", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 3, false, false));
                 FlyingEyeAnimations.Add("DeathLand", new AnimatedSprite(FlyingEyeTextures["Death"], FLYING_EYE_SPRITE_WIDTH + 10, FLYING_EYE_SPRITE_HEIGHT, 20, gameLoop.Window, RenderStates.Default, 3, 5, false, false));
+            }
+        }
+
+        public static void InitializeMushroomSprites(GameLoop gameLoop)
+        {
+            MushroomAnimations = new Dictionary<string, AnimatedSprite>();
+
+            if (MushroomTextures["Idle"] != null)
+            {
+                MushroomAnimations.Add("Idle", new AnimatedSprite(MushroomTextures["Idle"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 8, gameLoop.Window, RenderStates.Default, 0, 3, false, true));
+            }
+
+            if (MushroomTextures["Run"] != null)
+            {
+                MushroomAnimations.Add("Run", new AnimatedSprite(MushroomTextures["Run"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 12, gameLoop.Window, RenderStates.Default, 0, 7, false, true));
+            }
+
+            if (MushroomTextures["Attack"] != null)
+            {
+                MushroomAnimations.Add("Attack", new AnimatedSprite(MushroomTextures["Attack"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 15, gameLoop.Window, RenderStates.Default, 0, 7, false, true));
+            }
+
+            if (MushroomTextures["Hit"] != null)
+            {
+                MushroomAnimations.Add("Hit", new AnimatedSprite(MushroomTextures["Hit"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 7, gameLoop.Window, RenderStates.Default, 0, 4, false, false));
+            }
+
+            if (MushroomTextures["Death"] != null)
+            {
+                MushroomAnimations.Add("Death", new AnimatedSprite(MushroomTextures["Death"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 7, gameLoop.Window, RenderStates.Default, 0, 5, false, false));
             }
         }
 
@@ -197,6 +249,10 @@ namespace _2DGame.Utility
 
                     case 3:
                         (entity as IAnimated).Sprite = new AnimatedSprite(FlyingEyeAnimations["Fly"]);
+                        break;
+
+                    case 4:
+                        (entity as IAnimated).Sprite = new AnimatedSprite(HeartCollectibleTexture, Heart.WIDTH, Heart.HEIGHT, 8, gameLoop.Window, RenderStates.Default, 0, 5, true, true);
                         break;
 
                     default:

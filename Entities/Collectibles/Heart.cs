@@ -15,7 +15,7 @@ using TransformableHitbox2D;
 
 namespace _2DGame.Entities.Collectibles
 {
-    public class Gem : GameEntity, IAnimated
+    public class Heart : GameEntity, IAnimated
     {
         private Vector2f position = new();
         public override Vector2f Position
@@ -31,11 +31,10 @@ namespace _2DGame.Entities.Collectibles
         public AnimatedSprite Sprite { get; set; }
         public IAnimated.Direction CurrentDirection { get; set; }
 
-        public const int SCORE_VALUE = 500;
-        public const int WIDTH = 28;
-        public const int HEIGHT = 28;
+        public const int WIDTH = 16;
+        public const int HEIGHT = 16;
 
-        public Gem() : base(1) { }
+        public Heart() : base(4) { }
 
         public override void Initialize(Vector2i startPosition)
         {
@@ -47,7 +46,6 @@ namespace _2DGame.Entities.Collectibles
         public override void Update(Level level, GameLoop gameLoop)
         {
             Position = new Vector2f(Origin.X, Origin.Y + (int)(5 * (float)Math.Sin(2 * (gameLoop.GameTime.TotalTimeElapsed + Origin.X % 3))));
-            // Debug.WriteLine(Position.X + " " + Position.Y);
         }
 
         public override void OnEntityCollision(GameEntity entity)
@@ -56,9 +54,12 @@ namespace _2DGame.Entities.Collectibles
             {
                 if (entity is Player)
                 {
-                    IsActive = false;
-                    Score.Add(SCORE_VALUE);
-                    SoundManager.PlaySound("Collect Gem");
+                    if ((entity as Player).Health.CurrentHealth != (entity as Player).Health.MaxHealth)
+                    {
+                        IsActive = false;
+                        (entity as Player).Health.Heal(1);
+                        SoundManager.PlaySound("Heal");
+                    }
                 }
             }
         }
@@ -96,11 +97,11 @@ namespace _2DGame.Entities.Collectibles
         private void InitializeHitbox()
         {
             Vector2[] vector2Arr = new Vector2[] {
-                new Vector2(WIDTH / 2, 0),
-                new Vector2(WIDTH, HEIGHT / 2),
-                new Vector2(WIDTH / 2, HEIGHT),
-                new Vector2(0, HEIGHT / 2),
-                new Vector2(WIDTH / 2, 0)
+                new Vector2(0, 0),
+                new Vector2(0, HEIGHT),
+                new Vector2(WIDTH, HEIGHT),
+                new Vector2(WIDTH, 0),
+                new Vector2(0, 0)
             };
             Hitbox = new Hitbox(vector2Arr);
             UpdateHitbox();

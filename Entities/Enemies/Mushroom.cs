@@ -15,14 +15,14 @@ using System.Diagnostics;
 
 namespace _2DGame.Entities.Enemies
 {
-    public class FlyingEye : GameEntity, IEnemy, IAnimated
+    public class Mushroom : GameEntity, IEnemy, IAnimated
     {
-        private Vector2f position, currentVelocityReduction;
-        private bool isGrounded;
+        private Vector2f position;
         private readonly FrameTimer invincibilityFrames;
-        private float xPlayerDistance, yPlayerDistance;
+        private float playerDistance;
+        private Hitbox normalHitbox, attackHitbox;
 
-        public enum State { Flying, Attacking, Hit, Dead }
+        public enum State { Idle, Running, Attacking, Hit, Dead }
         public State CurrentState { get; private set; }
         public State PreviousFrameState { get; private set; }
 
@@ -45,31 +45,31 @@ namespace _2DGame.Entities.Enemies
         }
 
         public const int MAX_HEALTH = 5;
-        public const float TRIGGER_DISTANCE = 5f * Tilemap.TILE_SIZE;
+        public const float TRIGGER_DISTANCE = 6f * Tilemap.TILE_SIZE;
         public const float ATTACK_TRIGGER_DISTANCE = 1.5f * Tilemap.TILE_SIZE;
         public const uint INVINCIBILITY_FRAME_COUNT = 25;
+        public const int Y_SPRITE_OFFSET = -8;
 
         public const float MAX_VELOCITY = 3f;
-        public const float FALL_MAX_VELOCITY = 5f;
-        private const float VELOCITY_GAIN = 0.3f;
+        public const float FALL_MAX_VELOCITY = 7f;
+        private const float VELOCITY_GAIN = 0.25f;
         private const float VELOCITY_REDUCTION = 0.2f;
-        private const float GRAVITY = 0.5f;
+        private const float GRAVITY = 1f;
 
-        public const int HITBOX_WIDTH = 40;
+        public const int HITBOX_ATTACK_RANGE = 20;
+        public const int HITBOX_WIDTH = 30;
         public const int HITBOX_HEIGHT = 30;
 
-        public FlyingEye() : base(3)
+        public Mushroom() : base(5)
         {
-            currentVelocityReduction = new Vector2f();
             invincibilityFrames = new FrameTimer(INVINCIBILITY_FRAME_COUNT);
-            isGrounded = false;
-            CurrentState = State.Flying;
-            PreviousFrameState = State.Flying;
+            CurrentState = State.Idle;
+            PreviousFrameState = State.Idle;
             AttackDamage = 1;
-            Score = 1000;
+            Score = 750;
             Health = new Health(3);
             Velocity = new Vector2f();
-            Sprite = new AnimatedSprite(TextureManager.FlyingEyeAnimations["Fly"]);
+            Sprite = new AnimatedSprite(TextureManager.MushroomAnimations["Idle"]);
         }
 
         public override void Initialize(Vector2i startPosition)
@@ -120,84 +120,37 @@ namespace _2DGame.Entities.Enemies
             if (CurrentState == State.Hit || CurrentState == State.Dead)
                 return;
 
-            xPlayerDistance = Math.Abs(player.Position.X - Position.X);
-            yPlayerDistance = Math.Abs(player.Position.Y - Position.Y);
-            float xPlayerPercentage = (xPlayerDistance + yPlayerDistance != 0) ? (xPlayerDistance / (xPlayerDistance + yPlayerDistance)) : 0;
-            float yPlayerPercentage = (xPlayerDistance + yPlayerDistance != 0) ? (yPlayerDistance / (xPlayerDistance + yPlayerDistance)) : 0;
+            playerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
 
-            float xOriginDistance = Math.Abs(Origin.X - Position.X);
-            float yOriginDistance = Math.Abs(Origin.Y - Position.Y);
-            float xOriginPercentage = (xOriginDistance + yOriginDistance != 0) ? (xOriginDistance / (xOriginDistance + yOriginDistance)) : 0;
-            float yOriginPercentage = (xOriginDistance + yOriginDistance != 0) ? (yOriginDistance / (xOriginDistance + yOriginDistance)) : 0;
-
-            float playerToOriginDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Origin.X, 2) + (float)Math.Pow(player.Position.Y - Origin.Y, 2));
-            float flyingEyeToOriginDistance = (float)Math.Sqrt((float)Math.Pow(Position.X - Origin.X, 2) + (float)Math.Pow(Position.Y - Origin.Y, 2));
-
-            if (playerToOriginDistance <= TRIGGER_DISTANCE)
+            if (playerDistance <= TRIGGER_DISTANCE && playerDistance >= ATTACK_TRIGGER_DISTANCE)
             {
                 if (player.Position.X >= Position.X)
                 {
-                    GainPositiveXVelocity(VELOCITY_GAIN * xPlayerPercentage);
+                    GainPositiveXVelocity(VELOCITY_GAIN);
                     CurrentDirection = IAnimated.Direction.Right;
                 }
                 else
                 {
-                    GainNegativeXVelocity(VELOCITY_GAIN * xPlayerPercentage);
+                    GainNegativeXVelocity(VELOCITY_GAIN);
                     CurrentDirection = IAnimated.Direction.Left;
                 }
-
-                if (player.Position.Y >= Position.Y)
-                {
-                    GainPositiveYVelocity(VELOCITY_GAIN * yPlayerPercentage);
-                }
-                else
-                {
-                    GainNegativeYVelocity(VELOCITY_GAIN * yPlayerPercentage);
-                }
-
-                currentVelocityReduction = new Vector2f(VELOCITY_REDUCTION * xPlayerPercentage, VELOCITY_REDUCTION * yPlayerPercentage);
             }
-            else
+            else if (playerDistance <= ATTACK_TRIGGER_DISTANCE)
             {
-                if (flyingEyeToOriginDistance < 2f)
+                if (CurrentState != State.Attacking)
                 {
-                    Position = Origin;
-                    return;
+                    Velocity = new Vector2f(Velocity.X / 2, Velocity.Y);
                 }
-
-                if (Origin.X >= Position.X)
-                {
-                    GainPositiveXVelocity(VELOCITY_GAIN * xOriginPercentage);
-                    CurrentDirection = IAnimated.Direction.Right;
-                }
-                else
-                {
-                    GainNegativeXVelocity(VELOCITY_GAIN * xOriginPercentage);
-                    CurrentDirection = IAnimated.Direction.Left;
-                }
-
-                if (Origin.Y >= Position.Y)
-                {
-                    GainPositiveYVelocity(VELOCITY_GAIN * yOriginPercentage);
-                }
-                else
-                {
-                    GainNegativeYVelocity(VELOCITY_GAIN * yOriginPercentage);
-                }
-
-                currentVelocityReduction = new Vector2f(VELOCITY_REDUCTION * xOriginPercentage, VELOCITY_REDUCTION * yOriginPercentage);
             }
         }
 
         public void GainPositiveXVelocity(float xVelocityGain) { Velocity = new Vector2f(Velocity.X + xVelocityGain, Velocity.Y); }
         public void GainNegativeXVelocity(float xVelocityGain) { Velocity = new Vector2f(Velocity.X - xVelocityGain, Velocity.Y); }
-        public void GainPositiveYVelocity(float yVelocityGain) { Velocity = new Vector2f(Velocity.X, Velocity.Y + yVelocityGain); }
-        public void GainNegativeYVelocity(float yVelocityGain) { Velocity = new Vector2f(Velocity.X, Velocity.Y - yVelocityGain); }
 
         public override void Update(Level level, GameLoop gameLoop)
         {
             ApplyGravity();
-            Velocity = UtilityFunctions.UpdateVelocity(Velocity, currentVelocityReduction.X, currentVelocityReduction.Y, MAX_VELOCITY, MAX_VELOCITY);
+            Velocity = UtilityFunctions.UpdateVelocity(Velocity, VELOCITY_REDUCTION, VELOCITY_REDUCTION, MAX_VELOCITY, MAX_VELOCITY);
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             UpdateCurrentState();
             UpdateAnimatedSprite();
@@ -206,15 +159,9 @@ namespace _2DGame.Entities.Enemies
 
         private void ApplyGravity()
         {
-            if (CurrentState == State.Dead && Sprite.GetCurrentFrame() > 2)
-            {
-                if (Velocity.Y + GRAVITY >= FALL_MAX_VELOCITY)
-                    Velocity = new Vector2f(Velocity.X, FALL_MAX_VELOCITY);
-                else Velocity = new Vector2f(Velocity.X, Velocity.Y + GRAVITY);
-
-                if (Velocity.Y >= 1f)
-                    isGrounded = false;
-            }
+            if (Velocity.Y + GRAVITY >= FALL_MAX_VELOCITY)
+                Velocity = new Vector2f(Velocity.X, FALL_MAX_VELOCITY);
+            else Velocity = new Vector2f(Velocity.X, Velocity.Y + GRAVITY);
         }
 
         private void UpdateAllPositionProperties()
@@ -226,14 +173,26 @@ namespace _2DGame.Entities.Enemies
 
         private void InitializeHitbox()
         {
-            Vector2[] vector2Arr = new Vector2[] {
+            Vector2[] normalHitboxArr = new Vector2[] {
                 new Vector2(0, 0),
                 new Vector2(HITBOX_WIDTH, 0),
                 new Vector2(HITBOX_WIDTH, HITBOX_HEIGHT),
                 new Vector2(0, HITBOX_HEIGHT),
                 new Vector2(0, 0)
             };
-            Hitbox = new Hitbox(vector2Arr);
+
+            Vector2[] attackHitboxArr = new Vector2[] {
+                new Vector2(0, 0),
+                new Vector2(HITBOX_WIDTH + HITBOX_ATTACK_RANGE, 0),
+                new Vector2(HITBOX_WIDTH + HITBOX_ATTACK_RANGE, HITBOX_HEIGHT),
+                new Vector2(0, HITBOX_HEIGHT),
+                new Vector2(0, 0)
+            };
+
+            normalHitbox = new Hitbox(normalHitboxArr);
+            attackHitbox = new Hitbox(attackHitboxArr);
+
+            Hitbox = normalHitbox;
             UpdateHitbox();
         }
 
@@ -241,28 +200,45 @@ namespace _2DGame.Entities.Enemies
         {
             if (Sprite != null)
             {
-                Sprite.Position = new Vector2f(Position.X, Position.Y);
+                Sprite.Position = new Vector2f(Position.X, Position.Y + Y_SPRITE_OFFSET);
             }
         }
 
         protected override void UpdateHitbox()
         {
             Transform transform = new();
-            transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);
+
             if (Hitbox != null)
             {
-                Hitbox.Transform(transform);
+
+                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2 + HITBOX_ATTACK_RANGE * (CurrentDirection == IAnimated.Direction.Right ? 1 : -1), Position.Y - HITBOX_HEIGHT / 2);
+                attackHitbox.Transform(transform);
+
+                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);
+                normalHitbox.Transform(transform);
+
+                if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 7)
+                {
+                    Hitbox = attackHitbox;
+                }
+                else
+                {
+                    Hitbox = normalHitbox;
+                }
             }
         }
 
         private void UpdatePosition(SpriteLayer spriteLayer)
         {
+            if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
+
             Vector2f crtPos = new Vector2f(Position.X, Position.Y);
             Vector2f posAfterXVelocity = new Vector2f(Position.X + (int)Velocity.X, Position.Y);
             Vector2i finalVelocity = new Vector2i((int)Velocity.X, (int)Velocity.Y);
             List<Tuple<Hitbox, int, int>> collidedTiles;
 
             Position = posAfterXVelocity;
+            if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
 
             // X Axis test
             collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
@@ -272,6 +248,7 @@ namespace _2DGame.Entities.Enemies
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X + i * Math.Sign(Velocity.X), crtPos.Y);
                     Position = interpolatedPosition;
+                    if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
                     List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
@@ -283,6 +260,7 @@ namespace _2DGame.Entities.Enemies
             }
 
             Position = new Vector2f(crtPos.X + finalVelocity.X, crtPos.Y + (int)Velocity.Y);
+            if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
 
             // Y Axis test
             collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
@@ -292,6 +270,7 @@ namespace _2DGame.Entities.Enemies
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X, crtPos.Y + i * Math.Sign(Velocity.Y));
                     Position = interpolatedPosition;
+                    if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
                     List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
@@ -302,10 +281,8 @@ namespace _2DGame.Entities.Enemies
                 }
             }
 
-            if (finalVelocity.Y == 0 && collidedTiles.Count != 0)
-                isGrounded = true;
-
             Position = new Vector2f(crtPos.X + finalVelocity.X, crtPos.Y + finalVelocity.Y);
+            if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
 
             // Corner test
             collidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
@@ -315,6 +292,7 @@ namespace _2DGame.Entities.Enemies
                 {
                     Vector2f interpolatedPosition = new Vector2f(crtPos.X + i * Math.Sign(Velocity.X), crtPos.Y + i * Math.Sign(Velocity.Y));
                     Position = interpolatedPosition;
+                    if (Hitbox == attackHitbox) { Hitbox = normalHitbox; }
                     List<Tuple<Hitbox, int, int>> newCollidedTiles = UtilityFunctions.GameEntityLevelCollision(this, spriteLayer);
                     if (newCollidedTiles.Count == 0)
                     {
@@ -339,16 +317,22 @@ namespace _2DGame.Entities.Enemies
                 return;
             }
 
-            if (CurrentState == State.Hit && !invincibilityFrames.IsFinished()) { 
-                return; }
+            if (CurrentState == State.Hit && !invincibilityFrames.IsFinished())
+            {
+                return;
+            }
 
-            if (xPlayerDistance < ATTACK_TRIGGER_DISTANCE && yPlayerDistance < ATTACK_TRIGGER_DISTANCE)
+            if (playerDistance <= TRIGGER_DISTANCE && playerDistance >= ATTACK_TRIGGER_DISTANCE)
+            {
+                CurrentState = State.Running;
+            }
+            else if (playerDistance < ATTACK_TRIGGER_DISTANCE)
             {
                 CurrentState = State.Attacking;
             }
             else
             {
-                CurrentState = State.Flying;
+                CurrentState = State.Idle;
             }
 
         }
@@ -358,22 +342,11 @@ namespace _2DGame.Entities.Enemies
             var currentAnimation = Sprite;
             AnimatedSprite newAnimation = currentAnimation;
 
-            if (CurrentState == State.Flying) { newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["Fly"]); }
-            else if (CurrentState == State.Attacking) { newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["Attack"]); }
-            else if (CurrentState == State.Hit) { newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["Hit"]); }
-            else if (CurrentState == State.Dead)
-            {
-                if (!isGrounded)
-                {
-                    newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["DeathFall"]);
-                }
-                else
-                {
-                    newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["DeathLand"]);
-                }
-/*                Sprite = newAnimation;
-                Sprite.Play();*/
-            }
+            if (CurrentState == State.Idle) { newAnimation = new AnimatedSprite(TextureManager.MushroomAnimations["Idle"]); }
+            else if (CurrentState == State.Running) { newAnimation = new AnimatedSprite(TextureManager.MushroomAnimations["Run"]); }
+            else if (CurrentState == State.Attacking) { newAnimation = new AnimatedSprite(TextureManager.MushroomAnimations["Attack"]); }
+            else if (CurrentState == State.Hit) { newAnimation = new AnimatedSprite(TextureManager.MushroomAnimations["Hit"]); }
+            else if (CurrentState == State.Dead) { newAnimation = new AnimatedSprite(TextureManager.MushroomAnimations["Death"]); }
 
             if (currentAnimation.NotEqual(newAnimation))
             {
@@ -385,7 +358,7 @@ namespace _2DGame.Entities.Enemies
             {
                 SoundManager.PlaySound("Bite");
             }
-            else if (CurrentState == State.Flying && Sprite.GetCurrentFrame() == 6)
+            else if (CurrentState == State.Running && Sprite.GetCurrentFrame() == 6)
             {
                 SoundManager.PlaySound("Flap");
             }

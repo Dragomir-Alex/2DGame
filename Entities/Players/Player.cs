@@ -27,7 +27,7 @@ namespace _2DGame.Entities.Players
         private bool attackedInCurrentAnimation;
 
         private Vector2f position = new();
-        private FrameTimer invincibilityFrames;
+        private readonly FrameTimer invincibilityFrames;
 
         public bool IsSpawningProjectile { get; private set; }
         public View Camera { get; set; }
@@ -364,7 +364,7 @@ namespace _2DGame.Entities.Players
         private void UpdateAllPositionProperties()
         {
             UpdateSpritePosition();
-            UpdateHitboxPosition();
+            UpdateHitbox();
             UpdateTileCoordinates();
         }
 
@@ -390,7 +390,7 @@ namespace _2DGame.Entities.Players
                 new Vector2(0, 0)
             };
             Hitbox = new Hitbox(vector2Arr);
-            UpdateHitboxPosition();
+            UpdateHitbox();
         }
 
         private void UpdateSpritePosition()
@@ -403,7 +403,7 @@ namespace _2DGame.Entities.Players
             }
         }
 
-        protected override void UpdateHitboxPosition()
+        protected override void UpdateHitbox()
         {
             TransformableHitbox2D.Transform transform = new();
             transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);

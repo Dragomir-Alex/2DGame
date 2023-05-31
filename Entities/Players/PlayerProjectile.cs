@@ -155,7 +155,7 @@ namespace _2DGame.Entities.Players
         private void UpdateAllPositionProperties()
         {
             UpdateSpritePosition();
-            UpdateHitboxPosition();
+            UpdateHitbox();
             UpdateTileCoordinates();
         }
         private void UpdateSpritePosition()
@@ -166,7 +166,7 @@ namespace _2DGame.Entities.Players
             }
         }
 
-        protected override void UpdateHitboxPosition()
+        protected override void UpdateHitbox()
         {
             if (Hitbox != null && Sprite != null)
             {
@@ -186,7 +186,7 @@ namespace _2DGame.Entities.Players
                 new Vector2(0, 0)
             };
             Hitbox = new Hitbox(vector2Arr);
-            UpdateHitboxPosition();
+            UpdateHitbox();
         }
     }
 }

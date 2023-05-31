@@ -51,6 +51,7 @@ namespace _2DGame.Entities
                     case 0:
                         PlayerStartTileCoordinates = new Vector2i(entity.TileCoordinates.X, entity.TileCoordinates.Y);
                         break;
+
                     case 1:
                         GameEntities.Add(new Gem() {
                             TileCoordinates = entity.TileCoordinates,
@@ -58,7 +59,6 @@ namespace _2DGame.Entities
                                 entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
                                 entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
                         });
-
                         break;
 
                     case 3:
@@ -69,7 +69,26 @@ namespace _2DGame.Entities
                                 entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
                                 entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
                         });
+                        break;
 
+                    case 4:
+                        GameEntities.Add(new Heart()
+                        {
+                            TileCoordinates = entity.TileCoordinates,
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
+                    case 5:
+                        GameEntities.Add(new Mushroom()
+                        {
+                            TileCoordinates = entity.TileCoordinates,
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
                         break;
 
                     default:

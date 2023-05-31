@@ -101,6 +101,7 @@ namespace _2DGame
             TextureManager.InitializePlayerSprites(player, this);
             TextureManager.InitializeHealthBarSprites(healthBar, player);
             TextureManager.InitializeFlyingEyeSprites(this);
+            TextureManager.InitializeMushroomSprites(this);
         }
 
         public override void LoadContent()
@@ -109,8 +110,10 @@ namespace _2DGame
             TextureManager.LoadPlayerTextures();
             TextureManager.LoadMenuTextures();
             TextureManager.LoadHealthTexture();
+            TextureManager.LoadHeartCollectibleTexture();
             TextureManager.LoadGemTexture();
             TextureManager.LoadFlyingEyeTextures();
+            TextureManager.LoadMushroomTextures();
         }
 
         public override void ProcessInputs()

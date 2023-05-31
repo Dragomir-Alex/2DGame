@@ -136,14 +136,14 @@ namespace _2DGame.Animation
 
         public bool NotEqual(AnimatedSprite animatedSprite)
         {
-            return
-                (renderTarget != animatedSprite.renderTarget ||
-            frameWidth != animatedSprite.frameWidth ||
-            frameHeight != animatedSprite.frameHeight ||
-            firstFrame != animatedSprite.firstFrame ||
-            lastFrame != animatedSprite.lastFrame ||
-            interval != animatedSprite.interval ||
-            isLooped != animatedSprite.isLooped);
+            return ( Texture != animatedSprite.Texture ||
+                renderTarget != animatedSprite.renderTarget ||
+                frameWidth != animatedSprite.frameWidth ||
+                frameHeight != animatedSprite.frameHeight ||
+                firstFrame != animatedSprite.firstFrame ||
+                lastFrame != animatedSprite.lastFrame ||
+                interval != animatedSprite.interval ||
+                isLooped != animatedSprite.isLooped);
         }
     }
 }

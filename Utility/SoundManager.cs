@@ -67,7 +67,8 @@ namespace _2DGame.Utility
                 { "Hiss", new Sound (new SoundBuffer(SOUNDS_PATH + "hiss.wav")) },
                 { "Low Hiss", new Sound (new SoundBuffer(SOUNDS_PATH + "hiss_low.wav")) },
                 { "Flap", new Sound (new SoundBuffer(SOUNDS_PATH + "flap.wav")) },
-                { "Bite", new Sound (new SoundBuffer(SOUNDS_PATH + "bite.wav")) }
+                { "Bite", new Sound (new SoundBuffer(SOUNDS_PATH + "bite.wav")) },
+                { "Heal", new Sound (new SoundBuffer(SOUNDS_PATH + "heal.wav")) }
             };
         }
 

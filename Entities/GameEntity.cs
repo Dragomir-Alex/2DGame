@@ -39,7 +39,7 @@ namespace _2DGame.Entities
             Position = new Vector2f(0, 0);
         }
 
-        protected virtual void UpdateHitboxPosition()
+        protected virtual void UpdateHitbox()
         {
             if (Hitbox != null)
             {
