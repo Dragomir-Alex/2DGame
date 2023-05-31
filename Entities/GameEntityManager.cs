@@ -20,7 +20,7 @@ namespace _2DGame.Entities
 {
     public class GameEntityManager
     {
-
+        public Vector2i PlayerStartTileCoordinates { get; private set; }
         public List<GameEntity> GameEntities { get; set; }
         [JsonIgnore]
         public List<GameEntity> OnScreenGameEntities { get; set; }
@@ -48,6 +48,9 @@ namespace _2DGame.Entities
             { 
                 switch (entity.ID)
                 {
+                    case 0:
+                        PlayerStartTileCoordinates = new Vector2i(entity.TileCoordinates.X, entity.TileCoordinates.Y);
+                        break;
                     case 1:
                         GameEntities.Add(new Gem() {
                             TileCoordinates = entity.TileCoordinates,

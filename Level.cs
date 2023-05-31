@@ -49,9 +49,7 @@ namespace _2DGame
             Width = Layers[LayerList.PRIMARY_LAYER].Width;
             Height = Layers[LayerList.PRIMARY_LAYER].Height;
             GameEntityManager.Initialize();
-
-            // Test
-            TileStartPosition = new Vector2i(30, 50);
+            TileStartPosition = GameEntityManager.PlayerStartTileCoordinates;
         }
 
         public void Update(Player player, GameLoop gameLoop)
