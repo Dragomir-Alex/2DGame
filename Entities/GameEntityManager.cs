@@ -157,12 +157,16 @@ namespace _2DGame.Entities
             OnScreenGameEntities.Clear();
             OffScreenGameEntities.Clear();
 
+            TileCoordinates cameraTileCoordinates = new TileCoordinates(
+                (int)(player.Camera.Center.X / Tilemap.TILE_SIZE),
+                (int)(player.Camera.Center.Y / Tilemap.TILE_SIZE));
+
             foreach (var gameEntity in GameEntities)
             {
-                if (gameEntity.TileCoordinates.X >= player.TileCoordinates.X - X_AREA &&
-                    gameEntity.TileCoordinates.X <= player.TileCoordinates.X + X_AREA &&
-                    gameEntity.TileCoordinates.Y >= player.TileCoordinates.Y - Y_AREA &&
-                    gameEntity.TileCoordinates.Y <= player.TileCoordinates.Y + Y_AREA)
+                if (gameEntity.TileCoordinates.X >= cameraTileCoordinates.X - X_AREA &&
+                    gameEntity.TileCoordinates.X <= cameraTileCoordinates.X + X_AREA &&
+                    gameEntity.TileCoordinates.Y >= cameraTileCoordinates.Y - Y_AREA &&
+                    gameEntity.TileCoordinates.Y <= cameraTileCoordinates.Y + Y_AREA)
                 {
                     OnScreenGameEntities.Add(gameEntity);
                 }
