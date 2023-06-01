@@ -17,6 +17,7 @@ namespace _2DGame.Entities.Enemies
 {
     public class Mushroom : GameEntity, IEnemy, IAnimated
     {
+        private bool slapSoundPlayed, lowStepSoundPlayed;
         private Vector2f position;
         private readonly FrameTimer invincibilityFrames;
         private float playerDistance;
@@ -62,6 +63,8 @@ namespace _2DGame.Entities.Enemies
 
         public Mushroom() : base(5)
         {
+            slapSoundPlayed = false;
+            lowStepSoundPlayed = false;
             invincibilityFrames = new FrameTimer(INVINCIBILITY_FRAME_COUNT);
             CurrentState = State.Idle;
             PreviousFrameState = State.Idle;
@@ -93,12 +96,12 @@ namespace _2DGame.Entities.Enemies
                         if (Health.CurrentHealth > 0)
                         {
                             CurrentState = State.Hit;
-                            SoundManager.PlaySound("Hiss");
+                            SoundManager.PlaySound("Growl");
                         }
                         else
                         {
                             CurrentState = State.Dead;
-                            SoundManager.PlaySound("Low Hiss");
+                            SoundManager.PlaySound("Low Growl");
                         }
 
                         invincibilityFrames.Reset();
@@ -356,11 +359,28 @@ namespace _2DGame.Entities.Enemies
 
             if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 6)
             {
-                SoundManager.PlaySound("Bite");
+                if (!slapSoundPlayed)
+                {
+                    SoundManager.PlaySound("Slap");
+                    slapSoundPlayed = true;
+                }
             }
-            else if (CurrentState == State.Running && Sprite.GetCurrentFrame() == 6)
+            else
             {
-                SoundManager.PlaySound("Flap");
+                slapSoundPlayed = false;
+            }
+
+            if (CurrentState == State.Running && (Sprite.GetCurrentFrame() == 1 || Sprite.GetCurrentFrame() == 5))
+            {
+                if (!lowStepSoundPlayed)
+                {
+                    SoundManager.PlaySound("Low Step");
+                    lowStepSoundPlayed = true;
+                }
+            }
+            else
+            {
+                lowStepSoundPlayed = false;
             }
 
             UpdateSpritePosition();

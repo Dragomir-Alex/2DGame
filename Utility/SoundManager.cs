@@ -63,16 +63,21 @@ namespace _2DGame.Utility
                 { "Poof", new Sound(new SoundBuffer(SOUNDS_PATH + "poof.wav")) },
                 { "Hurt", new Sound(new SoundBuffer(SOUNDS_PATH + "hurt.wav")) },
                 { "Step", new Sound(new SoundBuffer(SOUNDS_PATH + "step.wav")) },
+                { "Low Step", new Sound(new SoundBuffer(SOUNDS_PATH + "step_low.wav")) },
                 { "Collect Gem", new Sound (new SoundBuffer(SOUNDS_PATH + "collect_gem.wav")) },
                 { "Hiss", new Sound (new SoundBuffer(SOUNDS_PATH + "hiss.wav")) },
                 { "Low Hiss", new Sound (new SoundBuffer(SOUNDS_PATH + "hiss_low.wav")) },
                 { "Flap", new Sound (new SoundBuffer(SOUNDS_PATH + "flap.wav")) },
                 { "Bite", new Sound (new SoundBuffer(SOUNDS_PATH + "bite.wav")) },
-                { "Heal", new Sound (new SoundBuffer(SOUNDS_PATH + "heal.wav")) }
+                { "Heal", new Sound (new SoundBuffer(SOUNDS_PATH + "heal.wav")) },
+                { "Slap", new Sound (new SoundBuffer(SOUNDS_PATH + "slap.wav")) },
+                { "Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl.wav")) },
+                { "Low Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl_low.wav")) }
             };
         }
 
         public static void PlaySound(string soundName) { Sounds[soundName].Play(); }
+        public static void PlaySoundOnce(string soundName) { if (Sounds[soundName].Status == SoundStatus.Stopped) Sounds[soundName].Play(); }
         public static void PauseSound(string soundName) { Sounds[soundName].Pause(); }
         public static void StopSound(string soundName) { Sounds[soundName].Stop(); }
     }

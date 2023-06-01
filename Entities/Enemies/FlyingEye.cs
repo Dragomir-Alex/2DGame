@@ -18,7 +18,7 @@ namespace _2DGame.Entities.Enemies
     public class FlyingEye : GameEntity, IEnemy, IAnimated
     {
         private Vector2f position, currentVelocityReduction;
-        private bool isGrounded;
+        private bool isGrounded, biteSoundPlayed, flapSoundPlayed;
         private readonly FrameTimer invincibilityFrames;
         private float xPlayerDistance, yPlayerDistance;
 
@@ -63,6 +63,8 @@ namespace _2DGame.Entities.Enemies
             currentVelocityReduction = new Vector2f();
             invincibilityFrames = new FrameTimer(INVINCIBILITY_FRAME_COUNT);
             isGrounded = false;
+            biteSoundPlayed = false;
+            flapSoundPlayed = false;
             CurrentState = State.Flying;
             PreviousFrameState = State.Flying;
             AttackDamage = 1;
@@ -383,11 +385,28 @@ namespace _2DGame.Entities.Enemies
 
             if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 6)
             {
-                SoundManager.PlaySound("Bite");
+                if (!biteSoundPlayed)
+                {
+                    SoundManager.PlaySound("Bite");
+                    biteSoundPlayed = true;
+                }
             }
-            else if (CurrentState == State.Flying && Sprite.GetCurrentFrame() == 6)
+            else
             {
-                SoundManager.PlaySound("Flap");
+                biteSoundPlayed = false;
+            }
+            
+            if (CurrentState == State.Flying && Sprite.GetCurrentFrame() == 6)
+            {
+                if (!flapSoundPlayed)
+                {
+                    SoundManager.PlaySound("Flap");
+                    flapSoundPlayed = true;
+                }
+            }
+            else
+            {
+                flapSoundPlayed = false;
             }
 
             UpdateSpritePosition();

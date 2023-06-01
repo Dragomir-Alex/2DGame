@@ -221,12 +221,12 @@ namespace _2DGame.Utility
 
             if (MushroomTextures["Hit"] != null)
             {
-                MushroomAnimations.Add("Hit", new AnimatedSprite(MushroomTextures["Hit"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 7, gameLoop.Window, RenderStates.Default, 0, 4, false, false));
+                MushroomAnimations.Add("Hit", new AnimatedSprite(MushroomTextures["Hit"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 4, false, false));
             }
 
             if (MushroomTextures["Death"] != null)
             {
-                MushroomAnimations.Add("Death", new AnimatedSprite(MushroomTextures["Death"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 7, gameLoop.Window, RenderStates.Default, 0, 5, false, false));
+                MushroomAnimations.Add("Death", new AnimatedSprite(MushroomTextures["Death"], MUSHROOM_SPRITE_WIDTH, MUSHROOM_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 5, false, false));
             }
         }
 
