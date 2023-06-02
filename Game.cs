@@ -19,6 +19,7 @@ namespace _2DGame
         private Menu menu;
         private LoadingScreen loadingScreen;
         private PauseScreen pauseScreen;
+        private GameOverScreen gameOverScreen;
         private Scoreboard scoreboard;
         private HealthBar healthBar;
         private bool debugMode;
@@ -73,6 +74,16 @@ namespace _2DGame
                     }
                     break;
 
+                case GameState.GameOver:
+                    TextureManager.DrawLevelTextures(this, level, player, true);
+
+                    Window.SetView(Window.DefaultView);
+                    Window.Draw(healthBar);
+                    Window.Draw(gameOverScreen);
+                    Window.SetView(player.Camera);
+
+                    break;
+
                 default:
                     break;
             }
@@ -84,14 +95,16 @@ namespace _2DGame
             level = new Level();
             player = new Player();
             loadingScreen = new LoadingScreen();
+            scoreboard = new Scoreboard();
             healthBar = new HealthBar();
         }
 
         public override void Initialize()
         {
-            loadingScreen.Initialize();
+            gameOverScreen = new GameOverScreen();
             pauseScreen = new PauseScreen();
-            scoreboard = new Scoreboard();
+
+            loadingScreen.Initialize();
 
             Settings.MusicVolume = 0;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
@@ -133,6 +146,10 @@ namespace _2DGame
                     KeyboardManager.ProcessPauseScreenKeys(this, player);
                     break;
 
+                case GameState.GameOver:
+                    KeyboardManager.ProcessGameOverScreenKeys(this, player, gameOverScreen);
+                    break;
+
                 default:
                     break;
             }
@@ -162,7 +179,6 @@ namespace _2DGame
                     level.Destroy();
                     level = null;
                     player.Reset();
-
                     Score.Reset();
 
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
@@ -205,6 +221,14 @@ namespace _2DGame
                 case GameState.Paused:
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume / 2);
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume / 2);
+                    break;
+
+                case GameState.GameOver:
+                    SoundManager.SetMusicVolume((uint)Settings.MusicVolume / 2);
+                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume / 2);
+                    gameOverScreen.Initialize(player.Health.CurrentHealth != 0);
+                    gameOverScreen.Update();
+                    gameOverScreen.TextEnteredSubscribe(this);
                     break;
 
                 default:

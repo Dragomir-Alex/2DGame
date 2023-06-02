@@ -56,6 +56,7 @@ namespace _2DGame.Entities.Players
         private const float Y_VELOCITY_REDUCTION = 0.15f;
         private const float X_KNOCKBACK_VELOCITY = 5f;
         private const float Y_KNOCKBACK_VELOCITY = 3f;
+        public const float DEBUG_VELOCITY = 10f;
         private const float GRAVITY = 0.5f;
 
         public const int HITBOX_WIDTH = 20;
@@ -319,7 +320,7 @@ namespace _2DGame.Entities.Players
             }
         }
 
-        public void UpdateAnimatedSprite()
+        public void UpdateAnimatedSprite(GameLoop gameLoop)
         {
             var currentAnimation = Sprite;
 
@@ -359,6 +360,11 @@ namespace _2DGame.Entities.Players
                 SoundManager.PlaySound("Step");
             }
 
+            if (CurrentState == State.Dead && Sprite.IsFinished())
+            {
+                gameLoop.CurrentState = GameLoop.GameState.GameOver;
+            }
+
             UpdateSpritePosition();
         }
 
@@ -369,7 +375,7 @@ namespace _2DGame.Entities.Players
             {
                 Velocity = new();
             }
-            else
+            else if (!debugMode)
             {
                 Velocity = UtilityFunctions.UpdateVelocity(Velocity, X_VELOCITY_REDUCTION, Y_VELOCITY_REDUCTION, X_MAX_VELOCITY, Y_MAX_VELOCITY);
             }
@@ -378,7 +384,7 @@ namespace _2DGame.Entities.Players
             GameEntityCollision(level.GameEntityManager);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
             UpdateCurrentState();
-            UpdateAnimatedSprite();
+            UpdateAnimatedSprite(gameLoop);
             invincibilityFrames.Update();
         }
 
@@ -392,6 +398,7 @@ namespace _2DGame.Entities.Players
         public override void Reset()
         {
             base.Reset();
+            CurrentState = State.Falling;
             Velocity = new Vector2f(0, 0);
             Health.Reset();
         }
@@ -445,9 +452,9 @@ namespace _2DGame.Entities.Players
         {
             if (debugMode)
             {
-                SetYVelocity(-Y_MAX_VELOCITY - 1);
+                SetYVelocity(-DEBUG_VELOCITY);
             }
-            else if (isGrounded && CurrentState != State.Attacking && CurrentState != State.Hit)
+            else if (isGrounded && CurrentState != State.Attacking && CurrentState != State.Hit && CurrentState != State.Dead)
             {
                 SetYVelocity(0);
                 GainNegativeYVelocity();
@@ -460,7 +467,7 @@ namespace _2DGame.Entities.Players
         {
             if (debugMode)
             {
-                SetYVelocity(Y_MAX_VELOCITY + 1);
+                SetYVelocity(DEBUG_VELOCITY);
             }
         }
 
@@ -468,9 +475,9 @@ namespace _2DGame.Entities.Players
         {
             if (debugMode)
             {
-                SetXVelocity(-X_MAX_VELOCITY - 1);
+                SetXVelocity(-DEBUG_VELOCITY);
             }
-            else if (CurrentState != State.Attacking && CurrentState != State.Hit)
+            else if (CurrentState != State.Attacking && CurrentState != State.Hit && CurrentState != State.Dead)
             {
                 if (Velocity.X > 0f)
                 {
@@ -482,16 +489,19 @@ namespace _2DGame.Entities.Players
                 }
             }
 
-            CurrentDirection = IAnimated.Direction.Left;
+            if (CurrentState != State.Hit && CurrentState != State.Dead)
+            {
+                CurrentDirection = IAnimated.Direction.Left;
+            }
         }
 
         public void RightButtonAction()
         {
             if (debugMode)
             {
-                SetXVelocity(X_MAX_VELOCITY + 1);
+                SetXVelocity(DEBUG_VELOCITY);
             }
-            else if (CurrentState != State.Attacking && CurrentState != State.Hit)
+            else if (CurrentState != State.Attacking && CurrentState != State.Hit && CurrentState != State.Dead)
             {
                 if (Velocity.X < 0f)
                 {
@@ -503,12 +513,15 @@ namespace _2DGame.Entities.Players
                 }
             }
 
-            CurrentDirection = IAnimated.Direction.Right;
+            if (CurrentState != State.Hit && CurrentState != State.Dead)
+            {
+                CurrentDirection = IAnimated.Direction.Right;
+            }
         }
 
         public void AttackButtonAction()
         {
-            if (CurrentState != State.Attacking && CurrentState != State.Hit && isGrounded)
+            if ( (CurrentState != State.Attacking && CurrentState != State.Hit && CurrentState != State.Dead && isGrounded) || debugMode)
             {
                 CurrentState = State.Attacking;
                 SetXVelocity(Velocity.X / 2.5f);

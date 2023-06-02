@@ -12,7 +12,7 @@ namespace _2DGame
 
         public enum GameState
         {
-            StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused
+            StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused, GameOver
         }
 
         public RenderWindow Window { get; protected set; }

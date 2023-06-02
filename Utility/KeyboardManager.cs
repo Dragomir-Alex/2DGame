@@ -1,5 +1,6 @@
 ﻿using _2DGame.Entities.Players;
 using _2DGame.Layers;
+using _2DGame.LevelUI;
 using _2DGame.MainMenu;
 using SFML.System;
 using SFML.Window;
@@ -102,6 +103,17 @@ namespace _2DGame.Utility
             }
 
             ProcessLevelKeys(game, player);
+        }
+
+        public static void ProcessGameOverScreenKeys(Game game, Player player, GameOverScreen gameOverScreen)
+        {
+            bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter);
+
+            if (enter)
+            {
+                gameOverScreen.Reset(game);
+                game.CurrentState = GameLoop.GameState.LoadingMenu;
+            }
         }
     }
 }

@@ -54,7 +54,7 @@ namespace _2DGame.Entities.Collectibles
             {
                 if (entity is Player)
                 {
-                    if ((entity as Player).Health.CurrentHealth != (entity as Player).Health.MaxHealth)
+                    if ((entity as Player).Health.CurrentHealth != (entity as Player).Health.MaxHealth && (entity as Player).CurrentState != Player.State.Dead)
                     {
                         IsActive = false;
                         (entity as Player).Health.Heal(1);
