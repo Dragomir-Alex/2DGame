@@ -29,7 +29,16 @@ namespace _2DGame
             GameTime = new GameTime();
             CurrentState = GameState.StartingUp;
 
-            Window.Closed += WindowClosed;
+            Window.LostFocus += (s, e) =>
+            {
+                if (CurrentState == GameState.Level)
+                    CurrentState = GameState.Paused;
+            };
+
+            Window.Closed += (s, e) =>
+            {
+                Window.Close();
+            };
         }
 
         public void Run()
@@ -78,7 +87,7 @@ namespace _2DGame
 
         public void TogglePause()
         {
-            if (CurrentState == GameState.Paused) 
+            if (CurrentState == GameState.Paused)
             {
                 CurrentState = GameState.Level;
             }
@@ -86,11 +95,6 @@ namespace _2DGame
             {
                 CurrentState = GameState.Paused;
             }
-        }
-
-        private void WindowClosed(object sender, EventArgs e)
-        {
-            Window.Close();
         }
     }
 }
