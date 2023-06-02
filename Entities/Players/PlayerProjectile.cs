@@ -129,7 +129,7 @@ namespace _2DGame.Entities.Players
 
             if (CurrentState == State.Disappearing && Sprite.IsFinished())
             {
-                SoundManager.PlaySound("Poof");
+                SoundManager.Play2DSound("Poof", Position.X, Position.Y);
                 IsActive = false;
             }
             else if (CurrentState == State.Starting && Sprite.IsFinished())

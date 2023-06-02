@@ -20,7 +20,7 @@ namespace _2DGame.Entities.Enemies
         private Vector2f position, currentVelocityReduction;
         private bool isGrounded, biteSoundPlayed, flapSoundPlayed;
         private readonly FrameTimer invincibilityFrames;
-        private float xPlayerDistance, yPlayerDistance;
+        private float xPlayerDistance, yPlayerDistance, positionToPlayerDistance;
 
         public enum State { Flying, Attacking, Hit, Dead }
         public State CurrentState { get; private set; }
@@ -95,12 +95,12 @@ namespace _2DGame.Entities.Enemies
                         if (Health.CurrentHealth > 0)
                         {
                             CurrentState = State.Hit;
-                            SoundManager.PlaySound("Hiss");
+                            SoundManager.Play2DSound("Hiss", position.X, position.Y);
                         }
                         else
                         {
                             CurrentState = State.Dead;
-                            SoundManager.PlaySound("Low Hiss");
+                            SoundManager.Play2DSound("Low Hiss", position.X, position.Y);
                         }
 
                         invincibilityFrames.Reset();
@@ -119,11 +119,13 @@ namespace _2DGame.Entities.Enemies
 
         public void OnPlayerDetection(Player player)
         {
+            xPlayerDistance = Math.Abs(player.Position.X - Position.X);
+            yPlayerDistance = Math.Abs(player.Position.Y - Position.Y);
+            positionToPlayerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
+
             if (CurrentState == State.Hit || CurrentState == State.Dead)
                 return;
 
-            xPlayerDistance = Math.Abs(player.Position.X - Position.X);
-            yPlayerDistance = Math.Abs(player.Position.Y - Position.Y);
             float xPlayerPercentage = (xPlayerDistance + yPlayerDistance != 0) ? (xPlayerDistance / (xPlayerDistance + yPlayerDistance)) : 0;
             float yPlayerPercentage = (xPlayerDistance + yPlayerDistance != 0) ? (yPlayerDistance / (xPlayerDistance + yPlayerDistance)) : 0;
 
@@ -132,10 +134,10 @@ namespace _2DGame.Entities.Enemies
             float xOriginPercentage = (xOriginDistance + yOriginDistance != 0) ? (xOriginDistance / (xOriginDistance + yOriginDistance)) : 0;
             float yOriginPercentage = (xOriginDistance + yOriginDistance != 0) ? (yOriginDistance / (xOriginDistance + yOriginDistance)) : 0;
 
-            float playerToOriginDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Origin.X, 2) + (float)Math.Pow(player.Position.Y - Origin.Y, 2));
-            float flyingEyeToOriginDistance = (float)Math.Sqrt((float)Math.Pow(Position.X - Origin.X, 2) + (float)Math.Pow(Position.Y - Origin.Y, 2));
+            float originToPlayerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Origin.X, 2) + (float)Math.Pow(player.Position.Y - Origin.Y, 2));
+            float positionToOriginDistance = (float)Math.Sqrt((float)Math.Pow(Position.X - Origin.X, 2) + (float)Math.Pow(Position.Y - Origin.Y, 2));
 
-            if (playerToOriginDistance <= TRIGGER_DISTANCE)
+            if (originToPlayerDistance <= TRIGGER_DISTANCE)
             {
                 if (player.Position.X >= Position.X)
                 {
@@ -161,7 +163,7 @@ namespace _2DGame.Entities.Enemies
             }
             else
             {
-                if (flyingEyeToOriginDistance < 2f)
+                if (positionToOriginDistance < 2f)
                 {
                     Position = Origin;
                     return;
@@ -387,7 +389,7 @@ namespace _2DGame.Entities.Enemies
             {
                 if (!biteSoundPlayed)
                 {
-                    SoundManager.PlaySound("Bite");
+                    SoundManager.Play2DSound("Bite", position.X, position.Y);
                     biteSoundPlayed = true;
                 }
             }
@@ -400,7 +402,7 @@ namespace _2DGame.Entities.Enemies
             {
                 if (!flapSoundPlayed)
                 {
-                    SoundManager.PlaySound("Flap");
+                    SoundManager.Play2DSound("Flap", Position.X, Position.Y);
                     flapSoundPlayed = true;
                 }
             }

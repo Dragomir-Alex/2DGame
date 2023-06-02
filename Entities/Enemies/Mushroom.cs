@@ -96,12 +96,12 @@ namespace _2DGame.Entities.Enemies
                         if (Health.CurrentHealth > 0)
                         {
                             CurrentState = State.Hit;
-                            SoundManager.PlaySound("Growl");
+                            SoundManager.Play2DSound("Growl", position.X, position.Y);
                         }
                         else
                         {
                             CurrentState = State.Dead;
-                            SoundManager.PlaySound("Low Growl");
+                            SoundManager.Play2DSound("Low Growl", position.X, position.Y);
                         }
 
                         invincibilityFrames.Reset();
@@ -120,10 +120,10 @@ namespace _2DGame.Entities.Enemies
 
         public void OnPlayerDetection(Player player)
         {
+            playerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
+
             if (CurrentState == State.Hit || CurrentState == State.Dead)
                 return;
-
-            playerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
 
             if (playerDistance <= TRIGGER_DISTANCE && playerDistance >= ATTACK_TRIGGER_DISTANCE)
             {
@@ -361,7 +361,7 @@ namespace _2DGame.Entities.Enemies
             {
                 if (!slapSoundPlayed)
                 {
-                    SoundManager.PlaySound("Slap");
+                    SoundManager.Play2DSound("Slap", position.X, position.Y);
                     slapSoundPlayed = true;
                 }
             }
@@ -374,7 +374,7 @@ namespace _2DGame.Entities.Enemies
             {
                 if (!lowStepSoundPlayed)
                 {
-                    SoundManager.PlaySound("Low Step");
+                    SoundManager.Play2DSound("Low Step", position.X, position.Y);
                     lowStepSoundPlayed = true;
                 }
             }
