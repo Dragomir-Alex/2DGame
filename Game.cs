@@ -29,29 +29,29 @@ namespace _2DGame
             switch (CurrentState)
             {
                 case GameState.StartingUp:
-                    Window.Draw(loadingScreen);
+                    RenderTexture.Draw(loadingScreen);
                     break;
 
                 case GameState.LoadingMenu:
-                    Window.Draw(loadingScreen);
+                    RenderTexture.Draw(loadingScreen);
                     break;
 
                 case GameState.LoadingLevel:
-                    Window.Draw(loadingScreen);
+                    RenderTexture.Draw(loadingScreen);
                     break;
 
                 case GameState.Menu:
-                    Window.SetView(Window.DefaultView);
-                    Window.Draw(menu);
+                    RenderTexture.SetView(RenderTexture.DefaultView);
+                    RenderTexture.Draw(menu);
                     break;
 
                 case GameState.Level:
                     TextureManager.DrawLevelTextures(this, level, player, false);
 
-                    Window.SetView(Window.DefaultView);
-                    Window.Draw(scoreboard);
-                    Window.Draw(healthBar);
-                    Window.SetView(player.Camera);
+                    RenderTexture.SetView(RenderTexture.DefaultView);
+                    RenderTexture.Draw(scoreboard);
+                    RenderTexture.Draw(healthBar);
+                    RenderTexture.SetView(player.Camera);
 
                     if (debugMode)
                     {
@@ -62,11 +62,11 @@ namespace _2DGame
                 case GameState.Paused:
                     TextureManager.DrawLevelTextures(this, level, player, true);
 
-                    Window.SetView(Window.DefaultView);
-                    Window.Draw(scoreboard);
-                    Window.Draw(healthBar);
-                    Window.Draw(pauseScreen);
-                    Window.SetView(player.Camera);
+                    RenderTexture.SetView(RenderTexture.DefaultView);
+                    RenderTexture.Draw(scoreboard);
+                    RenderTexture.Draw(healthBar);
+                    RenderTexture.Draw(pauseScreen);
+                    RenderTexture.SetView(player.Camera);
 
                     if (debugMode)
                     {
@@ -77,10 +77,10 @@ namespace _2DGame
                 case GameState.GameOver:
                     TextureManager.DrawLevelTextures(this, level, player, true);
 
-                    Window.SetView(Window.DefaultView);
-                    Window.Draw(healthBar);
-                    Window.Draw(gameOverScreen);
-                    Window.SetView(player.Camera);
+                    RenderTexture.SetView(RenderTexture.DefaultView);
+                    RenderTexture.Draw(healthBar);
+                    RenderTexture.Draw(gameOverScreen);
+                    RenderTexture.SetView(player.Camera);
 
                     break;
 
@@ -163,7 +163,7 @@ namespace _2DGame
             {
                 case GameState.StartingUp:
                     Draw(gameTime);
-                    Window.Display();
+                    //Window.Display();
 
                     menu.Initialize();
                     TextureManager.InitializeMenuSprites(menu, loadingScreen);
@@ -174,7 +174,7 @@ namespace _2DGame
 
                 case GameState.LoadingMenu:
                     Draw(gameTime);
-                    Window.Display();
+//Window.Display();
 
                     level.Destroy();
                     level = null;
@@ -187,7 +187,7 @@ namespace _2DGame
 
                 case GameState.LoadingLevel:
                     Draw(gameTime);
-                    Window.Display();
+                    //Window.Display();
 
                     level = new Level();
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
@@ -204,7 +204,7 @@ namespace _2DGame
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     SoundManager.PlayMusic();
-                    menu.Update(Window.DefaultView);
+                    menu.Update(RenderTexture.DefaultView);
                     break;
 
                 case GameState.Level:

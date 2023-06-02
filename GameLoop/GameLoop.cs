@@ -16,6 +16,7 @@ namespace _2DGame
         }
 
         public RenderWindow Window { get; protected set; }
+        public RenderTexture RenderTexture { get; set; }
         public GameTime GameTime { get; protected set; }
         public Color WindowClearColor { get; protected set; }
         public GameState CurrentState { get; set; }
@@ -26,6 +27,7 @@ namespace _2DGame
             WindowClearColor = windowClearColor;
             Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle);
             Window.SetVerticalSyncEnabled(true);
+            RenderTexture = new RenderTexture(windowWidth, windowHeight);
             GameTime = new GameTime();
             CurrentState = GameState.StartingUp;
 
@@ -58,6 +60,21 @@ namespace _2DGame
             {
                 Window.DispatchEvents();
 
+                var view = RenderTexture.GetView();
+                var viewSize = view.Size;
+
+                Vertex[] vertices = new Vertex[4]
+                {
+                    new(new Vector2f(0, 0), Color.White, new Vector2f(0, 0)),
+                    new(new Vector2f(Window.Size.X, 0), Color.White, new Vector2f(viewSize.X, 0)),
+                    new(new Vector2f(Window.Size.X, Window.Size.Y), Color.White, new Vector2f(viewSize.X, viewSize.Y)),
+                    new(new Vector2f(0, Window.Size.Y), Color.White, new Vector2f(0, viewSize.Y))
+                };
+
+                viewSize += new Vector2f(1f, 1f);
+                view.Size = viewSize;
+                RenderTexture.SetView(view);
+
                 totalTimeElapsed = clock.ElapsedTime.AsSeconds();
                 deltaTime = totalTimeElapsed - previousTimeElapsed;
                 previousTimeElapsed = totalTimeElapsed;
@@ -72,7 +89,10 @@ namespace _2DGame
 
                     Update(GameTime);
                     Window.Clear(WindowClearColor);
+                    RenderTexture.Clear(WindowClearColor);
                     Draw(GameTime);
+                    RenderTexture.Display();
+                    Window.Draw(vertices, PrimitiveType.Quads, new(RenderTexture.Texture));
                     Window.Display();
                 }
             }

@@ -29,9 +29,9 @@ namespace _2DGame.Utility
             textC.Position = new Vector2f(4f, 48f);
             textC.FillColor = color;
 
-            gameLoop.Window.Draw(textA);
-            gameLoop.Window.Draw(textB);
-            gameLoop.Window.Draw(textC);
+            gameLoop.RenderTexture.Draw(textA);
+            gameLoop.RenderTexture.Draw(textB);
+            gameLoop.RenderTexture.Draw(textC);
 
             textA.Dispose();
             textB.Dispose();
@@ -68,11 +68,11 @@ namespace _2DGame.Utility
             directionText.Position = new Vector2f(4f, 148f);
             directionText.FillColor = color;
 
-            gameLoop.Window.Draw(positionText);
-            gameLoop.Window.Draw(velocityText);
-            gameLoop.Window.Draw(tileCoordinatesText);
-            gameLoop.Window.Draw(stateText);
-            gameLoop.Window.Draw(directionText);
+            gameLoop.RenderTexture.Draw(positionText);
+            gameLoop.RenderTexture.Draw(velocityText);
+            gameLoop.RenderTexture.Draw(tileCoordinatesText);
+            gameLoop.RenderTexture.Draw(stateText);
+            gameLoop.RenderTexture.Draw(directionText);
 
             positionText.Dispose();
             velocityText.Dispose();
@@ -83,7 +83,7 @@ namespace _2DGame.Utility
 
         public static void DrawMessage(GameLoop gameLoop, string message, Color color)
         {
-            gameLoop.Window.SetView(gameLoop.Window.DefaultView);
+            gameLoop.RenderTexture.SetView(gameLoop.RenderTexture.DefaultView);
 
             if (TextureManager.DebugFont == null) return;
 
@@ -91,7 +91,7 @@ namespace _2DGame.Utility
             text.Position = new Vector2f(80f, 80f);
             text.FillColor = color;
 
-            gameLoop.Window.Draw(text);
+            gameLoop.RenderTexture.Draw(text);
 
             text.Dispose();
         }
@@ -103,7 +103,7 @@ namespace _2DGame.Utility
             shape.Origin = new Vector2f(2, 2);
             shape.FillColor = new Color(100, 250, 50);
             shape.Position = player.Position;
-            gameLoop.Window.Draw(shape);
+            gameLoop.RenderTexture.Draw(shape);
             shape.Dispose();
 
             foreach (var line in player.Hitbox.Lines)
@@ -112,7 +112,7 @@ namespace _2DGame.Utility
                 shape2.Origin = new Vector2f(2, 2);
                 shape2.FillColor = new Color(200, 50, 50);
                 shape2.Position = new Vector2f(line.A.X, line.A.Y);
-                gameLoop.Window.Draw(shape2);
+                gameLoop.RenderTexture.Draw(shape2);
 
                 shape2.Dispose();
             }
@@ -123,7 +123,7 @@ namespace _2DGame.Utility
                 shape3.Origin = new Vector2f(2, 2);
                 shape3.FillColor = new Color(100, 250, 50);
                 shape3.Position = entity.Position;
-                gameLoop.Window.Draw(shape3);
+                gameLoop.RenderTexture.Draw(shape3);
                 shape3.Dispose();
 
                 foreach (var line in entity.Hitbox.Lines)
@@ -132,17 +132,17 @@ namespace _2DGame.Utility
                     shape4.Origin = new Vector2f(2, 2);
                     shape4.FillColor = new Color(200, 50, 50);
                     shape4.Position = new Vector2f(line.A.X, line.A.Y);
-                    gameLoop.Window.Draw(shape4);
+                    gameLoop.RenderTexture.Draw(shape4);
 
                     shape4.Dispose();
                 }
             }
 
-            gameLoop.Window.SetView(gameLoop.Window.DefaultView);
+            gameLoop.RenderTexture.SetView(gameLoop.RenderTexture.DefaultView);
 
             RectangleShape rectangleBackground = new RectangleShape(new Vector2f(175f, 175f));
             rectangleBackground.FillColor = new Color(0, 0, 0, 100);
-            gameLoop.Window.Draw(rectangleBackground);
+            gameLoop.RenderTexture.Draw(rectangleBackground);
             rectangleBackground.Dispose();
 
             DrawPerformanceData(gameLoop, Color.White);
