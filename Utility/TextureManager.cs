@@ -161,7 +161,7 @@ namespace _2DGame.Utility
 
             if (PlayerTextures["Death"] != null)
             {
-                PlayerAnimations.Add("Death", new AnimatedSprite(PlayerTextures["Death"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 10, gameLoop.Window, RenderStates.Default, 0, 9, false, false));
+                PlayerAnimations.Add("Death", new AnimatedSprite(PlayerTextures["Death"], PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 12, gameLoop.Window, RenderStates.Default, 0, 11, false, false));
             }
 
             if (PlayerTextures["Projectile"] != null)

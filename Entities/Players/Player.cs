@@ -16,7 +16,7 @@ namespace _2DGame.Entities.Players
 {
     public class Player : GameEntity, IAnimated
     {
-        public enum State { Idle, Jumping, Falling, Walking, Attacking, Hit }
+        public enum State { Idle, Jumping, Falling, Walking, Attacking, Hit, Dead }
 
         public IAnimated.Direction CurrentDirection { get; set; }
         public State CurrentState { get; private set; }
@@ -247,21 +247,31 @@ namespace _2DGame.Entities.Players
 
         public void Hurt(int damageAmount)
         {
-            if (CurrentState != State.Hit && !invincibilityFrames.IsRunning && !debugMode)
+            if (CurrentState != State.Hit && CurrentState != State.Dead && !invincibilityFrames.IsRunning && !debugMode)
             {
                 Health.Damage(damageAmount);
-                CurrentState = State.Hit;
-                invincibilityFrames.Reset();
-                invincibilityFrames.Start();
+
+                if (Health.CurrentHealth > 0)
+                {
+                    CurrentState = State.Hit;
+                    invincibilityFrames.Reset();
+                    invincibilityFrames.Start();
+
+                    Velocity = new Vector2f((int)((Velocity.X < 0 ? 1 : -1) * X_KNOCKBACK_VELOCITY),
+                        (int)((Velocity.Y < 0 ? 1 : -1) * Y_KNOCKBACK_VELOCITY));
+                }
+                else
+                {
+                    CurrentState = State.Dead;
+                }
+
                 SoundManager.PlaySound("Hurt");
-                Velocity = new Vector2f((int)((Velocity.X < 0 ? 1 : -1) * X_KNOCKBACK_VELOCITY),
-                    (int)((Velocity.Y < 0 ? 1 : -1) * Y_KNOCKBACK_VELOCITY));
             }
         }
 
         private void ApplyGravity()
         {
-            if (!debugMode)
+            if (!debugMode && CurrentState != State.Dead)
             {
                 if (Velocity.Y + GRAVITY >= Y_MAX_VELOCITY)
                     Velocity = new Vector2f(Velocity.X, Y_MAX_VELOCITY);
@@ -274,6 +284,8 @@ namespace _2DGame.Entities.Players
 
         public void UpdateCurrentState()
         {
+            if (CurrentState == State.Dead) return;
+
             PreviousFrameState = CurrentState;
 
             if (CurrentState == State.Hit
@@ -317,6 +329,7 @@ namespace _2DGame.Entities.Players
             else if (CurrentState == State.Walking) { Sprite = TextureManager.PlayerAnimations["Run"]; }
             else if (CurrentState == State.Attacking) { Sprite = TextureManager.PlayerAnimations["Attack"]; }
             else if (CurrentState == State.Hit) { Sprite = TextureManager.PlayerAnimations["Hit"]; }
+            else if (CurrentState == State.Dead) { Sprite = TextureManager.PlayerAnimations["Death"]; }
 
             if (currentAnimation != Sprite)
             {
@@ -352,7 +365,15 @@ namespace _2DGame.Entities.Players
         public override void Update(Level level, GameLoop gameLoop)
         {
             ApplyGravity();
-            Velocity = UtilityFunctions.UpdateVelocity(Velocity, X_VELOCITY_REDUCTION, Y_VELOCITY_REDUCTION, X_MAX_VELOCITY, Y_MAX_VELOCITY);
+            if (CurrentState == State.Dead)
+            {
+                Velocity = new();
+            }
+            else
+            {
+                Velocity = UtilityFunctions.UpdateVelocity(Velocity, X_VELOCITY_REDUCTION, Y_VELOCITY_REDUCTION, X_MAX_VELOCITY, Y_MAX_VELOCITY);
+            }
+
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             GameEntityCollision(level.GameEntityManager);
             UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
