@@ -11,7 +11,7 @@ namespace _2DGame.Entities.Enemies
     {
         public Health Health { get; set; }
         public int AttackDamage { get; }
-        public int Score { get; }
+        public int ScoreOnDeath { get; }
 
         public void OnPlayerDetection(Player player);
     }

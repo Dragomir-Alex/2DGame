@@ -28,7 +28,7 @@ namespace _2DGame.Entities.Enemies
         public State PreviousFrameState { get; private set; }
 
         public int AttackDamage { get; }
-        public int Score { get; }
+        public int ScoreOnDeath { get; }
         public Health Health { get; set; }
         public AnimatedSprite Sprite { get; set; }
         public IAnimated.Direction CurrentDirection { get; set; }
@@ -69,10 +69,9 @@ namespace _2DGame.Entities.Enemies
             CurrentState = State.Idle;
             PreviousFrameState = State.Idle;
             AttackDamage = 1;
-            Score = 750;
+            ScoreOnDeath = 50;
             Health = new Health(3);
             Velocity = new Vector2f();
-            Sprite = new AnimatedSprite(TextureManager.MushroomAnimations["Idle"]);
         }
 
         public override void Initialize(Vector2i startPosition)
@@ -102,6 +101,7 @@ namespace _2DGame.Entities.Enemies
                         {
                             CurrentState = State.Dead;
                             SoundManager.Play2DSound("Low Growl", position.X, position.Y);
+                            Score.Add(ScoreOnDeath);
                         }
 
                         invincibilityFrames.Reset();

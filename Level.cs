@@ -84,6 +84,11 @@ namespace _2DGame
                 SoundManager.PlaySound("Shoot");
             }
 
+            if (player.HasFinishedLevel)
+            {
+                gameLoop.CurrentState = GameLoop.GameState.GameOver;
+            }
+
             GameEntityManager.Update(this, player, gameLoop);
         }
     }

@@ -39,6 +39,7 @@ namespace _2DGame.Utility
         public static Texture HealthTexture { get; private set; }
         public static Texture HeartCollectibleTexture { get; private set; }
         public static Texture GemTexture { get; private set; }
+        public static Texture EndPortalTexture { get; private set; }
 
         public static Font GameFont { get; private set; }
         public static Font GameFontBold { get; private set; }
@@ -106,6 +107,10 @@ namespace _2DGame.Utility
         public static void LoadGemTexture()
         {
             GemTexture = new Texture(TEXTURES_PATH + "Gem.png");
+        }
+        public static void LoadEndPortalTexture()
+        {
+            EndPortalTexture = new Texture(TEXTURES_PATH + "EndPortal.png");
         }
 
         public static void InitializeMenuSprites(Menu menu, LoadingScreen loadingScreen)
@@ -253,6 +258,14 @@ namespace _2DGame.Utility
 
                     case 4:
                         (entity as IAnimated).Sprite = new AnimatedSprite(HeartCollectibleTexture, Heart.WIDTH, Heart.HEIGHT, 8, gameLoop.RenderTexture, RenderStates.Default, 0, 5, true, true);
+                        break;
+
+                    case 5:
+                        (entity as IAnimated).Sprite = new AnimatedSprite(TextureManager.MushroomAnimations["Idle"]);
+                        break;
+
+                    case 6:
+                        (entity as IAnimated).Sprite = new AnimatedSprite(EndPortalTexture, EndPortal.WIDTH, EndPortal.HEIGHT, 10, gameLoop.RenderTexture, RenderStates.Default, 0, 3, true, true);
                         break;
 
                     default:

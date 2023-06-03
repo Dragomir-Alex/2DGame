@@ -51,6 +51,15 @@ namespace _2DGame.LevelUI
             {
                 initialized = true;
 
+                if (won)
+                {
+                    SoundManager.PlaySound("Victory");
+                }
+                else
+                {
+                    SoundManager.PlaySound("Loss");
+                }
+
                 messageText = new Text("GAME OVER!\n You " + ((won) ? "won!\n" : "lost!\n"), TextureManager.GameFontBold, 60);
                 messageText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - messageText.GetGlobalBounds().Width / 2), 50);
                 messageText.FillColor = won ? new Color(34, 139, 34) : new Color(210, 43, 43);

@@ -30,6 +30,14 @@ namespace _2DGame.Utility
             }
         }
 
+        public static void StopMusic()
+        {
+            if (CurrentTrack != null)
+            {
+                CurrentTrack.Stop();
+            }
+        }
+
         public static void SetMusicVolume(uint newVolume)
         {
             CurrentTrack.Volume = newVolume;
@@ -82,7 +90,10 @@ namespace _2DGame.Utility
                 { "Heal", new Sound (new SoundBuffer(SOUNDS_PATH + "heal.wav")) { RelativeToListener = true } },
                 { "Slap", new Sound (new SoundBuffer(SOUNDS_PATH + "slap.wav")) { RelativeToListener = true } },
                 { "Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl.wav")) { RelativeToListener = true } },
-                { "Low Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl.wav")) { Pitch = 0.7f, RelativeToListener = true} }
+                { "Low Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl.wav")) { Pitch = 0.7f, RelativeToListener = true } },
+                { "Victory", new Sound (new SoundBuffer(SOUNDS_PATH + "victory.wav")) { RelativeToListener = true } },
+                { "Loss", new Sound (new SoundBuffer(SOUNDS_PATH + "loss.wav")) { RelativeToListener = true } },
+                { "Vanish", new Sound (new SoundBuffer(SOUNDS_PATH + "vanish.wav")) { Pitch = 0.5f, RelativeToListener = true } }
             };
         }
 

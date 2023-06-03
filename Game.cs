@@ -129,6 +129,7 @@ namespace _2DGame
             TextureManager.LoadGemTexture();
             TextureManager.LoadFlyingEyeTextures();
             TextureManager.LoadMushroomTextures();
+            TextureManager.LoadEndPortalTexture();
             Settings.Load();
         }
 
@@ -225,8 +226,7 @@ namespace _2DGame
                     break;
 
                 case GameState.GameOver:
-                    SoundManager.SetMusicVolume((uint)Settings.MusicVolume / 2);
-                    SoundManager.SetSoundVolume((uint)Settings.SoundVolume / 2);
+                    SoundManager.StopMusic();
                     gameOverScreen.Initialize(player.Health.CurrentHealth != 0);
                     gameOverScreen.Update();
                     gameOverScreen.TextEnteredSubscribe(this);

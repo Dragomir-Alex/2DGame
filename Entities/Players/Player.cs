@@ -29,6 +29,7 @@ namespace _2DGame.Entities.Players
         private Vector2f position = new();
         private readonly FrameTimer invincibilityFrames;
 
+        public bool HasFinishedLevel { get; set; }
         public bool IsSpawningProjectile { get; private set; }
         public View Camera { get; set; }
         public Vector2f Velocity { get; set; }
@@ -68,6 +69,7 @@ namespace _2DGame.Entities.Players
             isGrounded = false;
             attackedInCurrentAnimation = false;
             IsSpawningProjectile = false;
+            HasFinishedLevel = false;
 
             invincibilityFrames = new FrameTimer(INVINCIBILITY_FRAME_COUNT);
 
@@ -83,6 +85,7 @@ namespace _2DGame.Entities.Players
         public override void Initialize(Vector2i startPosition)
         {
             Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE, startPosition.Y * Tilemap.TILE_SIZE);
+
             InitializeHitbox();
         }
 
@@ -264,6 +267,7 @@ namespace _2DGame.Entities.Players
                 else
                 {
                     CurrentState = State.Dead;
+                    SoundManager.PlaySound("Vanish");
                 }
 
                 SoundManager.PlaySound("Hurt");
@@ -401,6 +405,11 @@ namespace _2DGame.Entities.Players
             CurrentState = State.Falling;
             Velocity = new Vector2f(0, 0);
             Health.Reset();
+
+            debugMode = false;
+            attackedInCurrentAnimation = false;
+            IsSpawningProjectile = false;
+            HasFinishedLevel = false;
         }
 
         public void ToggleDebugMode()

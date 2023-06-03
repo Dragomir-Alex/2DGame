@@ -179,6 +179,16 @@ namespace _2DGame.Entities
                         });
                         break;
 
+                    case 6:
+                        GameEntities.Add(new EndPortal()
+                        {
+                            TileCoordinates = new TileCoordinates(entity.TileCoordinates),
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
                     default:
                         break;
                 }
