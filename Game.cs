@@ -5,6 +5,8 @@ using _2DGame.MainMenu;
 using _2DGame.LevelUI;
 using _2DGame.Entities.Players;
 using SFML.Graphics;
+using System.Text.Json;
+using _2DGame.GameSettings;
 
 namespace _2DGame
 {
@@ -107,7 +109,6 @@ namespace _2DGame
 
             loadingScreen.Initialize();
 
-            Settings.MusicVolume = 0;
             SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
             SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
             SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
@@ -128,6 +129,7 @@ namespace _2DGame
             TextureManager.LoadGemTexture();
             TextureManager.LoadFlyingEyeTextures();
             TextureManager.LoadMushroomTextures();
+            Settings.Load();
         }
 
         public override void ProcessInputs()

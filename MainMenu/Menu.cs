@@ -1,4 +1,5 @@
-﻿using _2DGame.LayerData;
+﻿using _2DGame.GameSettings;
+using _2DGame.LayerData;
 using _2DGame.Layers;
 using _2DGame.MainMenu.Buttons;
 using _2DGame.Utility;
@@ -172,6 +173,7 @@ namespace _2DGame.MainMenu
                                 break;
                             }
                         }
+                        Settings.Save();
                     }
                     else if (buttonAction.Target == "MusicVolume")
                     {
@@ -185,6 +187,7 @@ namespace _2DGame.MainMenu
                                 break;
                             }
                         }
+                        Settings.Save();
                     }
                     break;
 
