@@ -60,20 +60,15 @@ namespace _2DGame
             {
                 Window.DispatchEvents();
 
-                var view = RenderTexture.GetView();
-                var viewSize = view.Size;
+                var viewSize = RenderTexture.Size;
 
                 Vertex[] vertices = new Vertex[4]
                 {
                     new(new Vector2f(0, 0), Color.White, new Vector2f(0, 0)),
-                    new(new Vector2f(Window.Size.X, 0), Color.White, new Vector2f(viewSize.X, 0)),
-                    new(new Vector2f(Window.Size.X, Window.Size.Y), Color.White, new Vector2f(viewSize.X, viewSize.Y)),
-                    new(new Vector2f(0, Window.Size.Y), Color.White, new Vector2f(0, viewSize.Y))
+                    new(new Vector2f(viewSize.X, 0), Color.White, new Vector2f(viewSize.X, 0)),
+                    new(new Vector2f(viewSize.X, viewSize.Y), Color.White, new Vector2f(viewSize.X, viewSize.Y)),
+                    new(new Vector2f(0, viewSize.Y), Color.White, new Vector2f(0, viewSize.Y))
                 };
-
-                viewSize += new Vector2f(1f, 1f);
-                view.Size = viewSize;
-                RenderTexture.SetView(view);
 
                 totalTimeElapsed = clock.ElapsedTime.AsSeconds();
                 deltaTime = totalTimeElapsed - previousTimeElapsed;

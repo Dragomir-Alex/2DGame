@@ -43,7 +43,8 @@ namespace _2DGame.Utility
         public static void ProcessMainMenuKeys(GameLoop gameLoop, Menu menu)
         {
             bool leftClick = Mouse.IsButtonPressed(Mouse.Button.Left);
-            Vector2i mousePosition = Mouse.GetPosition(gameLoop.Window);
+
+            Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
 
             // Debug.WriteLine("Mouse position: " + mousePosition.X.ToString() + "   " + mousePosition.Y.ToString());
 
