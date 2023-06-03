@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class DetailLayer : Layer, Drawable, IDestroyable
+    public class DetailLayer : Layer, Drawable
     {
         [JsonIgnore]
         public Texture? LayerTexture { get; set; }
@@ -126,13 +126,6 @@ namespace _2DGame.Layers
                 target.Draw(LayerSprite);
                 UtilityFunctions.Move(LayerSprite, -XCameraOffset, -YCameraOffset);
             }
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
-            LayerTexture.Dispose();
-            LayerSprite.Dispose();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace _2DGame.Entities.Enemies
         private Vector2f position, currentVelocityReduction;
         private bool isGrounded, biteSoundPlayed, flapSoundPlayed;
         private readonly FrameTimer invincibilityFrames;
-        private float xPlayerDistance, yPlayerDistance, positionToPlayerDistance;
+        private float xPlayerDistance, yPlayerDistance;
 
         public enum State { Flying, Attacking, Hit, Dead }
         public State CurrentState { get; private set; }
@@ -121,7 +121,7 @@ namespace _2DGame.Entities.Enemies
         {
             xPlayerDistance = Math.Abs(player.Position.X - Position.X);
             yPlayerDistance = Math.Abs(player.Position.Y - Position.Y);
-            positionToPlayerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
+            float positionToPlayerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
 
             if (CurrentState == State.Hit || CurrentState == State.Dead)
                 return;
@@ -419,6 +419,9 @@ namespace _2DGame.Entities.Enemies
             if (CurrentState != State.Dead)
             {
                 Position = Origin;
+                Velocity = new();
+                invincibilityFrames.Reset();
+                CurrentState = State.Flying;
             }
         }
     }

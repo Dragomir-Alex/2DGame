@@ -21,5 +21,11 @@ namespace _2DGame.Entities
             this.X = X;
             this.Y = Y;
         }
+
+        public TileCoordinates(TileCoordinates tileCoordinates)
+        {
+            this.X = tileCoordinates.X;
+            this.Y = tileCoordinates.Y;
+        }
     }
 }

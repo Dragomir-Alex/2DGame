@@ -14,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace _2DGame
 {
-    public class Level : IDestroyable
+    public class Level
     {
+        private bool isLoaded;
+        private bool isInitialized;
         public LayerList Layers { get; set; }
         public string Name { get; private set; }
         public string TrackFilename { get; private set; }
@@ -31,24 +33,41 @@ namespace _2DGame
             TrackFilename = string.Empty;
             Width = 0;
             Height = 0;
-            TileStartPosition = new Vector2i(0, 0);
+            TileStartPosition = new();
             GameEntityManager = new();
+            isLoaded = false;
+            isInitialized = false;
         }
 
         public void LoadData(string mapFilename, string entityDataFilename, string layerDataFilename)
         {
-            Layers.Load(mapFilename, layerDataFilename);
-            GameEntityManager.Load(entityDataFilename);
+            if (!isLoaded)
+            {
+                Layers.Load(mapFilename, layerDataFilename);
+                GameEntityManager.Load(entityDataFilename);
+                isLoaded = true;
+            }
+            else
+            {
+                GameEntityManager.Reload();
+            }
         }
 
         public void Initialize(string tilesetFilename, string trackFilename)
         {
-            TrackFilename = trackFilename;
-            SoundManager.SetCurrentTrack(TrackFilename);
-            Layers.Initialize(tilesetFilename);
-            Width = Layers[LayerList.PRIMARY_LAYER].Width;
-            Height = Layers[LayerList.PRIMARY_LAYER].Height;
+            if (!isInitialized)
+            {
+                TrackFilename = trackFilename;
+
+                Layers.Initialize(tilesetFilename);
+                Width = Layers[LayerList.PRIMARY_LAYER].Width;
+                Height = Layers[LayerList.PRIMARY_LAYER].Height;
+
+                isInitialized = true;
+            }
+
             GameEntityManager.Initialize();
+            SoundManager.SetCurrentTrack(TrackFilename);
             TileStartPosition = GameEntityManager.PlayerStartTileCoordinates;
         }
 
@@ -66,13 +85,6 @@ namespace _2DGame
             }
 
             GameEntityManager.Update(this, player, gameLoop);
-        }
-
-        public void Destroy()
-        {
-            Layers.Destroy();
-            Name = string.Empty;
-            TrackFilename = string.Empty;
         }
     }
 }

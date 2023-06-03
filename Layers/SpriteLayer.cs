@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class SpriteLayer : Layer, Drawable, IDestroyable
+    public class SpriteLayer : Layer, Drawable
     {
         public uint[,] EventData { get; private set; }
         public SpriteLayer() : base()
@@ -49,12 +49,6 @@ namespace _2DGame.Layers
             {
                 LayerTilemap.Draw(target, states);
             }
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
-            EventData = new uint[0, 0];
         }
     }
 }

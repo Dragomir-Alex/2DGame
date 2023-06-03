@@ -20,6 +20,8 @@ namespace _2DGame.Entities
 {
     public class GameEntityManager
     {
+        private JsonEntity?[] loadedData;
+        public bool IsLoaded { get; private set; }
         public Vector2i PlayerStartTileCoordinates { get; private set; }
         public List<GameEntity> GameEntities { get; set; }
         [JsonIgnore]
@@ -40,61 +42,25 @@ namespace _2DGame.Entities
 
         public void Load(string entityDataFilename)
         {
+            if (IsLoaded) return;
+
             string fileName = LEVELS_PATH + entityDataFilename;
             string jsonString = File.ReadAllText(fileName);
-            var loadedData = JsonSerializer.Deserialize<JsonEntity[]>(jsonString)!;
 
-            foreach (var entity in loadedData) 
-            { 
-                switch (entity.ID)
-                {
-                    case 0:
-                        PlayerStartTileCoordinates = new Vector2i(entity.TileCoordinates.X, entity.TileCoordinates.Y);
-                        break;
+            loadedData = JsonSerializer.Deserialize<JsonEntity[]>(jsonString)!;
 
-                    case 1:
-                        GameEntities.Add(new Gem() {
-                            TileCoordinates = entity.TileCoordinates,
-                            Position = new Vector2f(
-                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
-                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
-                        });
-                        break;
+            CreateEntitiesFromLoadedData();
 
-                    case 3:
-                        GameEntities.Add( new FlyingEye()
-                        {
-                            TileCoordinates = entity.TileCoordinates,
-                            Position = new Vector2f(
-                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
-                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
-                        });
-                        break;
+            IsLoaded = true;
+        }
 
-                    case 4:
-                        GameEntities.Add(new Heart()
-                        {
-                            TileCoordinates = entity.TileCoordinates,
-                            Position = new Vector2f(
-                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
-                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
-                        });
-                        break;
+        public void Reload()
+        {
+            GameEntities.Clear();
+            OnScreenGameEntities.Clear();
+            OffScreenGameEntities.Clear();
 
-                    case 5:
-                        GameEntities.Add(new Mushroom()
-                        {
-                            TileCoordinates = entity.TileCoordinates,
-                            Position = new Vector2f(
-                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
-                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
-                        });
-                        break;
-
-                    default:
-                        break;
-                }
-            }
+            CreateEntitiesFromLoadedData();
         }
 
         public void Initialize()
@@ -124,20 +90,6 @@ namespace _2DGame.Entities
             foreach (var offScreenGameEntity in OffScreenGameEntities)
             {
                 offScreenGameEntity.Reset();
-            }
-        }
-
-        public void InitializeSprites(RenderTarget renderTarget)
-        {
-/*            foreach (var gameEntity in GameEntities)
-                gameEntity.InitializeSprite(r);*/
-        }
-
-        public void ResetAllGameEntities()
-        {
-            foreach (var gameEntity in GameEntities)
-            {
-                gameEntity.Reset();
             }
         }
 
@@ -174,11 +126,63 @@ namespace _2DGame.Entities
                 {
                     OffScreenGameEntities.Add(gameEntity);
                 }
-
-                // Debug.WriteLine("Entity - X: " + gameEntity.TileCoordinates.X + ";   Y: " + gameEntity.TileCoordinates.Y);
             }
+        }
 
-            // Debug.WriteLine(GameEntities.Count);
+        private void CreateEntitiesFromLoadedData()
+        {
+            foreach (var entity in loadedData)
+            {
+                switch (entity.ID)
+                {
+                    case 0:
+                        PlayerStartTileCoordinates = new Vector2i(entity.TileCoordinates.X, entity.TileCoordinates.Y);
+                        break;
+
+                    case 1:
+                        GameEntities.Add(new Gem()
+                        {
+                            TileCoordinates = new TileCoordinates(entity.TileCoordinates),
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
+                    case 3:
+                        GameEntities.Add(new FlyingEye()
+                        {
+                            TileCoordinates = new TileCoordinates(entity.TileCoordinates),
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
+                    case 4:
+                        GameEntities.Add(new Heart()
+                        {
+                            TileCoordinates = new TileCoordinates(entity.TileCoordinates),
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
+                    case 5:
+                        GameEntities.Add(new Mushroom()
+                        {
+                            TileCoordinates = new TileCoordinates(entity.TileCoordinates),
+                            Position = new Vector2f(
+                                entity.TileCoordinates.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                                entity.TileCoordinates.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2)
+                        });
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

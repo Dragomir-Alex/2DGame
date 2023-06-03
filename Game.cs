@@ -177,8 +177,6 @@ namespace _2DGame
                     Draw(gameTime);
                     Display();
 
-                    level.Destroy();
-                    level = null;
                     player.Reset();
                     Score.Reset();
 
@@ -190,10 +188,10 @@ namespace _2DGame
                     Draw(gameTime);
                     Display();
 
-                    level = new Level();
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
                     level.Initialize("aztec2.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level, this);
+
 
                     player.Initialize(level.TileStartPosition);
                     player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));

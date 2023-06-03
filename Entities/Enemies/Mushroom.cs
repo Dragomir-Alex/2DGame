@@ -391,6 +391,9 @@ namespace _2DGame.Entities.Enemies
             if (CurrentState != State.Dead)
             {
                 Position = Origin;
+                Velocity = new();
+                invincibilityFrames.Reset();
+                CurrentState = State.Idle;
             }
         }
     }

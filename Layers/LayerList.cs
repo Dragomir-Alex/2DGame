@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.Layers
 {
-    public class LayerList : IEnumerable<Layer>, IDestroyable
+    public class LayerList : IEnumerable<Layer>
     {
         private DetailLayer[] loadedLayerData;
         private Layer[] layers;
@@ -105,16 +105,6 @@ namespace _2DGame.Layers
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        public void Destroy()
-        {
-            foreach (var layer in layers)
-            {
-                layer.Destroy();
-            }
-            layers = Array.Empty<Layer>();
-            map.Clear();
         }
     }
 }
