@@ -60,16 +60,6 @@ namespace _2DGame
             {
                 Window.DispatchEvents();
 
-                var viewSize = RenderTexture.Size;
-
-                Vertex[] vertices = new Vertex[4]
-                {
-                    new(new Vector2f(0, 0), Color.White, new Vector2f(0, 0)),
-                    new(new Vector2f(viewSize.X, 0), Color.White, new Vector2f(viewSize.X, 0)),
-                    new(new Vector2f(viewSize.X, viewSize.Y), Color.White, new Vector2f(viewSize.X, viewSize.Y)),
-                    new(new Vector2f(0, viewSize.Y), Color.White, new Vector2f(0, viewSize.Y))
-                };
-
                 totalTimeElapsed = clock.ElapsedTime.AsSeconds();
                 deltaTime = totalTimeElapsed - previousTimeElapsed;
                 previousTimeElapsed = totalTimeElapsed;
@@ -83,12 +73,7 @@ namespace _2DGame
                     ProcessInputs();
 
                     Update(GameTime);
-                    Window.Clear(WindowClearColor);
-                    RenderTexture.Clear(WindowClearColor);
-                    Draw(GameTime);
-                    RenderTexture.Display();
-                    Window.Draw(vertices, PrimitiveType.Quads, new(RenderTexture.Texture));
-                    Window.Display();
+                    Display();
                 }
             }
         }
@@ -110,6 +95,26 @@ namespace _2DGame
             {
                 CurrentState = GameState.Paused;
             }
+        }
+
+        public void Display()
+        {
+            var viewSize = RenderTexture.Size;
+
+            Vertex[] vertices = new Vertex[4]
+            {
+                    new(new Vector2f(0, 0), Color.White, new Vector2f(0, 0)),
+                    new(new Vector2f(viewSize.X, 0), Color.White, new Vector2f(viewSize.X, 0)),
+                    new(new Vector2f(viewSize.X, viewSize.Y), Color.White, new Vector2f(viewSize.X, viewSize.Y)),
+                    new(new Vector2f(0, viewSize.Y), Color.White, new Vector2f(0, viewSize.Y))
+            };
+
+            Window.Clear(WindowClearColor);
+            RenderTexture.Clear(WindowClearColor);
+            Draw(GameTime);
+            RenderTexture.Display();
+            Window.Draw(vertices, PrimitiveType.Quads, new(RenderTexture.Texture));
+            Window.Display();
         }
     }
 }

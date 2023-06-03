@@ -4,6 +4,7 @@ using Color = SFML.Graphics.Color;
 using _2DGame.MainMenu;
 using _2DGame.LevelUI;
 using _2DGame.Entities.Players;
+using SFML.Graphics;
 
 namespace _2DGame
 {
@@ -163,7 +164,7 @@ namespace _2DGame
             {
                 case GameState.StartingUp:
                     Draw(gameTime);
-                    //Window.Display();
+                    Display();
 
                     menu.Initialize();
                     TextureManager.InitializeMenuSprites(menu, loadingScreen);
@@ -174,7 +175,7 @@ namespace _2DGame
 
                 case GameState.LoadingMenu:
                     Draw(gameTime);
-//Window.Display();
+                    Display();
 
                     level.Destroy();
                     level = null;
@@ -187,7 +188,7 @@ namespace _2DGame
 
                 case GameState.LoadingLevel:
                     Draw(gameTime);
-                    //Window.Display();
+                    Display();
 
                     level = new Level();
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
