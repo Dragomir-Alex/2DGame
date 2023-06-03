@@ -25,6 +25,7 @@ namespace _2DGame
         private GameOverScreen gameOverScreen;
         private Scoreboard scoreboard;
         private HealthBar healthBar;
+        private Leaderboard leaderboard;
         private bool debugMode;
 
         public override void Draw(GameTime gameTime)
@@ -100,6 +101,7 @@ namespace _2DGame
             loadingScreen = new LoadingScreen();
             scoreboard = new Scoreboard();
             healthBar = new HealthBar();
+            leaderboard = new Leaderboard();
         }
 
         public override void Initialize()
@@ -151,7 +153,7 @@ namespace _2DGame
                     break;
 
                 case GameState.GameOver:
-                    KeyboardManager.ProcessGameOverScreenKeys(this, player, gameOverScreen);
+                    KeyboardManager.ProcessGameOverScreenKeys(this, leaderboard, gameOverScreen);
                     break;
 
                 default:
@@ -173,6 +175,8 @@ namespace _2DGame
                     TextureManager.InitializeMenuSprites(menu, loadingScreen);
                     SoundManager.LoadSounds();
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
+                    leaderboard.Load();
+                    menu.UpdateLeaderboard(leaderboard);
                     CurrentState = GameState.Menu;
                     break;
 
@@ -182,6 +186,7 @@ namespace _2DGame
 
                     player.Reset();
                     Score.Reset();
+                    menu.UpdateLeaderboard(leaderboard);
 
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
                     CurrentState = GameState.Menu;
@@ -194,7 +199,6 @@ namespace _2DGame
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
                     level.Initialize("aztec2.png", "lush.ogg");
                     TextureManager.InitializeLevelSprites(level, this);
-
 
                     player.Initialize(level.TileStartPosition);
                     player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));

@@ -98,6 +98,8 @@ namespace _2DGame.LevelUI
             playerNameText.DisplayedString = "";
         }
 
+        public string GetPlayerName() { return playerNameSB.ToString(); }
+
         private void KeyboardKeyPressed(object? sender, SFML.Window.TextEventArgs e)
         {
             int ascii = e.Unicode[0];

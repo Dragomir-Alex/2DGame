@@ -106,12 +106,14 @@ namespace _2DGame.Utility
             ProcessLevelKeys(game, player);
         }
 
-        public static void ProcessGameOverScreenKeys(Game game, Player player, GameOverScreen gameOverScreen)
+        public static void ProcessGameOverScreenKeys(Game game, Leaderboard leaderboard, GameOverScreen gameOverScreen)
         {
             bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter);
 
-            if (enter)
+            if (enter && gameOverScreen.GetPlayerName().Length != 0)
             {
+                leaderboard.Add(gameOverScreen.GetPlayerName(), Score.Value);
+                leaderboard.Save();
                 gameOverScreen.Reset(game);
                 game.CurrentState = GameLoop.GameState.LoadingMenu;
             }
