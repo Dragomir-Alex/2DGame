@@ -210,7 +210,7 @@ namespace _2DGame
                     SoundManager.SetMusicVolume((uint)Settings.MusicVolume);
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     SoundManager.PlayMusic();
-                    menu.Update(RenderTexture.DefaultView);
+                    menu.Update(RenderTexture.DefaultView, GameTime.DeltaTime, TIME_UNTIL_UPDATE);
                     break;
 
                 case GameState.Level:

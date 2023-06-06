@@ -38,7 +38,7 @@ namespace _2DGame.Layers
             Height = Tilemap.TILE_SIZE * tileIDs.Height();
         }
 
-        public override void Update(View view)
+        public override void Update(View view, float deltaTime, float timeUntilUpdate)
         {
             // Do nothing
         }

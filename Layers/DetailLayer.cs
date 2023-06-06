@@ -97,8 +97,14 @@ namespace _2DGame.Layers
             }
         }
 
-        public override void Update(View camera)
+        public override void Update(View camera, float deltaTime, float timeUntilUpdate)
         {
+            clock += deltaTime;
+
+            if (clock <= timeUntilUpdate) return;
+
+            clock = 0;
+
             if (LayerSprite != null)
             {
                 UtilityFunctions.Move(LayerSprite, XCameraOffset, YCameraOffset);

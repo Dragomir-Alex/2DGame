@@ -75,7 +75,7 @@ namespace _2DGame
         {
             for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
             {
-                Layers[i].Update(player.Camera);
+                Layers[i].Update(player.Camera, gameLoop.GameTime.DeltaTime, GameLoop.TIME_UNTIL_UPDATE);
             }
 
             if (player.IsSpawningProjectile)

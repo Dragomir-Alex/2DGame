@@ -1,5 +1,4 @@
 ﻿using _2DGame.Animation;
-using _2DGame.LayerData;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using TransformableHitbox2D;
 using _2DGame.Utility;
 using _2DGame.Layers;
 using System.Diagnostics;
+using _2DGame.LayerData;
 
 namespace _2DGame.Entities.Enemies
 {

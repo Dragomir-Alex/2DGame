@@ -46,9 +46,9 @@ namespace _2DGame.MainMenu
             }
         }
 
-        public void Update(View view)
+        public void Update(View view, float deltaTime, float timeUntilUpdate)
         {
-            Background.Update(view);
+            Background.Update(view, deltaTime, timeUntilUpdate);
             foreach (var button in Buttons)
             {
                 button.Update();

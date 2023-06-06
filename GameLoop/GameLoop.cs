@@ -51,8 +51,8 @@ namespace _2DGame
 
             float totalTimeBeforeUpdate = 0f;
             float previousTimeElapsed = 0f;
-            float deltaTime = 0f;
-            float totalTimeElapsed = 0f;
+            float deltaTime;
+            float totalTimeElapsed;
 
             Clock clock = new Clock();
 

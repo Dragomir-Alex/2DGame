@@ -39,7 +39,9 @@ namespace _2DGame.Entities.Collectibles
 
         public override void Initialize(Vector2i startPosition)
         {
-            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2, startPosition.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2);
+            Position = new Vector2f(
+                startPosition.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                startPosition.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2);
             Origin = Position;
             InitializeHitbox();
         }

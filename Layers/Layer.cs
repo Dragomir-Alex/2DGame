@@ -11,6 +11,8 @@ namespace _2DGame.Layers
 {
     public abstract class Layer : Drawable
     {
+        protected float clock;
+
         public float XSpeed { get; set; }
         public float YSpeed { get; set; }
         public float AutoXSpeed { get; set; }
@@ -32,6 +34,7 @@ namespace _2DGame.Layers
 
         public Layer()
         {
+            clock = 0f;
             XSpeed = 1f;
             YSpeed = 1f;
             AutoXSpeed = 0f;
@@ -43,7 +46,7 @@ namespace _2DGame.Layers
             IsVisible = true;
         }
 
-        public abstract void Update(View view);
+        public abstract void Update(View view, float deltaTime, float timeUntilUpdate);
         public abstract void Draw(RenderTarget target, RenderStates states);
     }
 }

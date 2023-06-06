@@ -250,9 +250,9 @@ namespace _2DGame.MainMenu
             }
         }
 
-        public void Update(View view)
+        public void Update(View view, float deltaTime, float timeUntilUpdate)
         {
-            Pages[CurrentPage].Update(view);
+            Pages[CurrentPage].Update(view, deltaTime, timeUntilUpdate);
         }
 
         public void Draw(RenderTarget target, RenderStates states)
