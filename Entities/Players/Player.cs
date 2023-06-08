@@ -386,7 +386,7 @@ namespace _2DGame.Entities.Players
 
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             GameEntityCollision(level.GameEntityManager);
-            UpdatePlayerCamera(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT, level);
+            UpdatePlayerCamera(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT, level);
             UpdateCurrentState();
             UpdateAnimatedSprite(gameLoop);
             invincibilityFrames.Update();

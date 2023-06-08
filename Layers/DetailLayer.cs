@@ -23,6 +23,8 @@ namespace _2DGame.Layers
         public float YOffset { get; set; }
         public bool RepeatX { get; set; }
         public bool RepeatY { get; set; }
+        public float AutoXSpeed { get; set; }
+        public float AutoYSpeed { get; set; }
         private float XCameraOffset { get; set; }
         private float YCameraOffset { get; set; }
 
@@ -34,6 +36,8 @@ namespace _2DGame.Layers
             YOffset = 0f;
             RepeatX = false;
             RepeatY = false;
+            AutoXSpeed = 0f;
+            AutoYSpeed = 0f;
             XCameraOffset = 0f;
             YCameraOffset = 0f;
         }
@@ -76,7 +80,7 @@ namespace _2DGame.Layers
 
                 if (RepeatX)
                 {
-                    TextureRectWidth = 3 * (int)LayerTexture.Size.X * (int)Math.Ceiling((double)Game.DEFAULT_WINDOW_WIDTH / LayerTexture.Size.X);
+                    TextureRectWidth = 3 * (int)LayerTexture.Size.X * (int)Math.Ceiling((double)Game.WINDOW_WIDTH / LayerTexture.Size.X);
                 }
                 else
                 {
@@ -85,7 +89,7 @@ namespace _2DGame.Layers
 
                 if (RepeatY)
                 {
-                    TextureRectHeight = 3 * (int)LayerTexture.Size.Y * (int)Math.Ceiling((double)Game.DEFAULT_WINDOW_HEIGHT / LayerTexture.Size.Y);
+                    TextureRectHeight = 3 * (int)LayerTexture.Size.Y * (int)Math.Ceiling((double)Game.WINDOW_HEIGHT / LayerTexture.Size.Y);
                 }
                 else
                 {
@@ -101,7 +105,7 @@ namespace _2DGame.Layers
         {
             clock += deltaTime;
 
-            if (clock <= timeUntilUpdate) return;
+            if (clock < timeUntilUpdate) return;
 
             clock = 0;
 
@@ -117,8 +121,8 @@ namespace _2DGame.Layers
 
                 UtilityFunctions.Move(LayerSprite, -XCameraOffset, -YCameraOffset);
 
-                XCameraOffset = (int)(-XSpeed * camera.Center.X / (Game.DEFAULT_WINDOW_WIDTH / 2));
-                YCameraOffset = (int)(-YSpeed * camera.Center.Y / (Game.DEFAULT_WINDOW_HEIGHT / 2));
+                XCameraOffset = (int)(-XSpeed * camera.Center.X / Game.WINDOW_WIDTH);
+                YCameraOffset = (int)(-YSpeed * camera.Center.Y / Game.WINDOW_HEIGHT);
 
                 UtilityFunctions.Move(LayerSprite, AutoXSpeed, AutoYSpeed);
             }

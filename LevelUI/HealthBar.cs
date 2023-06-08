@@ -22,7 +22,7 @@ namespace _2DGame.LevelUI
                 for (int i = 0; i < player.Health.MaxHealth; ++i)
                 {
                     Sprite heartSprite = new Sprite(texture);
-                    heartSprite.Position = new Vector2f(15 + texture.Size.X * i + 10 * i, Game.DEFAULT_WINDOW_HEIGHT - texture.Size.Y - 10);
+                    heartSprite.Position = new Vector2f(15 + texture.Size.X * i + 10 * i, Game.WINDOW_HEIGHT - texture.Size.Y - 10);
                     heartSprites.Add(heartSprite);
                 }
 

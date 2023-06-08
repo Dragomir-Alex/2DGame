@@ -15,10 +15,10 @@ namespace _2DGame
             StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused, GameOver
         }
 
-        public RenderWindow Window { get; protected set; }
-        public RenderTexture RenderTexture { get; set; }
-        public GameTime GameTime { get; protected set; }
-        public Color WindowClearColor { get; protected set; }
+        public RenderWindow Window { get; private set; }
+        public RenderTexture RenderTexture { get; private set; }
+        public GameTime GameTime { get; private set; }
+        public Color WindowClearColor { get; }
         public GameState CurrentState { get; set; }
 
 
@@ -54,7 +54,7 @@ namespace _2DGame
             float deltaTime;
             float totalTimeElapsed;
 
-            Clock clock = new Clock();
+            Clock clock = new();
 
             while (Window.IsOpen)
             {
@@ -67,10 +67,10 @@ namespace _2DGame
 
                 if (totalTimeBeforeUpdate >= TIME_UNTIL_UPDATE)
                 {
+                    ProcessInputs();
+
                     GameTime.Update(totalTimeBeforeUpdate, clock.ElapsedTime.AsSeconds());
                     totalTimeBeforeUpdate = 0f;
-
-                    ProcessInputs();
 
                     Update(GameTime);
                     Display();
@@ -84,18 +84,6 @@ namespace _2DGame
         public abstract void ProcessInputs();
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);
-
-        public void TogglePause()
-        {
-            if (CurrentState == GameState.Paused)
-            {
-                CurrentState = GameState.Level;
-            }
-            else if (CurrentState == GameState.Level)
-            {
-                CurrentState = GameState.Paused;
-            }
-        }
 
         public void Display()
         {
@@ -118,4 +106,7 @@ namespace _2DGame
         }
     }
 }
+
+
+
 

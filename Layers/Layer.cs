@@ -15,8 +15,6 @@ namespace _2DGame.Layers
 
         public float XSpeed { get; set; }
         public float YSpeed { get; set; }
-        public float AutoXSpeed { get; set; }
-        public float AutoYSpeed { get; set; }
         public bool IsVisible { get; set; }
 
         [JsonIgnore]
@@ -37,8 +35,6 @@ namespace _2DGame.Layers
             clock = 0f;
             XSpeed = 1f;
             YSpeed = 1f;
-            AutoXSpeed = 0f;
-            AutoYSpeed = 0f;
             Width = 0f;
             Height = 0f;
             TileWidth = 0;

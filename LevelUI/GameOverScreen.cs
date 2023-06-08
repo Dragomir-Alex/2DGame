@@ -29,19 +29,19 @@ namespace _2DGame.LevelUI
             playerNameSB = new StringBuilder();
             playerNameSB.Capacity = MAX_STRING_SIZE;
 
-            rectangleBackground = new RectangleShape(new Vector2f(Game.DEFAULT_WINDOW_WIDTH, Game.DEFAULT_WINDOW_HEIGHT));
+            rectangleBackground = new RectangleShape(new Vector2f(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
             rectangleBackground.FillColor = new Color(0, 0, 0, 100);
 
             topHintText = new Text("Please type out your name:", TextureManager.GameFont, 60);
-            topHintText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - topHintText.GetGlobalBounds().Width / 2), 250);
+            topHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - topHintText.GetGlobalBounds().Width / 2), 250);
             topHintText.FillColor = Color.White;
 
             playerNameText = new Text("", TextureManager.GameFontBold, 50);
-            playerNameText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2), 350);
+            playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 350);
             playerNameText.FillColor = new Color(137, 207, 240);
 
             bottomHintText = new Text("Press the [Enter] key to continue.", TextureManager.GameFont, 50);
-            bottomHintText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - bottomHintText.GetGlobalBounds().Width / 2), 600);
+            bottomHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - bottomHintText.GetGlobalBounds().Width / 2), 600);
             bottomHintText.FillColor = Color.White;
         }
 
@@ -61,11 +61,11 @@ namespace _2DGame.LevelUI
                 }
 
                 messageText = new Text("GAME OVER!\n You " + ((won) ? "won!\n" : "lost!\n"), TextureManager.GameFontBold, 60);
-                messageText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - messageText.GetGlobalBounds().Width / 2), 50);
+                messageText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - messageText.GetGlobalBounds().Width / 2), 50);
                 messageText.FillColor = won ? new Color(34, 139, 34) : new Color(210, 43, 43);
 
                 scoreText = new Text("Final score: " + Score.GetString(), TextureManager.GameFontBold, 60);
-                scoreText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - scoreText.GetGlobalBounds().Width / 2), 475);
+                scoreText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - scoreText.GetGlobalBounds().Width / 2), 475);
                 scoreText.FillColor = Color.White;
             }
         }
@@ -73,7 +73,7 @@ namespace _2DGame.LevelUI
         public void Update()
         {
             playerNameText.DisplayedString = playerNameSB.ToString();
-            playerNameText.Position = new Vector2f((int)(Game.DEFAULT_WINDOW_WIDTH / 2 - playerNameText.GetGlobalBounds().Width / 2), 350);
+            playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - playerNameText.GetGlobalBounds().Width / 2), 350);
         }
 
         public void TextEnteredSubscribe(GameLoop gameLoop)

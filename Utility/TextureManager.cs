@@ -122,7 +122,7 @@ namespace _2DGame.Utility
                 if (page.Key == Menu.PageName.MainPage)
                 {
                     page.Value.InitializeSprites(LogoTexture);
-                    page.Value.LogoSprite.Position = new Vector2f(Game.DEFAULT_WINDOW_WIDTH / 2 - LogoTexture.Size.X / 2, Game.DEFAULT_WINDOW_HEIGHT / 6f);
+                    page.Value.LogoSprite.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - LogoTexture.Size.X / 2, Game.WINDOW_HEIGHT / 6f);
                 }
                 else
                 {

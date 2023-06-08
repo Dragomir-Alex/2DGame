@@ -19,7 +19,6 @@ namespace _2DGame
         private bool isLoaded;
         private bool isInitialized;
         public LayerList Layers { get; set; }
-        public string Name { get; private set; }
         public string TrackFilename { get; private set; }
         public float Width { get; set; }
         public float Height { get; set; }
@@ -29,7 +28,6 @@ namespace _2DGame
         public Level()
         {
             Layers = new LayerList();
-            Name = "Unnamed";
             TrackFilename = string.Empty;
             Width = 0;
             Height = 0;
@@ -73,10 +71,7 @@ namespace _2DGame
 
         public void Update(Player player, GameLoop gameLoop)
         {
-            for (int i = 0; i < LayerList.LAYER_COUNT; ++i)
-            {
-                Layers[i].Update(player.Camera, gameLoop.GameTime.DeltaTime, GameLoop.TIME_UNTIL_UPDATE);
-            }
+            Layers.Update(player, gameLoop);
 
             if (player.IsSpawningProjectile)
             {

@@ -1,4 +1,5 @@
 ﻿using _2DGame.Entities;
+using _2DGame.Entities.Players;
 using _2DGame.LayerData;
 using System;
 using System.Collections;
@@ -34,8 +35,6 @@ namespace _2DGame.Layers
 
         public void Load(string mapFilename, string layerDataFilename)
         {
-            // Map = new();
-
             for (int i = 0; i < LAYER_COUNT; ++i)
             {
                 TileData tileData = new TileData(LEVELS_PATH + mapFilename, (i + 1).ToString());
@@ -44,7 +43,7 @@ namespace _2DGame.Layers
 
             string fileName = LEVELS_PATH + layerDataFilename;
             string jsonString = File.ReadAllText(fileName);
-            loadedLayerData = JsonSerializer.Deserialize<DetailLayer[]>(jsonString)!; // Can't deserialize abstract class :(
+            loadedLayerData = JsonSerializer.Deserialize<DetailLayer[]>(jsonString)!;
         }
 
         public void Instantiate()
@@ -77,8 +76,8 @@ namespace _2DGame.Layers
                         ((DetailLayer)layers[i]).YOffset = loadedLayerData[i].YOffset;
                         ((DetailLayer)layers[i]).RepeatX = loadedLayerData[i].RepeatX;
                         ((DetailLayer)layers[i]).RepeatY = loadedLayerData[i].RepeatY;
-                        ((DetailLayer)layers[i]).XSpeed = Game.DEFAULT_WINDOW_WIDTH * loadedLayerData[i].XSpeed;
-                        ((DetailLayer)layers[i]).YSpeed = Game.DEFAULT_WINDOW_HEIGHT * loadedLayerData[i].YSpeed;
+                        ((DetailLayer)layers[i]).XSpeed = Game.WINDOW_WIDTH * loadedLayerData[i].XSpeed;
+                        ((DetailLayer)layers[i]).YSpeed = Game.WINDOW_HEIGHT * loadedLayerData[i].YSpeed;
                         ((DetailLayer)layers[i]).AutoXSpeed = loadedLayerData[i].AutoXSpeed;
                         ((DetailLayer)layers[i]).AutoYSpeed = loadedLayerData[i].AutoYSpeed;
                         ((DetailLayer)layers[i]).IsVisible = loadedLayerData[i].IsVisible;
@@ -87,6 +86,14 @@ namespace _2DGame.Layers
             }
 
             loadedLayerData = null;
+        }
+
+        public void Update(Player player, GameLoop gameLoop)
+        {
+            for (int i = 0; i < LAYER_COUNT; ++i)
+            {
+                this[i].Update(player.Camera, gameLoop.GameTime.DeltaTime, GameLoop.TIME_UNTIL_UPDATE);
+            }
         }
 
         IEnumerator<T> Cast<T>(IEnumerator iterator)

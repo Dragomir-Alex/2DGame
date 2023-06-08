@@ -12,11 +12,11 @@ namespace _2DGame
 {
     public class Game : GameLoop
     {
-        public const uint DEFAULT_WINDOW_WIDTH = 1280;
-        public const uint DEFAULT_WINDOW_HEIGHT = 720;
-        public const string WINDOW_TITLE = "Game";
+        public const uint WINDOW_WIDTH = 1280;
+        public const uint WINDOW_HEIGHT = 720;
+        public const string WINDOW_TITLE = "Witchi";
 
-        public Game() : base(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
+        public Game() : base(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
         private Level level;
         private Player player;
         private Menu menu;
@@ -201,7 +201,7 @@ namespace _2DGame
                     TextureManager.InitializeLevelSprites(level, this);
 
                     player.Initialize(level.TileStartPosition);
-                    player.SetPlayerCamera(new Vector2f(DEFAULT_WINDOW_WIDTH / 2, DEFAULT_WINDOW_HEIGHT / 2), new Vector2f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+                    player.SetPlayerCamera(new Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), new Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
 
                     CurrentState = GameState.Level;
                     break;
@@ -244,6 +244,18 @@ namespace _2DGame
         public void ToggleDebugMode()
         {
             debugMode = !debugMode;
+        }
+
+        public void TogglePause()
+        {
+            if (CurrentState == GameState.Paused)
+            {
+                CurrentState = GameState.Level;
+            }
+            else if (CurrentState == GameState.Level)
+            {
+                CurrentState = GameState.Paused;
+            }
         }
     }
 }
