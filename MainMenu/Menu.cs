@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static SFML.Window.Mouse;
@@ -19,6 +20,7 @@ namespace _2DGame.MainMenu
 {
     public class Menu : Drawable
     {
+        private DetailLayer background;
         private Button leaderboardButtonRef;
 
         public const string MENU_MUSIC_FILENAME = "passage.ogg";
@@ -47,16 +49,17 @@ namespace _2DGame.MainMenu
                 { 0, 0, 1, 1 }
             };
             TileData tileData = new TileData(tiles);
+            background = CreateMenuBackground(tileData);
 
-            CreateMainPage(CreateMenuBackground(tileData));
-            CreateCreditsPage(CreateMenuBackground(tileData));
-            CreateSettingsPage(CreateMenuBackground(tileData));
-            CreateHighScoresPage(CreateMenuBackground(tileData));
+            CreateMainPage();
+            CreateCreditsPage();
+            CreateSettingsPage();
+            CreateHighScoresPage();
         }
 
         public static DetailLayer CreateMenuBackground(TileData tileIDs)
         {
-            DetailLayer background = new DetailLayer();
+            DetailLayer background = new();
             background.AutoYSpeed = 1;
             background.RepeatX = true;
             background.RepeatY = true;
@@ -65,7 +68,7 @@ namespace _2DGame.MainMenu
             return background;
         }
 
-        private void CreateMainPage(DetailLayer background)
+        private void CreateMainPage()
         {
             Page mainPage = Pages[PageName.MainPage];
             mainPage.Background = background;
@@ -96,7 +99,7 @@ namespace _2DGame.MainMenu
             mainPage.AddButton(quitButton);
         }
 
-        private void CreateCreditsPage(DetailLayer background)
+        private void CreateCreditsPage()
         {
             Page creditsPage = Pages[PageName.Credits];
             creditsPage.Background = background;
@@ -117,7 +120,7 @@ namespace _2DGame.MainMenu
             creditsPage.AddButton(backButton);
         }
 
-        private void CreateSettingsPage(DetailLayer background)
+        private void CreateSettingsPage()
         {
             Page settingsPage = Pages[PageName.Settings];
             settingsPage.Background = background;
@@ -159,7 +162,7 @@ namespace _2DGame.MainMenu
             settingsPage.AddButton(backButton);
         }
 
-        private void CreateHighScoresPage(DetailLayer background)
+        private void CreateHighScoresPage()
         {
             Page highScoresPage = Pages[PageName.HighScores];
             highScoresPage.Background = background;
