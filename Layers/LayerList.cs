@@ -1,6 +1,7 @@
 ﻿using _2DGame.Entities;
 using _2DGame.Entities.Players;
 using _2DGame.LayerData;
+using SFML.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace _2DGame.Layers
             layers[PRIMARY_LAYER] = new SpriteLayer();
         }
 
-        public void Initialize(string tilesetFilename)
+        public void Initialize(Texture tileset)
         {
             for (int i = 0; i < LAYER_COUNT; ++i)
             {
@@ -66,11 +67,11 @@ namespace _2DGame.Layers
                 {
                     if (i == PRIMARY_LAYER)
                     {
-                        ((SpriteLayer)layers[i]).Initialize(tilesetFilename, map[i]);
+                        ((SpriteLayer)layers[i]).Initialize(tileset, map[i]);
                     }
                     else
                     {
-                        ((DetailLayer)layers[i]).Initialize(tilesetFilename, map[i]);
+                        ((DetailLayer)layers[i]).Initialize(tileset, map[i]);
 
                         ((DetailLayer)layers[i]).XOffset = loadedLayerData[i].XOffset;
                         ((DetailLayer)layers[i]).YOffset = loadedLayerData[i].YOffset;

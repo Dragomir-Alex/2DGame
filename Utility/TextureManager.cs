@@ -35,6 +35,8 @@ namespace _2DGame.Utility
         public static Dictionary<string, Texture> MushroomTextures { get; private set; }
         public static Dictionary<string, AnimatedSprite> MushroomAnimations { get; private set; }
 
+        public static Texture TilesetTexture { get; private set; }
+        public static Texture MenuBackgroundTexture { get; private set; }
         public static Texture LogoTexture { get; private set; }
         public static Texture HealthTexture { get; private set; }
         public static Texture HeartCollectibleTexture { get; private set; }
@@ -52,9 +54,15 @@ namespace _2DGame.Utility
             DebugFont = new Font(FONTS_PATH + "8bitOperatorPlus-Regular.ttf");
         }
 
+        public static void LoadTilesetTexture()
+        {
+            TilesetTexture = new Texture(TILESETS_PATH + "aztec2.png");
+        }
+
         public static void LoadMenuTextures()
         {
             LogoTexture = new Texture(TEXTURES_PATH + "Logo.png");
+            MenuBackgroundTexture = new Texture(TILESETS_PATH + "menu.png");
         }
 
         public static void LoadPlayerTextures()

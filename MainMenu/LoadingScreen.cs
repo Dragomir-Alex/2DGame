@@ -32,7 +32,7 @@ namespace _2DGame.MainMenu
             TileData tileData = new TileData(tiles);
 
             LoadingPage = new Page();
-            LoadingPage.Background = CreateMenuBackground("menu.png", tileData);
+            LoadingPage.Background = CreateMenuBackground(tileData);
 
             ButtonAction loadingPageAction = new ButtonAction(ButtonAction.Type.None, "", 0);
             Button loadingPageButton = new Button("Loading...", 60, TextureManager.GameFontBold, Color.White, Color.White, loadingPageAction);

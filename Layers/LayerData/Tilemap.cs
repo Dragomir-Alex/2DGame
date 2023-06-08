@@ -17,7 +17,6 @@ namespace _2DGame.LayerData
     public class Tilemap : Drawable
     {
         public const uint TILE_SIZE = 32;
-        //public enum MaskShape { Square } // More TBA maybe, too lazy atm
         public Dictionary<(int, int), Hitbox> TileHitboxData { get; }
         public VertexArray Vertices { get; set; }
         public Texture? Tileset { get; set; }
@@ -73,9 +72,9 @@ namespace _2DGame.LayerData
             return true;
         }
 
-        public Tilemap(string tilesetFilename)
+        public Tilemap(Texture tileset)
         {
-            Tileset = new Texture(TextureManager.TILESETS_PATH + tilesetFilename);
+            Tileset = tileset;
             Vertices = new VertexArray();
             TileHitboxData = new Dictionary<(int, int), Hitbox>();
         }

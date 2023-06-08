@@ -125,6 +125,7 @@ namespace _2DGame
         {
             TextureManager.LoadFonts();
             TextureManager.LoadPlayerTextures();
+            TextureManager.LoadTilesetTexture();
             TextureManager.LoadMenuTextures();
             TextureManager.LoadHealthTexture();
             TextureManager.LoadHeartCollectibleTexture();
@@ -197,7 +198,7 @@ namespace _2DGame
                     Display();
 
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
-                    level.Initialize("aztec2.png", "lush.ogg");
+                    level.Initialize("lush.ogg");
                     TextureManager.InitializeLevelSprites(level, this);
 
                     player.Initialize(level.TileStartPosition);

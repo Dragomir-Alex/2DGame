@@ -48,19 +48,19 @@ namespace _2DGame.MainMenu
             };
             TileData tileData = new TileData(tiles);
 
-            CreateMainPage(CreateMenuBackground("menu.png", tileData));
-            CreateCreditsPage(CreateMenuBackground("menu.png", tileData));
-            CreateSettingsPage(CreateMenuBackground("menu.png", tileData));
-            CreateHighScoresPage(CreateMenuBackground("menu.png", tileData));
+            CreateMainPage(CreateMenuBackground(tileData));
+            CreateCreditsPage(CreateMenuBackground(tileData));
+            CreateSettingsPage(CreateMenuBackground(tileData));
+            CreateHighScoresPage(CreateMenuBackground(tileData));
         }
 
-        public static DetailLayer CreateMenuBackground(string tilesetFilename, TileData tileIDs)
+        public static DetailLayer CreateMenuBackground(TileData tileIDs)
         {
             DetailLayer background = new DetailLayer();
             background.AutoYSpeed = 1;
             background.RepeatX = true;
             background.RepeatY = true;
-            background.Initialize(tilesetFilename, tileIDs);
+            background.Initialize(TextureManager.MenuBackgroundTexture, tileIDs);
 
             return background;
         }

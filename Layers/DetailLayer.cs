@@ -42,12 +42,12 @@ namespace _2DGame.Layers
             YCameraOffset = 0f;
         }
 
-        public DetailLayer(string tilesetFilename, TileData tileIDs) : base()
+        public DetailLayer(Texture tileset, TileData tileIDs) : base()
         {
-            Initialize(tilesetFilename, tileIDs);
+            Initialize(tileset, tileIDs);
         }
 
-        public void Initialize(string tilesetFilename, TileData tileIDs)
+        public void Initialize(Texture tileset, TileData tileIDs)
         {
             TileIDs = tileIDs;
 
@@ -56,7 +56,7 @@ namespace _2DGame.Layers
             Width = Tilemap.TILE_SIZE * tileIDs.Width();
             Height = Tilemap.TILE_SIZE * tileIDs.Height();
 
-            LayerTilemap = new Tilemap(tilesetFilename);
+            LayerTilemap = new Tilemap(tileset);
             LayerTilemap.Load(tileIDs, false);
 
             RenderTexture renderTexture = new RenderTexture(LayerTilemap.PixelWidth, LayerTilemap.PixelHeight);
@@ -64,17 +64,15 @@ namespace _2DGame.Layers
             renderTexture.Draw(LayerTilemap.Vertices, new RenderStates(LayerTilemap.Tileset));
             renderTexture.Display();
 
-            LayerTexture = new Texture(renderTexture.Texture);
+            LayerTexture = new(renderTexture.Texture);
         }
 
         public void InitializeSprite()
         {
             if (LayerTexture != null)
             {
-                LayerTexture.Smooth = true;
-                LayerTexture.Repeated = true;
-
                 LayerSprite = new Sprite(LayerTexture);
+                LayerSprite.Texture.Repeated = true;
 
                 int TextureRectWidth, TextureRectHeight;
 

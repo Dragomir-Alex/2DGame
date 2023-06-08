@@ -51,13 +51,13 @@ namespace _2DGame
             }
         }
 
-        public void Initialize(string tilesetFilename, string trackFilename)
+        public void Initialize(string trackFilename)
         {
             if (!isInitialized)
             {
                 TrackFilename = trackFilename;
 
-                Layers.Initialize(tilesetFilename);
+                Layers.Initialize(TextureManager.TilesetTexture);
                 Width = Layers[LayerList.PRIMARY_LAYER].Width;
                 Height = Layers[LayerList.PRIMARY_LAYER].Height;
 
