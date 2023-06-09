@@ -1,6 +1,5 @@
 ﻿using _2DGame.Layers;
 using _2DGame.MainMenu.Buttons;
-using InstilledBee.SFML.SimpleCollision;
 using SFML.Graphics;
 using SFML.System;
 using System;

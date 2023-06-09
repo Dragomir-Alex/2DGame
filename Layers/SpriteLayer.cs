@@ -1,5 +1,4 @@
 ﻿using _2DGame.LayerData;
-using NetTopologySuite.Triangulate;
 using SFML.Graphics;
 using SFML.System;
 using System;

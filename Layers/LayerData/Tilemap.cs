@@ -46,7 +46,7 @@ namespace _2DGame.LayerData
                     if (tileNumber == -1)
                         continue;
 
-                    if (initializeHitboxDictionary) // Initialize hitbox dictionary
+                    if (initializeHitboxDictionary)
                     {
                         Vector2[] vector2Arr = new Vector2[] { new Vector2(0, 0), new Vector2(TILE_SIZE, 0), new Vector2(TILE_SIZE, TILE_SIZE), new Vector2(0, TILE_SIZE), new Vector2(0, 0) };
                         Hitbox hitbox = new Hitbox(vector2Arr);

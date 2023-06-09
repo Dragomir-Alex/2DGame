@@ -1,5 +1,4 @@
 ﻿using _2DGame.LayerData;
-using InstilledBee.SFML.SimpleCollision;
 using SFML.Graphics;
 using SFML.System;
 using System;

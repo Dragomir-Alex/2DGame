@@ -3,7 +3,6 @@ using _2DGame.Entities.Enemies;
 using _2DGame.Entities.Players;
 using _2DGame.LayerData;
 using _2DGame.Layers;
-using NetTopologySuite.Algorithm;
 using SFML.Graphics;
 using SFML.System;
 using System;

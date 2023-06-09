@@ -2,9 +2,6 @@
 using _2DGame.LayerData;
 using _2DGame.Layers;
 using _2DGame.Utility;
-using InstilledBee.SFML.SimpleCollision;
-using NetTopologySuite.Mathematics;
-using NetTopologySuite.Triangulate;
 using SFML.Graphics;
 using SFML.System;
 using System.Diagnostics;

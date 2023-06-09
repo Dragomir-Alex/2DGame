@@ -102,9 +102,7 @@ namespace _2DGame.Layers
         public override void Update(View camera, float deltaTime, float timeUntilUpdate)
         {
             clock += deltaTime;
-
             if (clock < timeUntilUpdate) return;
-
             clock = 0;
 
             if (LayerSprite != null)
@@ -112,9 +110,12 @@ namespace _2DGame.Layers
                 UtilityFunctions.Move(LayerSprite, XCameraOffset, YCameraOffset);
                 Vector2f pos = LayerSprite.Position;
 
-                if (RepeatX && (pos.X >= 0 || pos.X <= -(LayerSprite.TextureRect.Width / 3) * 2))
+                if (RepeatX
+                    && (pos.X >= 0|| pos.X <= -(LayerSprite.TextureRect.Width / 3) * 2))
                     LayerSprite.Position = new Vector2f(-(LayerSprite.TextureRect.Width / 3), pos.Y);
-                if (RepeatY && (pos.Y >= 0 || pos.Y <= -(LayerSprite.TextureRect.Height / 3) * 2))
+
+                if (RepeatY
+                    && (pos.Y >= 0 || pos.Y <= -(LayerSprite.TextureRect.Height / 3) * 2))
                     LayerSprite.Position = new Vector2f(pos.X, -(LayerSprite.TextureRect.Width / 3));
 
                 UtilityFunctions.Move(LayerSprite, -XCameraOffset, -YCameraOffset);

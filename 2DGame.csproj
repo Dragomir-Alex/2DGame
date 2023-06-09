@@ -9,9 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetTopologySuite" Version="2.5.0" />
     <PackageReference Include="SFML.Net" Version="2.5.0" />
-    <PackageReference Include="SFML.SimpleCollision" Version="0.1.1" />
     <PackageReference Include="TransformableHitbox2D" Version="1.0.3" />
   </ItemGroup>
 
