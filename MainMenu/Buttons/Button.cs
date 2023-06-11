@@ -10,7 +10,7 @@ namespace _2DGame.MainMenu.Buttons
 {
     public class Button : Drawable
     {
-        public bool IsSelected { get; set; }
+        public bool IsHovered { get; set; }
         public bool IsActive { get; set; }
         private ButtonAction Action { get; set; }
 
@@ -20,7 +20,7 @@ namespace _2DGame.MainMenu.Buttons
 
         public Button(string textString, uint fontSize, Font font, Color defaultColor, Color hoverColor, ButtonAction buttonAction)
         {
-            IsSelected = false;
+            IsHovered = false;
             IsActive = true;
             DefaultColor = defaultColor;
             HoverColor = hoverColor;
@@ -28,7 +28,8 @@ namespace _2DGame.MainMenu.Buttons
 
             ButtonText = new Text(textString, font, fontSize)
             {
-                FillColor = DefaultColor
+                FillColor = DefaultColor,
+                OutlineThickness = 2
             };
         }
 
@@ -43,7 +44,7 @@ namespace _2DGame.MainMenu.Buttons
 
         public void Update()
         {
-            if (IsSelected)
+            if (IsHovered)
             {
                 ButtonText.FillColor = HoverColor;
             }

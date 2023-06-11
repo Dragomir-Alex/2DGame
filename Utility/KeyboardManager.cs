@@ -50,7 +50,7 @@ namespace _2DGame.Utility
             {
                 if (button.ButtonText.GetGlobalBounds().Contains(mousePosition.X, mousePosition.Y))
                 {
-                    button.IsSelected = true;
+                    button.IsHovered = true;
 
                     if (leftClick && leftClick != previousLeftClickState)
                     {
@@ -59,7 +59,7 @@ namespace _2DGame.Utility
                 }
                 else
                 {
-                    button.IsSelected = false;
+                    button.IsHovered = false;
                 }
             }
 

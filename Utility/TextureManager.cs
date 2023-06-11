@@ -7,6 +7,7 @@ using _2DGame.Entities.Players;
 using _2DGame.Layers;
 using _2DGame.LevelUI;
 using _2DGame.MainMenu;
+using _2DGame.UIElements;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;

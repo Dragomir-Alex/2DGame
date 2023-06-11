@@ -105,6 +105,7 @@ namespace _2DGame.MainMenu
             creditsPage.Background = background;
 
             Text title = new Text("Credits", TextureManager.GameFontBold, 40);
+            title.OutlineThickness = 2;
             title.FillColor = Color.White;
             title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 4);
             creditsPage.Title = title;
@@ -126,6 +127,7 @@ namespace _2DGame.MainMenu
             settingsPage.Background = background;
 
             Text title = new Text("Settings", TextureManager.GameFontBold, 40);
+            title.OutlineThickness = 2;
             title.FillColor = Color.White;
             title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 6));
             settingsPage.Title = title;
@@ -168,6 +170,7 @@ namespace _2DGame.MainMenu
             highScoresPage.Background = background;
 
             Text title = new Text("High Scores", TextureManager.GameFontBold, 40);
+            title.OutlineThickness = 2;
             title.FillColor = Color.White;
             title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 4);
             highScoresPage.Title = title;

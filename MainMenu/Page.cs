@@ -19,15 +19,8 @@ namespace _2DGame.MainMenu
 
         public Page()
         {
-            Title = new Text();
+            Title = new Text() { OutlineThickness = 2 };
             Background = new DetailLayer();
-            Buttons = new List<Button>();
-        }
-
-        public Page(Text title, DetailLayer background)
-        {
-            Title = title;
-            Background = background;
             Buttons = new List<Button>();
         }
 

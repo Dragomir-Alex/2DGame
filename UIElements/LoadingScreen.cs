@@ -1,5 +1,6 @@
 ﻿using _2DGame.LayerData;
 using _2DGame.Layers;
+using _2DGame.MainMenu;
 using _2DGame.MainMenu.Buttons;
 using _2DGame.Utility;
 using SFML.Graphics;
@@ -11,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static _2DGame.MainMenu.Menu;
 
-namespace _2DGame.MainMenu
+namespace _2DGame.UIElements
 {
     public class LoadingScreen : Drawable
     {

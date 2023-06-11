@@ -7,6 +7,7 @@ using _2DGame.Entities.Players;
 using SFML.Graphics;
 using System.Text.Json;
 using _2DGame.GameSettings;
+using _2DGame.UIElements;
 
 namespace _2DGame
 {
