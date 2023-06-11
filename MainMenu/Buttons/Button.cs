@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _2DGame.MainMenu.Buttons
 {
-    public class Button : IButton
+    public class Button : Drawable
     {
         public bool IsSelected { get; set; }
         public bool IsActive { get; set; }
