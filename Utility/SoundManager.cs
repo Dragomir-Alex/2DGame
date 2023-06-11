@@ -93,7 +93,8 @@ namespace _2DGame.Utility
                 { "Low Growl", new Sound (new SoundBuffer(SOUNDS_PATH + "growl.wav")) { Pitch = 0.7f, RelativeToListener = true } },
                 { "Victory", new Sound (new SoundBuffer(SOUNDS_PATH + "victory.wav")) { RelativeToListener = true } },
                 { "Loss", new Sound (new SoundBuffer(SOUNDS_PATH + "loss.wav")) { RelativeToListener = true } },
-                { "Vanish", new Sound (new SoundBuffer(SOUNDS_PATH + "vanish.wav")) { Pitch = 0.5f, RelativeToListener = true } }
+                { "Vanish", new Sound (new SoundBuffer(SOUNDS_PATH + "vanish.wav")) { Pitch = 0.5f, RelativeToListener = true } },
+                { "Click", new Sound(new SoundBuffer(SOUNDS_PATH + "click.wav")) { RelativeToListener = true } }
             };
         }
 

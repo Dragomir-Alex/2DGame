@@ -121,7 +121,6 @@ namespace _2DGame.Entities.Enemies
         {
             xPlayerDistance = Math.Abs(player.Position.X - Position.X);
             yPlayerDistance = Math.Abs(player.Position.Y - Position.Y);
-            float positionToPlayerDistance = (float)Math.Sqrt((float)Math.Pow(player.Position.X - Position.X, 2) + (float)Math.Pow(player.Position.Y - Position.Y, 2));
 
             if (CurrentState == State.Hit || CurrentState == State.Dead)
                 return;
@@ -375,8 +374,6 @@ namespace _2DGame.Entities.Enemies
                 {
                     newAnimation = new AnimatedSprite(TextureManager.FlyingEyeAnimations["DeathLand"]);
                 }
-/*                Sprite = newAnimation;
-                Sprite.Play();*/
             }
 
             if (currentAnimation.NotEqual(newAnimation))

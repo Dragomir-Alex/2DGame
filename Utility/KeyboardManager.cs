@@ -46,8 +46,6 @@ namespace _2DGame.Utility
 
             Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
 
-            // Debug.WriteLine("Mouse position: " + mousePosition.X.ToString() + "   " + mousePosition.Y.ToString());
-
             foreach (var button in menu.Pages[menu.CurrentPage].Buttons)
             {
                 if (button.ButtonText.GetGlobalBounds().Contains(mousePosition.X, mousePosition.Y))

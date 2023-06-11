@@ -147,8 +147,6 @@ namespace _2DGame.Entities.Players
                 Sprite.Play();
             }
 
-            // Debug.WriteLine(CurrentState.ToString() + " " + Sprite.GetCurrentFrame() + " " + Sprite.GetLastFrame() + " " + Sprite.IsFinished());
-
             UpdateSpritePosition();
         }
 

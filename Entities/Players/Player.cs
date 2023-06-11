@@ -94,25 +94,25 @@ namespace _2DGame.Entities.Players
 
         private void UpdatePlayerCamera(uint screenWidth, uint screenHeight, Level level)
         {
-            float xCenter = (int)Position.X + HITBOX_WIDTH;
-            float yCenter = (int)Position.Y + HITBOX_HEIGHT;
+            float xCenter = (int)Position.X;
+            float yCenter = (int)Position.Y;
 
-            if ((int)Position.X + HITBOX_WIDTH <= screenWidth / 2) // Left
+            if ((int)Position.X <= screenWidth / 2) // Left
             {
                 xCenter = (float)screenWidth / 2;
 
             }
-            else if ((int)Position.X + HITBOX_WIDTH >= level.Width - screenWidth / 2) // Right
+            else if ((int)Position.X >= level.Width - screenWidth / 2) // Right
             {
                 xCenter = (int)level.Width - screenWidth / 2;
             }
 
-            if ((int)Position.Y + HITBOX_HEIGHT <= screenHeight / 2) // Top
+            if ((int)Position.Y <= screenHeight / 2) // Top
             {
                 yCenter = (float)screenHeight / 2;
 
             }
-            else if ((int)Position.Y + HITBOX_HEIGHT >= level.Height - screenHeight / 2) // Bottom
+            else if ((int)Position.Y >= level.Height - screenHeight / 2) // Bottom
             {
                 yCenter = (int)level.Height - screenHeight / 2;
             }
@@ -125,11 +125,10 @@ namespace _2DGame.Entities.Players
             PlayerBorderCollision(spriteLayer);
 
             Vector2f crtPos = new Vector2f(Position.X, Position.Y);
-            Vector2f posAfterXVelocity = new Vector2f(Position.X + (int)Velocity.X, Position.Y);
             Vector2i finalVelocity = new Vector2i((int)Velocity.X, (int)Velocity.Y);
             List<Tuple<Hitbox, int, int>> collidedTiles;
 
-            Position = posAfterXVelocity;
+            Position = new Vector2f(Position.X + (int)Velocity.X, Position.Y);
 
             if (debugMode)
             {
@@ -372,6 +371,7 @@ namespace _2DGame.Entities.Players
         public override void Update(Level level, GameLoop gameLoop)
         {
             ApplyGravity();
+
             if (CurrentState == State.Dead)
             {
                 Velocity = new();
@@ -431,9 +431,7 @@ namespace _2DGame.Entities.Players
         {
             if (Sprite != null)
             {
-                /*int sign = CurrentDirection == IAnimated.Direction.Left ? 1 : -1;
-                Sprite.Position = new Vector2f(Position.X + sign * HITBOX_WIDTH + sign * 12, Position.Y - HITBOX_HEIGHT + 7); // Magic numbers :)*/
-                Sprite.Position = new Vector2f(Position.X, Position.Y - 6); // Magic numbers :)
+                Sprite.Position = new Vector2f(Position.X, Position.Y - 6);
             }
         }
 

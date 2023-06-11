@@ -203,10 +203,12 @@ namespace _2DGame.MainMenu
             switch (buttonAction.ActionType)
             {
                 case ButtonAction.Type.StartLevel:
+                    SoundManager.PlaySound("Click");
                     gameLoop.CurrentState = GameLoop.GameState.LoadingLevel;
                     break;
 
                 case ButtonAction.Type.ChangeSetting:
+                    SoundManager.PlaySound("Click");
                     if (buttonAction.Target == "SoundVolume")
                     {
                         Settings.SoundVolume += (int)buttonAction.Parameter;
@@ -223,6 +225,7 @@ namespace _2DGame.MainMenu
                     }
                     else if (buttonAction.Target == "MusicVolume")
                     {
+                        SoundManager.PlaySound("Click");
                         Settings.MusicVolume += (int)buttonAction.Parameter;
                         foreach (var button in Pages[CurrentPage].Buttons)
                         {
@@ -238,6 +241,7 @@ namespace _2DGame.MainMenu
                     break;
 
                 case ButtonAction.Type.ChangePage:
+                    SoundManager.PlaySound("Click");
                     if (Enum.TryParse(buttonAction.Target, out PageName pageName))
                     {
                         CurrentPage = pageName;
@@ -245,6 +249,7 @@ namespace _2DGame.MainMenu
                     break;
 
                 case ButtonAction.Type.QuitGame:
+                    SoundManager.PlaySound("Click");
                     gameLoop.Window.Close();
                     break;
 

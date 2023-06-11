@@ -8,11 +8,15 @@ namespace _2DGame.Animation
 {
     public class AnimatedSprite : Sprite
     {
-        RenderTarget renderTarget;
-        RenderStates renderStates;
-        int frameWidth, frameHeight, currentFrame, firstFrame, lastFrame;
-        float interval, clock;
-        bool isAnimated, isLooped;
+        private readonly RenderTarget renderTarget;
+        private RenderStates renderStates;
+        private readonly int frameWidth;
+        private readonly int frameHeight;
+        private readonly int firstFrame;
+        private readonly int lastFrame;
+        private int currentFrame;
+        private float interval, clock;
+        private bool isAnimated, isLooped;
 
         public AnimatedSprite(Texture texture, int frameWidth, int frameHeight, int FPS, RenderTarget renderTarget, RenderStates renderStates, int firstFrame = 0, int lastFrame = 0, bool isAnimated = true, bool isLooped = true) : base(texture)
         {
@@ -56,11 +60,11 @@ namespace _2DGame.Animation
 
         public IntRect GetFramePosition(int frame)
         {
-            int WCount = (int)Texture.Size.X / frameWidth;
-            int XPos = frame % WCount;
-            int YPos = frame / WCount;
+            int count = (int)Texture.Size.X / frameWidth;
+            int xPos = frame % count;
+            int yPos = frame / count;
 
-            IntRect Position = new IntRect(frameWidth * XPos, frameHeight * YPos, frameWidth, frameHeight);
+            IntRect Position = new IntRect(frameWidth * xPos, frameHeight * yPos, frameWidth, frameHeight);
             return Position;
         }
 

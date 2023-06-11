@@ -44,12 +44,11 @@ namespace _2DGame.Entities.Collectibles
                 startPosition.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2);
             Origin = Position;
             InitializeHitbox();
-        }
+        }   
 
         public override void Update(Level level, GameLoop gameLoop)
         {
             Position = new Vector2f(Origin.X, Origin.Y + (int)(5 * (float)Math.Sin(2 * (gameLoop.GameTime.TotalTimeElapsed + Origin.X % 3))));
-            // Debug.WriteLine(Position.X + " " + Position.Y);
         }
 
         public override void OnEntityCollision(GameEntity entity)
