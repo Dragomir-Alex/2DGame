@@ -55,11 +55,11 @@ namespace _2DGame.Entities.Enemies
         public const float FALL_MAX_VELOCITY = 7f;
         private const float VELOCITY_GAIN = 0.25f;
         private const float VELOCITY_REDUCTION = 0.2f;
-        private const float GRAVITY = 1f;
+        private const float GRAVITY = 2f;
 
         public const int HITBOX_ATTACK_RANGE = 20;
         public const int HITBOX_WIDTH = 30;
-        public const int HITBOX_HEIGHT = 30;
+        public const int HITBOX_HEIGHT = 37;
 
         public Mushroom() : base(5)
         {
@@ -153,7 +153,7 @@ namespace _2DGame.Entities.Enemies
         public override void Update(Level level, GameLoop gameLoop)
         {
             ApplyGravity();
-            Velocity = UtilityFunctions.UpdateVelocity(Velocity, VELOCITY_REDUCTION, VELOCITY_REDUCTION, MAX_VELOCITY, MAX_VELOCITY);
+            Velocity = UtilityFunctions.UpdateVelocity(Velocity, VELOCITY_REDUCTION, VELOCITY_REDUCTION, MAX_VELOCITY, FALL_MAX_VELOCITY);
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             UpdateCurrentState();
             UpdateAnimatedSprite();
@@ -214,10 +214,10 @@ namespace _2DGame.Entities.Enemies
             if (Hitbox != null)
             {
 
-                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2 + HITBOX_ATTACK_RANGE * (CurrentDirection == IAnimated.Direction.Right ? 1 : -1), Position.Y - HITBOX_HEIGHT / 2);
+                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2 - HITBOX_ATTACK_RANGE / 2 + HITBOX_ATTACK_RANGE * (CurrentDirection == IAnimated.Direction.Right ? 1 : -1), Position.Y - HITBOX_HEIGHT / 2 - 4);
                 attackHitbox.Transform(transform);
 
-                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2);
+                transform.Position = new Vector2(Position.X - HITBOX_WIDTH / 2, Position.Y - HITBOX_HEIGHT / 2 - 4);
                 normalHitbox.Transform(transform);
 
                 if (CurrentState == State.Attacking && Sprite.GetCurrentFrame() == 7)
