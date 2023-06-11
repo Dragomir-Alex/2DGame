@@ -108,6 +108,17 @@ namespace _2DGame.Utility
 
             foreach (var line in player.Hitbox.Lines)
             {
+                Vertex[] vertexLine = new Vertex[2]
+                {
+                    new Vertex(new Vector2f(line.A.X, line.A.Y), Color.Blue),
+                    new Vertex(new Vector2f(line.B.X, line.B.Y), Color.Blue)
+                };
+
+                gameLoop.RenderTexture.Draw(vertexLine, PrimitiveType.Lines);
+            }
+
+            foreach (var line in player.Hitbox.Lines)
+            {
                 CircleShape shape2 = new CircleShape(2);
                 shape2.Origin = new Vector2f(2, 2);
                 shape2.FillColor = new Color(200, 50, 50);
@@ -125,6 +136,17 @@ namespace _2DGame.Utility
                 shape3.Position = entity.Position;
                 gameLoop.RenderTexture.Draw(shape3);
                 shape3.Dispose();
+
+                foreach (var line in entity.Hitbox.Lines)
+                {
+                    Vertex[] vertexLine = new Vertex[2]
+                    {
+                    new Vertex(new Vector2f(line.A.X, line.A.Y), Color.Blue),
+                    new Vertex(new Vector2f(line.B.X, line.B.Y), Color.Blue)
+                    };
+
+                    gameLoop.RenderTexture.Draw(vertexLine, PrimitiveType.Lines);
+                }
 
                 foreach (var line in entity.Hitbox.Lines)
                 {
