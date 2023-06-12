@@ -38,7 +38,7 @@ namespace _2DGame.Utility
             textC.Dispose();
         }
 
-        private static void DrawGameData(GameLoop gameLoop, Player player, Color color)
+        private static void DrawPlayerData(GameLoop gameLoop, Player player, Color color)
         {
             if (TextureManager.DebugFont == null) return;
 
@@ -81,24 +81,8 @@ namespace _2DGame.Utility
             directionText.Dispose();
         }
 
-        public static void DrawMessage(GameLoop gameLoop, string message, Color color)
+        public static void DrawHitboxData(GameLoop gameLoop, Player player, Level level)
         {
-            gameLoop.RenderTexture.SetView(gameLoop.RenderTexture.DefaultView);
-
-            if (TextureManager.DebugFont == null) return;
-
-            Text text = new Text(message, TextureManager.DebugFont, 20);
-            text.Position = new Vector2f(80f, 80f);
-            text.FillColor = color;
-
-            gameLoop.RenderTexture.Draw(text);
-
-            text.Dispose();
-        }
-
-        public static void DrawDebugInfo(GameLoop gameLoop, Player player, Level level)
-        {
-            // Hitbox debug
             CircleShape shape = new CircleShape(2);
             shape.Origin = new Vector2f(2, 2);
             shape.FillColor = new Color(100, 250, 50);
@@ -128,7 +112,7 @@ namespace _2DGame.Utility
                 shape2.Dispose();
             }
 
-            foreach (var entity in level.GameEntityManager.OnScreenGameEntities) 
+            foreach (var entity in level.GameEntityManager.OnScreenGameEntities)
             {
                 CircleShape shape3 = new CircleShape(2);
                 shape3.Origin = new Vector2f(2, 2);
@@ -159,6 +143,11 @@ namespace _2DGame.Utility
                     shape4.Dispose();
                 }
             }
+        }
+
+        public static void DrawDebugInfo(GameLoop gameLoop, Player player, Level level)
+        {
+            DrawHitboxData(gameLoop, player, level);
 
             gameLoop.RenderTexture.SetView(gameLoop.RenderTexture.DefaultView);
 
@@ -168,8 +157,7 @@ namespace _2DGame.Utility
             rectangleBackground.Dispose();
 
             DrawPerformanceData(gameLoop, Color.White);
-            DrawGameData(gameLoop, player, Color.White);
-
+            DrawPlayerData(gameLoop, player, Color.White);
         }
     }
 }

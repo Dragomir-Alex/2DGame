@@ -16,17 +16,17 @@ namespace _2DGame.Utility
             sprite.Position = new Vector2f(pos.X + x, pos.Y + y);
         }
 
-        public static List<Tuple<Hitbox, int, int>> GameEntityLevelCollision(GameEntity currentEntity, SpriteLayer spriteLayer)
+        public static List<Tuple<Hitbox, int, int>> GameEntityLevelCollision(GameEntity gameEntity, SpriteLayer spriteLayer)
         {
             List<Tuple<Hitbox, int, int>> collidedTiles = new();
 
-            for (int i = currentEntity.TileCoordinates.X - 2; i <= currentEntity.TileCoordinates.X + 2; ++i)
+            for (int i = gameEntity.TileCoordinates.X - 2; i <= gameEntity.TileCoordinates.X + 2; ++i)
             {
-                for (int j = currentEntity.TileCoordinates.Y - 2; j <= currentEntity.TileCoordinates.Y + 2; ++j)
+                for (int j = gameEntity.TileCoordinates.Y - 2; j <= gameEntity.TileCoordinates.Y + 2; ++j)
                 {
                     if (spriteLayer.LayerTilemap.TileHitboxData.ContainsKey((j, i)))
                     {
-                        if (spriteLayer.LayerTilemap.TileHitboxData[(j, i)].Overlaps(currentEntity.Hitbox))
+                        if (spriteLayer.LayerTilemap.TileHitboxData[(j, i)].Overlaps(gameEntity.Hitbox))
                         {
                             var newTile = new Tuple<Hitbox, int, int>(spriteLayer.LayerTilemap.TileHitboxData[(j, i)], j, i);
                             collidedTiles.Add(newTile);

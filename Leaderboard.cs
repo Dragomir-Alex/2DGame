@@ -42,7 +42,7 @@ namespace _2DGame
 
         public void Add(string name, int score)
         {
-            if (HighScores.Count < MAX_HIGHSCORES_COUNT || score >= HighScores[HighScores.Count - 1].Score)
+            if (HighScores.Count < MAX_HIGHSCORES_COUNT || score > HighScores[HighScores.Count - 1].Score)
             {
                 HighScores.Add(new(name, score));
                 HighScores.Sort(delegate (HighScore hs1, HighScore hs2) { return (hs2.Score.CompareTo(hs1.Score)); });

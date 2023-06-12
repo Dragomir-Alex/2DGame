@@ -146,7 +146,7 @@ namespace _2DGame
                     break;
 
                 case GameState.Level:
-                    KeyboardManager.ProcessPlayerKeys(player);
+                    KeyboardManager.ProcessPlayerKeys(this, player);
                     KeyboardManager.ProcessLevelKeys(this, player);
                     break;
 

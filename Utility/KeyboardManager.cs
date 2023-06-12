@@ -16,8 +16,10 @@ namespace _2DGame.Utility
         private static bool previousLeftClickState;
         private static bool previousToggleCollisionsState;
 
-        public static void ProcessPlayerKeys(Player player)
+        public static void ProcessPlayerKeys(GameLoop gameLoop, Player player)
         {
+            if (!gameLoop.IsFocused) return;
+
             bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left);
             bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right);
             bool moveUp = (Keyboard.IsKeyPressed(Keyboard.Key.Up) || Keyboard.IsKeyPressed(Keyboard.Key.X));
@@ -42,6 +44,8 @@ namespace _2DGame.Utility
 
         public static void ProcessMainMenuKeys(GameLoop gameLoop, Menu menu)
         {
+            if (!gameLoop.IsFocused) return;
+
             bool leftClick = Mouse.IsButtonPressed(Mouse.Button.Left);
 
             Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
@@ -68,6 +72,8 @@ namespace _2DGame.Utility
 
         public static void ProcessLevelKeys(Game game, Player player)
         {
+            if (!game.IsFocused) return;
+
             bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
             bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2);
@@ -94,6 +100,8 @@ namespace _2DGame.Utility
 
         public static void ProcessPauseScreenKeys(Game game, Player player)
         {
+            if (!game.IsFocused) return;
+
             bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape);
 
             if (esc)
@@ -106,6 +114,8 @@ namespace _2DGame.Utility
 
         public static void ProcessGameOverScreenKeys(Game game, Leaderboard leaderboard, GameOverScreen gameOverScreen)
         {
+            if (!game.IsFocused) return;
+
             bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter);
 
             if (enter && gameOverScreen.GetPlayerName().Length != 0)

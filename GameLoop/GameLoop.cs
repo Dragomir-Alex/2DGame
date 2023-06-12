@@ -14,7 +14,7 @@ namespace _2DGame
         {
             StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused, GameOver
         }
-
+        public bool IsFocused { get; private set; }
         public RenderWindow Window { get; private set; }
         public RenderTexture RenderTexture { get; private set; }
         public GameTime GameTime { get; private set; }
@@ -30,11 +30,18 @@ namespace _2DGame
             RenderTexture = new RenderTexture(windowWidth, windowHeight);
             GameTime = new GameTime();
             CurrentState = GameState.StartingUp;
+            IsFocused = true;
 
             Window.LostFocus += (s, e) =>
             {
                 if (CurrentState == GameState.Level)
                     CurrentState = GameState.Paused;
+                IsFocused = false;
+            };
+
+            Window.GainedFocus += (s, e) =>
+            {
+                IsFocused = true;
             };
 
             Window.Closed += (s, e) =>

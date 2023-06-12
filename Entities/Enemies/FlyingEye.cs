@@ -199,12 +199,12 @@ namespace _2DGame.Entities.Enemies
 
         public override void Update(Level level, GameLoop gameLoop)
         {
-            ApplyGravity();
             Velocity = UtilityFunctions.UpdateVelocity(Velocity, currentVelocityReduction.X, currentVelocityReduction.Y, MAX_VELOCITY, MAX_VELOCITY);
             UpdatePosition((SpriteLayer)level.Layers[LayerList.PRIMARY_LAYER]);
             UpdateCurrentState();
             UpdateAnimatedSprite();
             invincibilityFrames.Update();
+            ApplyGravity();
         }
 
         private void ApplyGravity()

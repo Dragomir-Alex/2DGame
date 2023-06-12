@@ -320,8 +320,6 @@ namespace _2DGame.Utility
                     }
                 }
             }
-
-            gameLoop.RenderTexture.SetView(player.Camera); // Back to player camera
         }
     }
 }
