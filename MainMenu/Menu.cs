@@ -23,7 +23,7 @@ namespace _2DGame.MainMenu
         private DetailLayer background;
         private Button leaderboardButtonRef;
 
-        public const string MENU_MUSIC_FILENAME = "passage.ogg";
+        public const string MENU_MUSIC_FILENAME = "menu_music.ogg";
         public enum PageName { MainPage, Settings, HighScores, Credits }
         public Dictionary<PageName, Page> Pages { get; set; }
         public PageName CurrentPage { get; set; }
@@ -107,12 +107,20 @@ namespace _2DGame.MainMenu
             Text title = new Text("Credits", TextureManager.GameFontBold, 40);
             title.OutlineThickness = 2;
             title.FillColor = Color.White;
-            title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 4);
+            title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 16);
             creditsPage.Title = title;
 
             ButtonAction creditsButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0); 
-            Button creditsButton = new Button("Dodo-Codes - TransformableHitbox2D and TileData libraries, coding help\nBlade - Tileset\n\nMore TBA!", 20, TextureManager.GameFontBold, Color.White, Color.White, creditsButtonAction);
-            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
+            Button creditsButton = new Button(
+                "Dodo-Codes - TransformableHitbox2D and TileData libraries, coding help \nhttps://github.com/Dodo-Codes\n\n" +
+                "Sampo 'Blade' Vesanen - 'Aztec 2' tileset \nhttps://www.jazz2online.com/downloads/7852/aztec-2\n\n" +
+                "c1b0rg0101 - Witch sprite sheet \nhttps://c1b0rg0101.itch.io/little-witch-pixel-character-animation\n\n" +
+                "LuizMelo - Enemy sprite sheets \nhttps://luizmelo.itch.io/monsters-creatures-fantasy\n\n" +
+                "Lunarnia - Gem sprite sheet \nhttps://lunarnia.itch.io\n\n" +
+                "LoadedInReverse - Life hearts animation \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
+                "Extra free assets, music and sounds from Freesound (freesound.org) and OpenGameArt (opengameart.org)", 18, TextureManager.GameFontBold, Color.White, Color.White, creditsButtonAction);
+            creditsButton.ButtonText.LineSpacing = 0.8f;
+            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 4));
             creditsPage.AddButton(creditsButton);
 
             ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);

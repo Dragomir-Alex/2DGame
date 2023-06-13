@@ -199,7 +199,7 @@ namespace _2DGame
                     Display();
 
                     level.LoadData("level.tmx", "level_entitydata.json", "level_layerdata.json");
-                    level.Initialize("lush.ogg");
+                    level.Initialize("level_music.ogg");
                     TextureManager.InitializeLevelSprites(level, this);
 
                     player.Initialize(level.TileStartPosition);

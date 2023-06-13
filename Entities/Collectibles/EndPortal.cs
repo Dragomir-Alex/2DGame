@@ -32,6 +32,7 @@ namespace _2DGame.Entities.Collectibles
 
         public const int WIDTH = 26;
         public const int HEIGHT = 42;
+        public const int SCORE = 500;
 
         public EndPortal() : base(6) { CurrentDirection = IAnimated.Direction.Left; }
 
@@ -50,6 +51,7 @@ namespace _2DGame.Entities.Collectibles
                 if (entity is Player)
                 {
                     (entity as Player).HasFinishedLevel = true;
+                    Score.Add(SCORE);
                 }
             }
         }
