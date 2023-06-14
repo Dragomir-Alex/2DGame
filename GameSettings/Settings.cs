@@ -11,6 +11,7 @@ namespace _2DGame.GameSettings
     {
         private static int musicVolume = 50;
         private static int soundVolume = 50;
+
         public const string SETTINGS_FILENAME_PATH = "./Data/settings.json";
         public static int MusicVolume
         {
@@ -46,6 +47,8 @@ namespace _2DGame.GameSettings
             }
         }
 
+        public static string Language { get; set; } = "English";
+
         public static void Load()
         {
             if (File.Exists(SETTINGS_FILENAME_PATH))
@@ -54,6 +57,7 @@ namespace _2DGame.GameSettings
                 SettingsJson settingsJson = JsonSerializer.Deserialize<SettingsJson>(jsonString)!;
                 MusicVolume = settingsJson.MusicVolume;
                 SoundVolume = settingsJson.SoundVolume;
+                Language = settingsJson.Language;
             }
             else
             {
@@ -63,7 +67,7 @@ namespace _2DGame.GameSettings
 
         public static void Save()
         {
-            var settingsJson = new SettingsJson(musicVolume, soundVolume);
+            var settingsJson = new SettingsJson(musicVolume, soundVolume, Language);
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(settingsJson, options);
             File.WriteAllText(SETTINGS_FILENAME_PATH, jsonString);

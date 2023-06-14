@@ -17,7 +17,7 @@ namespace _2DGame.LevelUI
 
         public void Update()
         {
-            text = new Text("Score: " + Score.GetString(), TextureManager.GameFont);
+            text = new Text(LanguageStrings.ScoreString + Score.GetString(), TextureManager.GameFont);
             text.CharacterSize = 30;
             text.Position = new Vector2f((int)(Game.WINDOW_WIDTH - text.GetGlobalBounds().Width - 20), (int)(Game.WINDOW_HEIGHT - text.GetGlobalBounds().Height - 20));
             text.FillColor = Color.White;

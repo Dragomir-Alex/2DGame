@@ -10,11 +10,13 @@ namespace _2DGame.GameSettings
     {
         public int MusicVolume { get; set; }
         public int SoundVolume { get; set; }
+        public string Language { get; set; }
 
-        public SettingsJson(int musicVolume, int soundVolume)
+        public SettingsJson(int musicVolume, int soundVolume, string language)
         {
             MusicVolume = musicVolume;
             SoundVolume = soundVolume;
+            Language = language;
         }
     }
 }

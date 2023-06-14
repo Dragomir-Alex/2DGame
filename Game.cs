@@ -107,6 +107,8 @@ namespace _2DGame
 
         public override void Initialize()
         {
+            LanguageStrings.Initialize();
+
             gameOverScreen = new GameOverScreen();
             pauseScreen = new PauseScreen();
 
