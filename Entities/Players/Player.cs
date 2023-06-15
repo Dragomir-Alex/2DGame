@@ -81,7 +81,9 @@ namespace _2DGame.Entities.Players
 
         public override void Initialize(Vector2i startPosition)
         {
-            Position = new Vector2f(startPosition.X * Tilemap.TILE_SIZE, startPosition.Y * Tilemap.TILE_SIZE);
+            Position = new Vector2f(
+                startPosition.X * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2,
+                startPosition.Y * Tilemap.TILE_SIZE + Tilemap.TILE_SIZE / 2);
 
             InitializeHitbox();
         }
