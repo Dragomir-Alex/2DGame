@@ -98,7 +98,7 @@ namespace _2DGame.LevelUI
             playerNameText.DisplayedString = "";
         }
 
-        public string GetPlayerName() { return playerNameSB.ToString(); }
+        public string GetPlayerName() { return playerNameSB.ToString().Trim(); }
 
         private void KeyboardKeyPressed(object? sender, SFML.Window.TextEventArgs e)
         {
@@ -112,7 +112,7 @@ namespace _2DGame.LevelUI
             if ((ascii >= 48 && ascii <= 57)
                 || (ascii >= 65 && ascii <= 90)
                 || (ascii >= 97 && ascii <= 122)
-                || (ascii == 32))
+                || (ascii == 32 && playerNameSB.Length > 0))
             {
                 if (playerNameSB.Length < MAX_STRING_SIZE)
                 {
