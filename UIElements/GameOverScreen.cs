@@ -45,9 +45,9 @@ namespace _2DGame.LevelUI
             bottomHintText.FillColor = Color.White;
         }
 
-        public void Initialize(bool won)
+        public void Initialize(GameLoop gameLoop, bool won)
         {
-            if (!initialized)
+            if (!initialized && gameLoop.CurrentState == GameLoop.GameState.GameOver)
             {
                 initialized = true;
 

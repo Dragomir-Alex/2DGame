@@ -21,10 +21,12 @@ namespace _2DGame.MainMenu
     public class Menu : Drawable
     {
         private DetailLayer background;
-        private Button leaderboardButtonRef;
+        private Button localLeaderboardButtonRef;
+        private Button globalLeaderboardButtonRef;
+        private bool isUpdatingGlobalLeaderboards = false;
 
         public const string MENU_MUSIC_FILENAME = "menu_music.ogg";
-        public enum PageName { MainPage, Settings, HighScores, Credits }
+        public enum PageName { MainPage, Settings, LocalHighScores, GlobalHighScores, Credits }
         public Dictionary<PageName, Page> Pages { get; set; }
         public PageName CurrentPage { get; set; }
 
@@ -54,7 +56,8 @@ namespace _2DGame.MainMenu
             CreateMainPage();
             CreateCreditsPage();
             CreateSettingsPage();
-            CreateHighScoresPage();
+            CreateLocalHighScoresPage();
+            CreateGlobalHighScoresPage();
         }
 
         public static DetailLayer CreateMenuBackground(TileData tileIDs)
@@ -83,7 +86,7 @@ namespace _2DGame.MainMenu
             settingsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 60));
             mainPage.AddButton(settingsButton);
 
-            ButtonAction highScoresButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "HighScores", 0);
+            ButtonAction highScoresButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "LocalHighScores", 0);
             Button highScoresButton = new Button(LanguageStrings.HighScoresButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, highScoresButtonAction);
             highScoresButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 120));
             mainPage.AddButton(highScoresButton);
@@ -175,22 +178,27 @@ namespace _2DGame.MainMenu
             settingsPage.AddButton(backButton);
         }
 
-        private void CreateHighScoresPage()
+        private void CreateLocalHighScoresPage()
         {
-            Page highScoresPage = Pages[PageName.HighScores];
+            Page highScoresPage = Pages[PageName.LocalHighScores];
             highScoresPage.Background = background;
 
-            Text title = new Text(LanguageStrings.HighScoresTitleString, TextureManager.GameFontBold, 40);
+            Text title = new Text(LanguageStrings.LocalHighScoresTitleString, TextureManager.GameFontBold, 40);
             title.OutlineThickness = 2;
             title.FillColor = Color.White;
-            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 5));
+            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 6));
             highScoresPage.Title = title;
 
             ButtonAction leaderboardButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0);
             Button leaderboardButton = new Button("", 30, TextureManager.GameFontBold, Color.White, Color.White, leaderboardButtonAction);
             leaderboardButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
             highScoresPage.AddButton(leaderboardButton);
-            leaderboardButtonRef = leaderboardButton;
+            localLeaderboardButtonRef = leaderboardButton;
+
+            ButtonAction globalHighScoresButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "GlobalHighScores", 0);
+            Button globalHighScoresButton = new Button(">", 80, TextureManager.GameFontBold, Color.White, Color.Red, globalHighScoresButtonAction);
+            globalHighScoresButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH - 50), (int)(Game.WINDOW_HEIGHT / 2));
+            highScoresPage.AddButton(globalHighScoresButton);
 
             ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
             Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
@@ -198,18 +206,68 @@ namespace _2DGame.MainMenu
             highScoresPage.AddButton(backButton);
         }
 
-        public void UpdateLeaderboard(Leaderboard leaderboard)
+        private void CreateGlobalHighScoresPage()
         {
-            if (leaderboard == null || leaderboardButtonRef == null) return;
+            Page highScoresPage = Pages[PageName.GlobalHighScores];
+            highScoresPage.Background = background;
+
+            Text title = new Text(LanguageStrings.GlobalHighScoresTitleString, TextureManager.GameFontBold, 40);
+            title.OutlineThickness = 2;
+            title.FillColor = Color.White;
+            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 6));
+            highScoresPage.Title = title;
+
+            ButtonAction leaderboardButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0);
+            Button leaderboardButton = new Button("", 30, TextureManager.GameFontBold, Color.White, Color.White, leaderboardButtonAction);
+            leaderboardButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
+            highScoresPage.AddButton(leaderboardButton);
+            globalLeaderboardButtonRef = leaderboardButton;
+
+            ButtonAction localHighScoresButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "LocalHighScores", 0);
+            Button localHighScoresButton = new Button("<", 80, TextureManager.GameFontBold, Color.White, Color.Red, localHighScoresButtonAction);
+            localHighScoresButton.ButtonText.Position = new Vector2f(50, (int)(Game.WINDOW_HEIGHT / 2));
+            highScoresPage.AddButton(localHighScoresButton);
+
+            ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
+            Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
+            backButton.ButtonText.Position = new Vector2f(50, (int)(Game.WINDOW_HEIGHT - 50));
+            highScoresPage.AddButton(backButton);
+        }
+
+        public void UpdateLocalLeaderboard(Leaderboard leaderboard)
+        {
+            if (leaderboard == null || localLeaderboardButtonRef == null) return;
 
             StringBuilder leaderboardSB = new();
-            for (int i = 0; i < leaderboard.HighScores.Count; ++i)
+            for (int i = 0; i < leaderboard.LocalHighScores.Count; ++i)
             {
-                leaderboardSB.AppendLine((i + 1) + ". " + leaderboard.HighScores[i].Name + "   -   " + leaderboard.HighScores[i].Score);
+                leaderboardSB.AppendLine((i + 1) + ". " + leaderboard.LocalHighScores[i].Name + "   -   " + leaderboard.LocalHighScores[i].Score);
             }
 
-            leaderboardButtonRef.SetDisplayedString(leaderboardSB.ToString());
-            leaderboardButtonRef.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2));
+            localLeaderboardButtonRef.SetDisplayedString(leaderboardSB.ToString());
+            localLeaderboardButtonRef.ButtonText.Origin = new Vector2f((int)(localLeaderboardButtonRef.ButtonText.GetGlobalBounds().Width / 2), 0);
+            localLeaderboardButtonRef.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 4));
+        }
+
+        public async Task UpdateGlobalLeaderboard(Leaderboard leaderboard)
+        {
+            if (leaderboard == null || globalLeaderboardButtonRef == null || isUpdatingGlobalLeaderboards) return;
+
+            isUpdatingGlobalLeaderboards = true;
+
+            await leaderboard.GetLeaderboardFromDatabase();
+
+            StringBuilder leaderboardSB = new();
+            for (int i = 0; i < leaderboard.GlobalHighScores.Count; ++i)
+            {
+                leaderboardSB.AppendLine((i + 1) + ". " + leaderboard.GlobalHighScores[i].Name + "   -   " + leaderboard.GlobalHighScores[i].Score);
+            }
+
+            globalLeaderboardButtonRef.SetDisplayedString(leaderboardSB.ToString());
+            globalLeaderboardButtonRef.ButtonText.Origin = new Vector2f((int)(globalLeaderboardButtonRef.ButtonText.GetGlobalBounds().Width / 2), 0);
+            globalLeaderboardButtonRef.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 4));
+
+            isUpdatingGlobalLeaderboards = false;
         }
 
         public void ProcessButtonAction(ButtonAction buttonAction, GameLoop gameLoop)

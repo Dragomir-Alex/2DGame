@@ -9,12 +9,13 @@ namespace _2DGame.Utility
 {
     public static class LanguageStrings
     {
-        public static string LoadingScreenString { get; private set; }
+        public static string LoadingString { get; private set; }
         public static string StartGameButtonString { get; private set; }
         public static string SettingsButtonString { get; private set; }
         public static string SettingsTitleString { get; private set; }
         public static string HighScoresButtonString { get; private set; }
-        public static string HighScoresTitleString { get; private set; }
+        public static string LocalHighScoresTitleString { get; private set; }
+        public static string GlobalHighScoresTitleString { get; private set; }
         public static string CreditsButtonString { get; private set; }
         public static string CreditsTitleString { get; private set; }
         public static string CloseGameButtonString { get; private set; }
@@ -38,12 +39,13 @@ namespace _2DGame.Utility
 
         public static void SetEnglish()
         {
-            LoadingScreenString = "Loading...";
+            LoadingString = "Loading...";
             StartGameButtonString = "START GAME";
             SettingsButtonString = "SETTINGS";
             SettingsTitleString = "Settings";
             HighScoresButtonString = "HIGH SCORES";
-            HighScoresTitleString = "High Scores";
+            LocalHighScoresTitleString = "Local High Scores";
+            GlobalHighScoresTitleString = "Global High Scores";
             CreditsButtonString = "CREDITS";
             CreditsTitleString = "Credits";
             CreditsString =
@@ -69,12 +71,13 @@ namespace _2DGame.Utility
 
         public static void SetRomanian()
         {
-            LoadingScreenString = "Se incarca...";
+            LoadingString = "Se incarca...";
             StartGameButtonString = "INCEPE JOCUL";
             SettingsButtonString = "SETARI";
             SettingsTitleString = "Setari";
             HighScoresButtonString = "SCORURI MARI";
-            HighScoresTitleString = "Scoruri mari";
+            LocalHighScoresTitleString = "Scoruri mari locale";
+            GlobalHighScoresTitleString = "Scoruri mari globale";
             CreditsButtonString = "CREDITE";
             CreditsTitleString = "Credite";
             CreditsString =

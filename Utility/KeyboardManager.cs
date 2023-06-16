@@ -15,6 +15,7 @@ namespace _2DGame.Utility
         private static bool previousDebugState;
         private static bool previousLeftClickState;
         private static bool previousToggleCollisionsState;
+        private static bool isProcessingGameOver = false;
 
         public static void ProcessPlayerKeys(GameLoop gameLoop, Player player)
         {
@@ -112,18 +113,22 @@ namespace _2DGame.Utility
             ProcessLevelKeys(game, player);
         }
 
-        public static void ProcessGameOverScreenKeys(Game game, Leaderboard leaderboard, GameOverScreen gameOverScreen)
+        public static async Task ProcessGameOverScreenKeys(Game game, Leaderboard leaderboard, GameOverScreen gameOverScreen)
         {
-            if (!game.IsFocused) return;
+            if (!game.IsFocused || isProcessingGameOver) return;
 
             bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter);
 
             if (enter && gameOverScreen.GetPlayerName().Length != 0)
             {
-                leaderboard.Add(gameOverScreen.GetPlayerName(), Score.Value);
+                isProcessingGameOver = true;
+
+                await leaderboard.Add(gameOverScreen.GetPlayerName(), Score.Value);
                 leaderboard.Save();
-                gameOverScreen.Reset(game);
                 game.CurrentState = GameLoop.GameState.LoadingMenu;
+                gameOverScreen.Reset(game);
+
+                isProcessingGameOver = false;
             }
         }
     }

@@ -180,7 +180,8 @@ namespace _2DGame
                     SoundManager.LoadSounds();
                     SoundManager.SetSoundVolume((uint)Settings.SoundVolume);
                     leaderboard.Load();
-                    menu.UpdateLeaderboard(leaderboard);
+                    menu.UpdateLocalLeaderboard(leaderboard);
+                    menu.UpdateGlobalLeaderboard(leaderboard);
                     CurrentState = GameState.Menu;
                     break;
 
@@ -190,7 +191,8 @@ namespace _2DGame
 
                     player.Reset();
                     Score.Reset();
-                    menu.UpdateLeaderboard(leaderboard);
+                    menu.UpdateLocalLeaderboard(leaderboard);
+                    menu.UpdateGlobalLeaderboard(leaderboard);
 
                     SoundManager.SetCurrentTrack(Menu.MENU_MUSIC_FILENAME);
                     CurrentState = GameState.Menu;
@@ -235,7 +237,7 @@ namespace _2DGame
 
                 case GameState.GameOver:
                     SoundManager.StopMusic();
-                    gameOverScreen.Initialize(player.Health.CurrentHealth != 0);
+                    gameOverScreen.Initialize(this, player.Health.CurrentHealth != 0);
                     gameOverScreen.Update();
                     gameOverScreen.TextEnteredSubscribe(this);
                     break;

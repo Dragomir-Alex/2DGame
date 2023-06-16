@@ -1,6 +1,9 @@
 ﻿using _2DGame.GameSettings;
+using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,13 +14,17 @@ namespace _2DGame
 {
     public class Leaderboard
     {
-        public List<HighScore> HighScores { get; private set; }
-        public const int MAX_HIGHSCORES_COUNT = 5;
+        public List<HighScore> LocalHighScores { get; private set; }
+        public List<HighScore> GlobalHighScores { get; private set; }
+
+        public const int MAX_HIGHSCORES_COUNT = 10;
         public const string HIGHSCORES_FILE_PATH = "./Data/highscores.json";
+        public const string CONNECTION_STRING = "Host=3.72.246.58;Username=player;Password=1234;Database=postgres;SSL Mode=Require;Trust Server Certificate=true";
 
         public Leaderboard()
         {
-            HighScores = new();
+            LocalHighScores = new();
+            GlobalHighScores = new();
         }
 
         public void Load()
@@ -25,7 +32,7 @@ namespace _2DGame
             if (File.Exists(HIGHSCORES_FILE_PATH))
             {
                 string jsonString = File.ReadAllText(HIGHSCORES_FILE_PATH);
-                HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString)!;
+                LocalHighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString)!;
             }
             else
             {
@@ -36,18 +43,64 @@ namespace _2DGame
         public void Save()
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(HighScores, options);
+            string jsonString = JsonSerializer.Serialize(LocalHighScores, options);
             File.WriteAllText(HIGHSCORES_FILE_PATH, jsonString);
         }
 
-        public void Add(string name, int score)
+        public async Task Add(string name, int score)
         {
-            if (HighScores.Count < MAX_HIGHSCORES_COUNT || score > HighScores[HighScores.Count - 1].Score)
+            await AddToDatabase(name, score);
+
+            if (LocalHighScores.Count < MAX_HIGHSCORES_COUNT || score > LocalHighScores[LocalHighScores.Count - 1].Score)
             {
-                HighScores.Add(new(name, score));
-                HighScores.Sort(delegate (HighScore hs1, HighScore hs2) { return (hs2.Score.CompareTo(hs1.Score)); });
-                if (HighScores.Count > MAX_HIGHSCORES_COUNT)
-                    HighScores.RemoveAt(HighScores.Count - 1);
+                LocalHighScores.Add(new(name, score));
+                LocalHighScores.Sort(delegate (HighScore hs1, HighScore hs2) { return (hs2.Score.CompareTo(hs1.Score)); });
+                if (LocalHighScores.Count > MAX_HIGHSCORES_COUNT)
+                    LocalHighScores.RemoveAt(LocalHighScores.Count - 1);
+            }
+        }
+
+        private async Task AddToDatabase(string name, int score)
+        {
+            await using var dataSource = NpgsqlDataSource.Create(CONNECTION_STRING);
+
+            try
+            {
+                await using (var cmd = dataSource.CreateCommand("INSERT INTO user_scores (user_name, score) VALUES ($1, $2)"))
+                {
+                    cmd.CommandTimeout = 3;
+                    cmd.Parameters.AddWithValue(name);
+                    cmd.Parameters.AddWithValue(score);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        public async Task GetLeaderboardFromDatabase()
+        {
+            GlobalHighScores.Clear();
+
+            await using var dataSource = NpgsqlDataSource.Create(CONNECTION_STRING);
+
+            try
+            {
+                await using (var cmd = dataSource.CreateCommand("SELECT user_name, score FROM user_scores ORDER BY score DESC LIMIT 10"))
+                await using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    cmd.CommandTimeout = 3;
+                    while (await reader.ReadAsync())
+                    {
+                        GlobalHighScores.Add(new HighScore(reader.GetString(0), reader.GetInt32(1)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
 
