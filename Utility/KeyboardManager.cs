@@ -20,11 +20,11 @@ namespace _2DGame.Utility
         {
             if (!gameLoop.IsFocused) return;
 
-            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left);
-            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right);
-            bool moveUp = (Keyboard.IsKeyPressed(Keyboard.Key.Up) || Keyboard.IsKeyPressed(Keyboard.Key.X));
-            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.Down);
-            bool attack = Keyboard.IsKeyPressed(Keyboard.Key.Z);
+            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left) || Keyboard.IsKeyPressed(Keyboard.Key.A);
+            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right) || Keyboard.IsKeyPressed(Keyboard.Key.D);
+            bool moveUp = (Keyboard.IsKeyPressed(Keyboard.Key.Up) || Keyboard.IsKeyPressed(Keyboard.Key.X) || Keyboard.IsKeyPressed(Keyboard.Key.L));
+            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.Down) || Keyboard.IsKeyPressed(Keyboard.Key.S);
+            bool attack = Keyboard.IsKeyPressed(Keyboard.Key.Z) || Keyboard.IsKeyPressed(Keyboard.Key.K);
 
             bool isMove = moveLeft || moveRight || moveUp || moveDown;
 
@@ -74,7 +74,7 @@ namespace _2DGame.Utility
         {
             if (!game.IsFocused) return;
 
-            bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P);
+            bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P) || Keyboard.IsKeyPressed(Keyboard.Key.Escape);
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
             bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2);
 
@@ -104,7 +104,7 @@ namespace _2DGame.Utility
 
             bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape);
 
-            if (esc)
+            if (esc && !previousPauseState)
             {
                 game.CurrentState = GameLoop.GameState.LoadingMenu;
             }
