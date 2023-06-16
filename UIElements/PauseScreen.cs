@@ -21,7 +21,8 @@ namespace _2DGame.LevelUI
 
             text = new Text(LanguageStrings.PausedMenuString, TextureManager.GameFont);
             text.CharacterSize = 60;
-            text.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - text.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2 - text.GetGlobalBounds().Height / 2));
+            text.Origin = new Vector2f((int)(text.GetGlobalBounds().Width / 2), (int)(text.GetGlobalBounds().Height / 2));
+            text.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2));
             text.FillColor = Color.White;
         }
 

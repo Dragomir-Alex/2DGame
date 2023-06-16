@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,16 @@ namespace _2DGame.MainMenu
 {
     public class Page : Drawable
     {
-        public Text Title { get; set; }
+        private Text title;
+        public Text Title
+        {
+            get { return title; }
+            set
+            {
+                title = value;
+                title.Origin = new Vector2f((int)(title.GetGlobalBounds().Width / 2), (int)(title.GetGlobalBounds().Height / 2));
+            }
+        }
         public DetailLayer Background { get; set; }
         public List<Button> Buttons { get; set; }
         public Sprite? LogoSprite { get; set; }

@@ -46,7 +46,7 @@ namespace _2DGame.Utility
         {
             if (!gameLoop.IsFocused) return;
 
-            bool leftClick = Mouse.IsButtonPressed(Mouse.Button.Left);
+            bool buttonPress = Mouse.IsButtonPressed(Mouse.Button.Left) || Keyboard.IsKeyPressed(Keyboard.Key.Enter) || Keyboard.IsKeyPressed(Keyboard.Key.Space);
 
             Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
 
@@ -56,7 +56,7 @@ namespace _2DGame.Utility
                 {
                     button.IsHovered = true;
 
-                    if (leftClick && leftClick != previousLeftClickState)
+                    if (buttonPress && buttonPress != previousLeftClickState)
                     {
                         menu.ProcessButtonAction(button.OnMouseClick(), gameLoop);
                     }
@@ -67,7 +67,7 @@ namespace _2DGame.Utility
                 }
             }
 
-            previousLeftClickState = leftClick;
+            previousLeftClickState = buttonPress;
         }
 
         public static void ProcessLevelKeys(Game game, Player player)

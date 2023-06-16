@@ -31,6 +31,8 @@ namespace _2DGame.MainMenu.Buttons
                 FillColor = DefaultColor,
                 OutlineThickness = 2
             };
+
+            ButtonText.Origin = new Vector2f((int)(ButtonText.GetGlobalBounds().Width / 2), (int)(ButtonText.GetGlobalBounds().Height / 2));
         }
 
         public ButtonAction OnMouseClick()
@@ -40,6 +42,12 @@ namespace _2DGame.MainMenu.Buttons
                 return Action;
             }
             else return new ButtonAction(ButtonAction.Type.None, "", 0);
+        }
+
+        public void SetDisplayedString(string displayedString)
+        {
+            ButtonText.DisplayedString = displayedString;
+            ButtonText.Origin = new Vector2f((int)(ButtonText.GetGlobalBounds().Width / 2), (int)(ButtonText.GetGlobalBounds().Height / 2));
         }
 
         public void Update()

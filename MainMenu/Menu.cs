@@ -75,27 +75,27 @@ namespace _2DGame.MainMenu
 
             ButtonAction startButtonAction = new ButtonAction(ButtonAction.Type.StartLevel, "", 0);
             Button startButton = new Button(LanguageStrings.StartGameButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, startButtonAction);
-            startButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - startButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.2f));
+            startButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f));
             mainPage.AddButton(startButton);
 
             ButtonAction settingsButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "Settings", 0);
             Button settingsButton = new Button(LanguageStrings.SettingsButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, settingsButtonAction);
-            settingsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - settingsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 60));
+            settingsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 60));
             mainPage.AddButton(settingsButton);
 
             ButtonAction highScoresButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "HighScores", 0);
             Button highScoresButton = new Button(LanguageStrings.HighScoresButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, highScoresButtonAction);
-            highScoresButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - highScoresButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 120));
+            highScoresButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 120));
             mainPage.AddButton(highScoresButton);
 
             ButtonAction creditsButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "Credits", 0);
             Button creditsButton = new Button(LanguageStrings.CreditsButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, creditsButtonAction);
-            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 180));
+            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 180));
             mainPage.AddButton(creditsButton);
 
             ButtonAction quitButtonAction = new ButtonAction(ButtonAction.Type.QuitGame, "", 0);
             Button quitButton = new Button(LanguageStrings.CloseGameButtonString, 30, TextureManager.GameFontBold, Color.White, Color.Red, quitButtonAction);
-            quitButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - quitButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 240));
+            quitButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.2f + 240));
             mainPage.AddButton(quitButton);
         }
 
@@ -107,18 +107,18 @@ namespace _2DGame.MainMenu
             Text title = new Text(LanguageStrings.CreditsTitleString, TextureManager.GameFontBold, 40);
             title.OutlineThickness = 2;
             title.FillColor = Color.White;
-            title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 16);
+            title.Position = new Vector2f(Game.WINDOW_WIDTH / 2, Game.WINDOW_HEIGHT / 16);
             creditsPage.Title = title;
 
             ButtonAction creditsButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0); 
             Button creditsButton = new Button(LanguageStrings.CreditsString, 18, TextureManager.GameFontBold, Color.White, Color.White, creditsButtonAction);
             creditsButton.ButtonText.LineSpacing = 0.8f;
-            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - creditsButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 4));
+            creditsButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 1.8));
             creditsPage.AddButton(creditsButton);
 
             ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
             Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
-            backButton.ButtonText.Position = new Vector2f(30, (int)(Game.WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
+            backButton.ButtonText.Position = new Vector2f(50, (int)(Game.WINDOW_HEIGHT - 50));
             creditsPage.AddButton(backButton);
         }
 
@@ -130,16 +130,15 @@ namespace _2DGame.MainMenu
             Text title = new Text(LanguageStrings.SettingsTitleString, TextureManager.GameFontBold, 40);
             title.OutlineThickness = 2;
             title.FillColor = Color.White;
-            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 6));
+            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 6));
             settingsPage.Title = title;
 
             ButtonAction leftArrowMusicAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "MusicVolume", -10);
             ButtonAction rightArrowMusicAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "MusicVolume", 10);
             LeftRightButtons musicVolumeButtons = new LeftRightButtons(LanguageStrings.MusicVolumeButtonString, "MusicVolume", 30, TextureManager.GameFont, TextureManager.GameFontBold, Color.White, Color.Red, leftArrowMusicAction, rightArrowMusicAction);
 
-            var musicVolumeButtonsSize = musicVolumeButtons.GetSize();
-            musicVolumeButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2 - musicVolumeButtonsSize.X / 2), (int)(Game.WINDOW_HEIGHT / 2.5)));
-            musicVolumeButtons.SettingValue.ButtonText.DisplayedString = Settings.MusicVolume.ToString();
+            musicVolumeButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5)));
+            musicVolumeButtons.SettingValue.SetDisplayedString(Settings.MusicVolume.ToString());
 
             settingsPage.AddButton(musicVolumeButtons.Label);
             settingsPage.AddButton(musicVolumeButtons.LeftArrow);
@@ -150,9 +149,8 @@ namespace _2DGame.MainMenu
             ButtonAction rightArrowSoundAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "SoundVolume", 10);
             LeftRightButtons soundVolumeButtons = new LeftRightButtons(LanguageStrings.SoundVolumeButtonString, "SoundVolume", 30, TextureManager.GameFont, TextureManager.GameFontBold, Color.White, Color.Red, leftArrowSoundAction, rightArrowSoundAction);
 
-            var soundVolumeButtonsSize = soundVolumeButtons.GetSize();
-            soundVolumeButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2 - soundVolumeButtonsSize.X / 2), (int)(Game.WINDOW_HEIGHT / 2.5) + 140));
-            soundVolumeButtons.SettingValue.ButtonText.DisplayedString = Settings.SoundVolume.ToString();
+            soundVolumeButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5) + 140));
+            soundVolumeButtons.SettingValue.SetDisplayedString(Settings.SoundVolume.ToString());
 
             settingsPage.AddButton(soundVolumeButtons.Label);
             settingsPage.AddButton(soundVolumeButtons.LeftArrow);
@@ -163,10 +161,8 @@ namespace _2DGame.MainMenu
             ButtonAction rightArrowLanguageAction = new ButtonAction(ButtonAction.Type.ChangeSetting, "Language", 0);
             LeftRightButtons languageButtons = new LeftRightButtons(LanguageStrings.LanguageButtonString, "Language", 30, TextureManager.GameFont, TextureManager.GameFontBold, Color.White, Color.Red, leftArrowLanguageAction, rightArrowLanguageAction);
 
-            var languageButtonsSize = languageButtons.GetSize();
-            languageButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2 - languageButtonsSize.X / 2), (int)(Game.WINDOW_HEIGHT / 2.5) + 280));
-            languageButtons.SettingValue.ButtonText.Position = new Vector2f(languageButtons.SettingValue.ButtonText.Position.X - 50, languageButtons.SettingValue.ButtonText.Position.Y);
-            languageButtons.SettingValue.ButtonText.DisplayedString = Settings.Language;
+            languageButtons.SetPosition(new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5) + 280));
+            languageButtons.SettingValue.SetDisplayedString(Settings.Language);
 
             settingsPage.AddButton(languageButtons.Label);
             settingsPage.AddButton(languageButtons.LeftArrow);
@@ -175,7 +171,7 @@ namespace _2DGame.MainMenu
 
             ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
             Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
-            backButton.ButtonText.Position = new Vector2f(30, (int)(Game.WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
+            backButton.ButtonText.Position = new Vector2f(50, (int)(Game.WINDOW_HEIGHT - 50));
             settingsPage.AddButton(backButton);
         }
 
@@ -187,18 +183,18 @@ namespace _2DGame.MainMenu
             Text title = new Text(LanguageStrings.HighScoresTitleString, TextureManager.GameFontBold, 40);
             title.OutlineThickness = 2;
             title.FillColor = Color.White;
-            title.Position = new Vector2f(Game.WINDOW_WIDTH / 2 - title.GetGlobalBounds().Width / 2, Game.WINDOW_HEIGHT / 4);
+            title.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 5));
             highScoresPage.Title = title;
 
             ButtonAction leaderboardButtonAction = new ButtonAction(ButtonAction.Type.None, "", 0);
             Button leaderboardButton = new Button("", 30, TextureManager.GameFontBold, Color.White, Color.White, leaderboardButtonAction);
-            leaderboardButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - leaderboardButton.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
+            leaderboardButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
             highScoresPage.AddButton(leaderboardButton);
             leaderboardButtonRef = leaderboardButton;
 
             ButtonAction backButtonAction = new ButtonAction(ButtonAction.Type.ChangePage, "MainPage", 0);
             Button backButton = new Button("<", 50, TextureManager.GameFontBold, Color.White, Color.Red, backButtonAction);
-            backButton.ButtonText.Position = new Vector2f(30, (int)(Game.WINDOW_HEIGHT - backButton.ButtonText.GetGlobalBounds().Height - 30));
+            backButton.ButtonText.Position = new Vector2f(50, (int)(Game.WINDOW_HEIGHT - 50));
             highScoresPage.AddButton(backButton);
         }
 
@@ -212,8 +208,8 @@ namespace _2DGame.MainMenu
                 leaderboardSB.AppendLine((i + 1) + ". " + leaderboard.HighScores[i].Name + "   -   " + leaderboard.HighScores[i].Score);
             }
 
-            leaderboardButtonRef.ButtonText.DisplayedString = leaderboardSB.ToString();
-            leaderboardButtonRef.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - leaderboardButtonRef.ButtonText.GetGlobalBounds().Width / 2), (int)(Game.WINDOW_HEIGHT / 2.5f));
+            leaderboardButtonRef.SetDisplayedString(leaderboardSB.ToString());
+            leaderboardButtonRef.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2));
         }
 
         public void ProcessButtonAction(ButtonAction buttonAction, GameLoop gameLoop)
@@ -235,7 +231,7 @@ namespace _2DGame.MainMenu
                             if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
                                 button.OnMouseClick().Target == "SoundVolume")
                             {
-                                button.ButtonText.DisplayedString = Settings.SoundVolume.ToString();
+                                button.SetDisplayedString(Settings.SoundVolume.ToString());
                                 break;
                             }
                         }
@@ -250,7 +246,7 @@ namespace _2DGame.MainMenu
                             if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
                                 button.OnMouseClick().Target == "MusicVolume")
                             {
-                                button.ButtonText.DisplayedString = Settings.MusicVolume.ToString();
+                                button.SetDisplayedString(Settings.MusicVolume.ToString());
                                 break;
                             }
                         }
@@ -265,7 +261,7 @@ namespace _2DGame.MainMenu
                             if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
                                 button.OnMouseClick().Target == "Language")
                             {
-                                button.ButtonText.DisplayedString = Settings.Language.ToString();
+                                button.SetDisplayedString(Settings.Language.ToString());
                                 break;
                             }
                         }
