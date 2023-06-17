@@ -169,6 +169,8 @@ namespace _2DGame.Utility
             {
                 game.ToggleFullscreen();
             }
+
+            previousFullscreenState = fullscreen;
         }
     }
 }
