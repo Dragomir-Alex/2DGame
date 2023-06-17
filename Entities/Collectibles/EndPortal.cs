@@ -50,8 +50,9 @@ namespace _2DGame.Entities.Collectibles
             {
                 if (entity is Player)
                 {
-                    (entity as Player).HasFinishedLevel = true;
-                    Score.Add(SCORE);
+                    var player = entity as Player;
+                    player.HasFinishedLevel = true;
+                    Score.Add(player.Health.CurrentHealth * SCORE);
                 }
             }
         }

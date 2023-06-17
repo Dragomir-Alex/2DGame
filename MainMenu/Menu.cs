@@ -367,7 +367,7 @@ namespace _2DGame.MainMenu
                             if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
                                 button.OnMouseClick().Target == "Language")
                             {
-                                button.SetDisplayedString(Settings.Language.ToString());
+                                button.SetDisplayedString(Settings.Language);
                                 LanguageManager.UpdateAllButtons();
                                 break;
                             }

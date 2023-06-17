@@ -58,6 +58,12 @@ namespace _2DGame.LevelUI
                 Reset(gameLoop);
                 initialized = true;
 
+                if (!subscribed)
+                {
+                    TextEnteredSubscribe(gameLoop);
+                    subscribed = true;
+                }
+
                 this.won = won;
 
                 if (won)
@@ -96,14 +102,7 @@ namespace _2DGame.LevelUI
             playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - playerNameText.GetGlobalBounds().Width / 2), 350);
         }
 
-        public void TextEnteredSubscribe(GameLoop gameLoop)
-        {
-            if (!subscribed)
-            {
-                gameLoop.Window.TextEntered += KeyboardKeyPressed;
-                subscribed = true;
-            }
-        }
+        public void TextEnteredSubscribe(GameLoop gameLoop) { gameLoop.Window.TextEntered += KeyboardKeyPressed; }
 
         public void Reset(GameLoop gameLoop)
         {

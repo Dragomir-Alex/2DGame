@@ -243,7 +243,6 @@ namespace _2DGame
                     SoundManager.StopMusic();
                     gameOverScreen.Initialize(this, player.Health.CurrentHealth != 0);
                     gameOverScreen.Update();
-                    gameOverScreen.TextEnteredSubscribe(this);
                     break;
 
                 default:
@@ -273,6 +272,11 @@ namespace _2DGame
             windowStyle = (windowStyle == Styles.Default) ? Styles.Fullscreen : Styles.Default;
             Window.Close();
             WindowSetup(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, windowStyle);
+
+            if (CurrentState == GameState.GameOver)
+            {
+                gameOverScreen.TextEnteredSubscribe(this);
+            }
         }
     }
 }
