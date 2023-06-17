@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
+using _2DGame.Utility;
 
 namespace _2DGame
 {
@@ -31,6 +32,9 @@ namespace _2DGame
             GameTime = new GameTime();
             CurrentState = GameState.StartingUp;
             IsFocused = true;
+
+            Image image = new(TextureManager.TEXTURES_PATH + "GameIcon.png");
+            Window.SetIcon(23, 23, image.Pixels);
 
             Window.LostFocus += (s, e) =>
             {

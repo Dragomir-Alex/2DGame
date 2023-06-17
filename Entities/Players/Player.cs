@@ -405,6 +405,7 @@ namespace _2DGame.Entities.Players
             Velocity = new Vector2f(0, 0);
             Health.Reset();
 
+            isGrounded = false;
             debugMode = false;
             attackedInCurrentAnimation = false;
             IsSpawningProjectile = false;

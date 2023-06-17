@@ -21,9 +21,6 @@ namespace _2DGame.Utility
         {
             if (!gameLoop.IsFocused) return;
 
-            Debug.WriteLine(XInputController.GamePad.Buttons);
-
-
             bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left)
                 || Keyboard.IsKeyPressed(Keyboard.Key.A)
                 || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.DPadLeft);
