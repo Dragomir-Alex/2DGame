@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using Text = SFML.Graphics.Text;
 
 namespace _2DGame.LevelUI
 {
@@ -18,7 +20,9 @@ namespace _2DGame.LevelUI
         private readonly Text bottomHintText;
         private Text scoreText;
         private Text playerNameText;
-        private Text messageText;
+        private Text messageTextWon;
+        private Text messageTextLost;
+        private bool won;
         private StringBuilder playerNameSB;
         public const int MAX_STRING_SIZE = 24;
 
@@ -32,24 +36,29 @@ namespace _2DGame.LevelUI
             rectangleBackground = new RectangleShape(new Vector2f(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
             rectangleBackground.FillColor = new Color(0, 0, 0, 100);
 
-            topHintText = new Text(LanguageStrings.GameOverTypeNameString, TextureManager.GameFont, 60);
+            topHintText = new Text("", TextureManager.GameFont, 60);
             topHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - topHintText.GetGlobalBounds().Width / 2), 250);
             topHintText.FillColor = Color.White;
+            LanguageManager.AddLocalizedText(topHintText, "GameOverTypeNameString");
 
             playerNameText = new Text("", TextureManager.GameFontBold, 50);
             playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 350);
             playerNameText.FillColor = new Color(137, 207, 240);
 
-            bottomHintText = new Text(LanguageStrings.GameOverPressKeyString, TextureManager.GameFont, 50);
+            bottomHintText = new Text("", TextureManager.GameFont, 50);
             bottomHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - bottomHintText.GetGlobalBounds().Width / 2), 600);
             bottomHintText.FillColor = Color.White;
+            LanguageManager.AddLocalizedText(bottomHintText, "GameOverPressKeyString");
         }
 
         public void Initialize(GameLoop gameLoop, bool won)
         {
             if (!initialized && gameLoop.CurrentState == GameLoop.GameState.GameOver)
             {
+                Reset(gameLoop);
                 initialized = true;
+
+                this.won = won;
 
                 if (won)
                 {
@@ -60,13 +69,24 @@ namespace _2DGame.LevelUI
                     SoundManager.PlaySound("Loss");
                 }
 
-                messageText = new Text((won) ? LanguageStrings.GameOverWonString : LanguageStrings.GameOverLostString, TextureManager.GameFontBold, 60);
-                messageText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - messageText.GetGlobalBounds().Width / 2), 50);
-                messageText.FillColor = won ? Color.Green : Color.Red;
+                messageTextWon = new Text("", TextureManager.GameFontBold, 60);
+                messageTextWon.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 50);
+                messageTextWon.FillColor = Color.Green;
+                LanguageManager.AddLocalizedText(messageTextWon, "GameOverWonString");
+                messageTextWon.Origin = new Vector2f(messageTextWon.Origin.X, 0);
 
-                scoreText = new Text(LanguageStrings.GameOverFinalScoreString + Score.GetString(), TextureManager.GameFontBold, 60);
+                messageTextLost = new Text("", TextureManager.GameFontBold, 60);
+                messageTextLost.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 50);
+                messageTextLost.FillColor = Color.Red;
+                LanguageManager.AddLocalizedText(messageTextLost, "GameOverLostString");
+                messageTextLost.Origin = new Vector2f(messageTextLost.Origin.X, 0);
+
+                scoreText = new Text("", TextureManager.GameFontBold, 60);
                 scoreText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - scoreText.GetGlobalBounds().Width / 2), 475);
                 scoreText.FillColor = Color.White;
+                LanguageManager.AddLocalizedText(scoreText, "GameOverFinalScoreString");
+                scoreText.DisplayedString += Score.GetString();
+                scoreText.Origin = new Vector2f((int)(scoreText.GetGlobalBounds().Width / 2), (int)(scoreText.GetGlobalBounds().Height / 2));
             }
         }
 
@@ -109,15 +129,12 @@ namespace _2DGame.LevelUI
                 playerNameSB.Remove(playerNameSB.Length - 1, 1);
             }
 
-            if ((ascii >= 48 && ascii <= 57)
+            if (((ascii >= 48 && ascii <= 57)
                 || (ascii >= 65 && ascii <= 90)
                 || (ascii >= 97 && ascii <= 122)
-                || (ascii == 32 && playerNameSB.Length > 0))
+                || (ascii == 32 && playerNameSB.Length > 0)) && playerNameSB.Length < MAX_STRING_SIZE)
             {
-                if (playerNameSB.Length < MAX_STRING_SIZE)
-                {
-                    playerNameSB.Append(e.Unicode[0]);
-                }
+                playerNameSB.Append(e.Unicode[0]);
             }
         }
 
@@ -130,7 +147,7 @@ namespace _2DGame.LevelUI
 
             if (initialized)
             {
-                target.Draw(messageText);
+                if (won) target.Draw(messageTextWon); else target.Draw(messageTextLost);
                 target.Draw(scoreText);
             }
         }

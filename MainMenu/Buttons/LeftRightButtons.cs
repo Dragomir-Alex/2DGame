@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using _2DGame.Utility;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,14 @@ namespace _2DGame.MainMenu.Buttons
         public Button LeftArrow { get; set; }
         public Button RightArrow { get; set; }
 
-        public LeftRightButtons(string textString, string settingValueString, uint fontSize, Font font, Font boldFont, Color defaultColor, Color hoverColor, ButtonAction leftArrowAction, ButtonAction rightArrowAction)
+        public LeftRightButtons(string localizedTextString, string settingValueString, uint fontSize, Font font, Font boldFont, Color defaultColor, Color hoverColor, ButtonAction leftArrowAction, ButtonAction rightArrowAction)
         {
             ButtonAction NoAction = new ButtonAction(ButtonAction.Type.None, "", 0);
             ButtonAction SettingValueAction = new ButtonAction(ButtonAction.Type.DisplayVariable, settingValueString, 0);
 
             SettingValue = new Button(" - ", fontSize, boldFont, defaultColor, defaultColor, SettingValueAction);
-            Label = new Button(textString, fontSize, boldFont, defaultColor, defaultColor, NoAction);
+            Label = new Button(localizedTextString, fontSize, boldFont, defaultColor, defaultColor, NoAction);
+            LanguageManager.AddLocalizedText(Label.ButtonText, localizedTextString);
             LeftArrow = new Button("< ", (uint)(fontSize * 1.5), boldFont, defaultColor, hoverColor, leftArrowAction);
             RightArrow = new Button(" >", (uint)(fontSize * 1.5), boldFont, defaultColor, hoverColor, rightArrowAction);
 

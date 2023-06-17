@@ -17,10 +17,13 @@ namespace _2DGame.LevelUI
 
         public void Update()
         {
-            text = new Text(LanguageStrings.ScoreString + Score.GetString(), TextureManager.GameFont);
+            text = new Text("", TextureManager.GameFont);
             text.CharacterSize = 30;
-            text.Position = new Vector2f((int)(Game.WINDOW_WIDTH - text.GetGlobalBounds().Width - 20), (int)(Game.WINDOW_HEIGHT - text.GetGlobalBounds().Height - 20));
             text.FillColor = Color.White;
+            LanguageManager.AddLocalizedText(text, "ScoreString");
+            text.DisplayedString += Score.GetString();
+            text.Origin = new();
+            text.Position = new Vector2f((int)(Game.WINDOW_WIDTH - text.GetGlobalBounds().Width - 20), (int)(Game.WINDOW_HEIGHT - text.GetGlobalBounds().Height - 20));
 
             rectangleBackground = new RectangleShape(new Vector2f(text.GetGlobalBounds().Width + 10, text.GetGlobalBounds().Height + 10));
             rectangleBackground.Position = new Vector2f(text.GetGlobalBounds().Left - 5, text.GetGlobalBounds().Top - 5);

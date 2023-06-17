@@ -36,8 +36,9 @@ namespace _2DGame.UIElements
             LoadingPage.Background = CreateMenuBackground(tileData);
 
             ButtonAction loadingPageAction = new ButtonAction(ButtonAction.Type.None, "", 0);
-            Button loadingPageButton = new Button(LanguageStrings.LoadingString, 60, TextureManager.GameFontBold, Color.White, Color.White, loadingPageAction);
+            Button loadingPageButton = new Button("", 60, TextureManager.GameFontBold, Color.White, Color.White, loadingPageAction);
             loadingPageButton.ButtonText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 1.5f));
+            LanguageManager.AddLocalizedText(loadingPageButton.ButtonText, "LoadingString");
             LoadingPage.AddButton(loadingPageButton);
         }
 
