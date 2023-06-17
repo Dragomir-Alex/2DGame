@@ -50,8 +50,8 @@ namespace _2DGame.Utility
 
         public static void LoadFonts()
         {
-            GameFont = new Font(FONTS_PATH + "8bitOperatorPlus-Regular.ttf");
-            GameFontBold = new Font(FONTS_PATH + "8bitOperatorPlus-Bold.ttf");
+            GameFont = new Font(FONTS_PATH + "8BitOperatorEdit-Regular.ttf");
+            GameFontBold = new Font(FONTS_PATH + "8BitOperatorEdit-Bold.ttf");
             DebugFont = GameFont;
         }
 

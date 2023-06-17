@@ -37,16 +37,16 @@ namespace _2DGame.LevelUI
             rectangleBackground.FillColor = new Color(0, 0, 0, 100);
 
             topHintText = new Text("", TextureManager.GameFont, 60);
-            topHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - topHintText.GetGlobalBounds().Width / 2), 250);
+            topHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - topHintText.GetGlobalBounds().Width / 2), 275);
             topHintText.FillColor = Color.White;
             LanguageManager.AddLocalizedText(topHintText, "GameOverTypeNameString");
 
             playerNameText = new Text("", TextureManager.GameFontBold, 50);
-            playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 350);
+            playerNameText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), 375);
             playerNameText.FillColor = new Color(137, 207, 240);
 
             bottomHintText = new Text("", TextureManager.GameFont, 50);
-            bottomHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - bottomHintText.GetGlobalBounds().Width / 2), 600);
+            bottomHintText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - bottomHintText.GetGlobalBounds().Width / 2), 650);
             bottomHintText.FillColor = Color.White;
             LanguageManager.AddLocalizedText(bottomHintText, "GameOverPressKeyString");
         }
@@ -88,7 +88,7 @@ namespace _2DGame.LevelUI
                 messageTextLost.Origin = new Vector2f(messageTextLost.Origin.X, 0);
 
                 scoreText = new Text("", TextureManager.GameFontBold, 60);
-                scoreText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - scoreText.GetGlobalBounds().Width / 2), 475);
+                scoreText.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2 - scoreText.GetGlobalBounds().Width / 2), 525);
                 scoreText.FillColor = Color.White;
                 LanguageManager.AddLocalizedText(scoreText, "GameOverFinalScoreString");
                 scoreText.DisplayedString += Score.GetString();

@@ -39,7 +39,7 @@ namespace _2DGame.Utility
                 "c1b0rg0101 - Witch sprite sheet \nhttps://c1b0rg0101.itch.io/little-witch-pixel-character-animation\n\n" +
                 "LuizMelo - Enemy sprite sheets \nhttps://luizmelo.itch.io/monsters-creatures-fantasy\n\n" +
                 "Lunarnia - Gem sprite sheet \nhttps://lunarnia.itch.io\n\n" +
-                "LoadedInReverse - Life hearts texture \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
+                "LoadedInReverse - Life heart texture \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
                 "Extra free assets, music and sounds from Freesound (freesound.org) and OpenGameArt (opengameart.org)");
             EnglishDictionary.Add("InstructionsButtonString", "INSTRUCTIONS");
             EnglishDictionary.Add("InstructionsTitleString", "Instructions");
@@ -74,55 +74,55 @@ namespace _2DGame.Utility
 
         private static void InitializeRomanianDictionary()
         {
-            RomanianDictionary.Add("LoadingString", "Se incarca...");
-            RomanianDictionary.Add("StartGameButtonString", "INCEPE JOCUL");
-            RomanianDictionary.Add("SettingsButtonString", "SETARI");
-            RomanianDictionary.Add("SettingsTitleString", "Setari");
+            RomanianDictionary.Add("LoadingString", "Se încarcă...");
+            RomanianDictionary.Add("StartGameButtonString", "ÎNCEPE JOCUL");
+            RomanianDictionary.Add("SettingsButtonString", "SETĂRI");
+            RomanianDictionary.Add("SettingsTitleString", "Setări");
             RomanianDictionary.Add("HighScoresButtonString", "SCORURI MARI");
             RomanianDictionary.Add("LocalHighScoresTitleString", "Scoruri mari locale");
             RomanianDictionary.Add("GlobalHighScoresTitleString", "Scoruri mari globale");
             RomanianDictionary.Add("CreditsButtonString", "CREDITE");
             RomanianDictionary.Add("CreditsTitleString", "Credite");
             RomanianDictionary.Add("CreditsString",
-                "Dodo-Codes - Bibliotecile TransformableHitbox2D si TileData, ajutor la realizarea codului \nhttps://github.com/Dodo-Codes\n\n" +
+                "Dodo-Codes - Bibliotecile TransformableHitbox2D și TileData, ajutor la realizarea codului \nhttps://github.com/Dodo-Codes\n\n" +
                 "Sampo 'Blade' Vesanen - Tileset-ul 'Aztec 2' \nhttps://www.jazz2online.com/downloads/7852/aztec-2\n\n" +
-                "c1b0rg0101 - Sprite sheet-ul vrajitoarei \nhttps://c1b0rg0101.itch.io/little-witch-pixel-character-animation\n\n" +
+                "c1b0rg0101 - Sprite sheet-ul vrăjitoarei \nhttps://c1b0rg0101.itch.io/little-witch-pixel-character-animation\n\n" +
                 "LuizMelo - Sprite sheet-urile inamicilor \nhttps://luizmelo.itch.io/monsters-creatures-fantasy\n\n" +
                 "Lunarnia - Sprite sheet-ul cristalului \nhttps://lunarnia.itch.io\n\n" +
-                "LoadedInReverse - Textura inimilor de viata \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
-                "Alte imagini, muzica si sunete gratuite de pe Freesound (freesound.org) si OpenGameArt (opengameart.org)");
-            RomanianDictionary.Add("InstructionsButtonString", "INSTRUCTIUNI");
-            RomanianDictionary.Add("InstructionsTitleString", "Instructiuni");
+                "LoadedInReverse - Textura inimii de viață \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
+                "Alte imagini, muzică și sunete gratuite de pe Freesound (freesound.org) și OpenGameArt (opengameart.org)");
+            RomanianDictionary.Add("InstructionsButtonString", "INSTRUCȚIUNI");
+            RomanianDictionary.Add("InstructionsTitleString", "Instrucțiuni");
             RomanianDictionary.Add("InstructionsString",
-                "Scopul acestui joc este de a aduna cat mai multe puncte si de a ajunge la\n" +
-                "portalul de la capatul nivelului.\n" +
-                "Poti colecta cristale pentru a primi puncte. Inimile roz colectate\n" +
-                "restituie o inima de viata.\n" +
-                "Inamicii te pot rani, asa ca incearca sa ii eviti sau sa ii infrangi.\n" +
-                "Daca ramai fara inimi de viata, vei pierde jocul.");
+                "Scopul acestui joc este de a aduna cât mai multe puncte și de a ajunge la\n" +
+                "portalul de la capătul nivelului.\n" +
+                "Colectează cristale pentru a primi puncte. Inimile roz colectate\n" +
+                "restituie o inimă de viata.\n" +
+                "Inamicii te pot răni, așa că încearcă să îi eviți sau sa îi înfrângi.\n" +
+                "Dacă rămâi fără inimi de viață, vei pierde jocul.");
             RomanianDictionary.Add("ControlsString",
                 "Controale:\n\n" +
-                "Salt -\t [ Sageata sus ]  /  [ X ]  /  [ W ]  /  [ L ]  /  ( D-pad sus )  /  ( A )\n" +
-                "Deplasare la stanga -\t [ Sageata stanga ]  /  [ A ]  /  ( D-pad stanga )\n" +
-                "Deplasare la dreapta -\t [ Sageata dreapta ]  /  [ D ]  /  ( D-pad dreapta )\n" +
+                "Salt -\t [ Săgeată sus ]  /  [ X ]  /  [ W ]  /  [ L ]  /  ( D-pad sus )  /  ( A )\n" +
+                "Deplasare la stânga -\t [ Săgeată stânga ]  /  [ A ]  /  ( D-pad stânga )\n" +
+                "Deplasare la dreapta -\t [ Săgeată dreapta ]  /  [ D ]  /  ( D-pad dreapta )\n" +
                 "Atac -\t [ Z ]  /  [ K ]  /  ( X )\n" +
                 "Suspendare joc -\t [ P ]  /  [ Esc ]  /  ( Menu )  /  ( Back )\n" +
                 "Modul Ecran complet -\t [ F11 ]");
-            RomanianDictionary.Add("CloseGameButtonString", "INCHIDE JOCUL");
+            RomanianDictionary.Add("CloseGameButtonString", "ÎNCHIDE JOCUL");
             RomanianDictionary.Add("MusicVolumeButtonString", "Volumul muzicii");
             RomanianDictionary.Add("SoundVolumeButtonString", "Volumul sunetului");
             RomanianDictionary.Add("LanguageButtonString", "Limba");
             RomanianDictionary.Add("ScoreString", "Scor: ");
             RomanianDictionary.Add("PausedMenuString",
                 "Jocul este suspendat\n\n" +
-                "Apasa [ P ] sau ( Back ) pentru a continua\n" +
-                "Apasa [ Esc ] sau ( Menu ) pentru a reveni\n" +
+                "Apasă [ P ] sau ( Back ) pentru a continua\n" +
+                "Apasă [ Esc ] sau ( Menu ) pentru a reveni\n" +
                 "la meniul principal");
-            RomanianDictionary.Add("GameOverWonString", "JOC TERMINAT!\n  Ai castigat!\n");
+            RomanianDictionary.Add("GameOverWonString", "JOC TERMINAT!\n  Ai câștigat!\n");
             RomanianDictionary.Add("GameOverLostString", "JOC TERMINAT!\n  Ai pierdut!\n");
             RomanianDictionary.Add("GameOverFinalScoreString", "Scor final: ");
-            RomanianDictionary.Add("GameOverTypeNameString", "Tasteaza-ti numele:");
-            RomanianDictionary.Add("GameOverPressKeyString", "Apasa tasta [ Enter ] pentru a continua");
+            RomanianDictionary.Add("GameOverTypeNameString", "Tastează-ți numele:");
+            RomanianDictionary.Add("GameOverPressKeyString", "Apasă tasta [ Enter ] pentru a continua");
         }
 
         public static void AddLocalizedText(Text text, string str)

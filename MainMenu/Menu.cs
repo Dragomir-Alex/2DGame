@@ -361,7 +361,7 @@ namespace _2DGame.MainMenu
                     else if (buttonAction.Target == "Language")
                     {
                         SoundManager.PlaySound("Click");
-                        Settings.Language = Settings.Language == "English" ? "Romana" : "English";
+                        Settings.Language = Settings.Language == "English" ? "Română" : "English";
                         foreach (var button in Pages[CurrentPage].Buttons)
                         {
                             if (button.OnMouseClick().ActionType == ButtonAction.Type.DisplayVariable &&
