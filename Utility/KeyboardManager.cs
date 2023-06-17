@@ -15,6 +15,7 @@ namespace _2DGame.Utility
         private static bool previousDebugState;
         private static bool previousLeftClickState;
         private static bool previousToggleCollisionsState;
+        private static bool previousFullscreenState;
         private static bool isProcessingGameOver = false;
 
         public static void ProcessPlayerKeys(GameLoop gameLoop, Player player)
@@ -59,16 +60,16 @@ namespace _2DGame.Utility
             }
         }
 
-        public static void ProcessMainMenuKeys(GameLoop gameLoop, Menu menu)
+        public static void ProcessMainMenuKeys(Game game, Menu menu)
         {
-            if (!gameLoop.IsFocused) return;
+            if (!game.IsFocused) return;
 
             bool buttonPress = Mouse.IsButtonPressed(Mouse.Button.Left)
                 || Keyboard.IsKeyPressed(Keyboard.Key.Enter)
                 || Keyboard.IsKeyPressed(Keyboard.Key.Space)
                 || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.A);
 
-            Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
+            Vector2f mousePosition = game.Window.MapPixelToCoords(Mouse.GetPosition(game.Window), game.RenderTexture.GetView());
 
             foreach (var button in menu.Pages[menu.CurrentPage].Buttons)
             {
@@ -78,7 +79,7 @@ namespace _2DGame.Utility
 
                     if (buttonPress && buttonPress != previousLeftClickState)
                     {
-                        menu.ProcessButtonAction(button.OnMouseClick(), gameLoop);
+                        menu.ProcessButtonAction(button.OnMouseClick(), game);
                     }
                 }
                 else
@@ -101,6 +102,7 @@ namespace _2DGame.Utility
 
             bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1)
                 || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.LeftShoulder);
+
             bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2)
                 || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.RightShoulder);
 
@@ -156,6 +158,16 @@ namespace _2DGame.Utility
                 gameOverScreen.Reset(game);
 
                 isProcessingGameOver = false;
+            }
+        }
+
+        public static void ProcessFullscreenKey(Game game)
+        {
+            bool fullscreen = Keyboard.IsKeyPressed(Keyboard.Key.F11);
+
+            if (fullscreen && fullscreen != previousFullscreenState)
+            {
+                game.ToggleFullscreen();
             }
         }
     }

@@ -10,15 +10,18 @@ namespace _2DGame
     {
         public const int TARGET_FPS = 60;
         public const float TIME_UNTIL_UPDATE = 1f / TARGET_FPS;
+        public const int WINDOW_ICON_WIDTH = 23;
+        public const int WINDOW_ICON_HEIGHT = 23;
 
         public enum GameState
         {
             StartingUp, LoadingMenu, LoadingLevel, Menu, Level, Paused, GameOver
         }
         public bool IsFocused { get; private set; }
-        public RenderWindow Window { get; private set; }
+        public RenderWindow Window { get; protected set; }
         public RenderTexture RenderTexture { get; private set; }
         public GameTime GameTime { get; private set; }
+        public Image Icon { get; private set; }
         public Color WindowClearColor { get; }
         public GameState CurrentState { get; set; }
 
@@ -26,32 +29,13 @@ namespace _2DGame
         protected GameLoop(uint windowWidth, uint windowHeight, string windowTitle, Color windowClearColor)
         {
             WindowClearColor = windowClearColor;
-            Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle);
-            Window.SetVerticalSyncEnabled(true);
             RenderTexture = new RenderTexture(windowWidth, windowHeight);
             GameTime = new GameTime();
             CurrentState = GameState.StartingUp;
             IsFocused = true;
+            Icon = new(TextureManager.TEXTURES_PATH + "GameIcon.png");
 
-            Image image = new(TextureManager.TEXTURES_PATH + "GameIcon.png");
-            Window.SetIcon(23, 23, image.Pixels);
-
-            Window.LostFocus += (s, e) =>
-            {
-                if (CurrentState == GameState.Level)
-                    CurrentState = GameState.Paused;
-                IsFocused = false;
-            };
-
-            Window.GainedFocus += (s, e) =>
-            {
-                IsFocused = true;
-            };
-
-            Window.Closed += (s, e) =>
-            {
-                Window.Close();
-            };
+            WindowSetup(windowWidth, windowHeight, windowTitle, Styles.Default);
         }
 
         public void Run()
@@ -114,6 +98,22 @@ namespace _2DGame
             RenderTexture.Display();
             Window.Draw(vertices, PrimitiveType.Quads, new(RenderTexture.Texture));
             Window.Display();
+        }
+
+        protected void WindowSetup(uint windowWidth, uint windowHeight, string windowTitle, Styles style)
+        {
+            Window = new RenderWindow(new VideoMode(windowWidth, windowHeight), windowTitle, style);
+            Window.SetVerticalSyncEnabled(true);
+            Window.SetIcon(23, 23, Icon.Pixels);
+
+            Window.LostFocus += (_, __) =>
+            {
+                if (CurrentState == GameState.Level)
+                    CurrentState = GameState.Paused;
+                IsFocused = false;
+            };
+            Window.GainedFocus += (_, __) => { IsFocused = true; };
+            Window.Closed += (_, __) => Window.Close();
         }
     }
 }

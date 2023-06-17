@@ -8,6 +8,7 @@ using SFML.Graphics;
 using System.Text.Json;
 using _2DGame.GameSettings;
 using _2DGame.UIElements;
+using SFML.Window;
 
 namespace _2DGame
 {
@@ -18,6 +19,7 @@ namespace _2DGame
         public const string WINDOW_TITLE = "Witchi";
 
         public Game() : base(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, Color.Black) { }
+        private Styles windowStyle = Styles.Default;
         private Level level;
         private Player player;
         private Menu menu;
@@ -169,6 +171,7 @@ namespace _2DGame
         {
             SoundManager.PlayMusic();
             XInputController.Update();
+            KeyboardManager.ProcessFullscreenKey(this);
 
             switch (CurrentState)
             {
@@ -263,6 +266,13 @@ namespace _2DGame
             {
                 CurrentState = GameState.Paused;
             }
+        }
+
+        public void ToggleFullscreen()
+        {
+            windowStyle = (windowStyle == Styles.Default) ? Styles.Fullscreen : Styles.Default;
+            Window.Close();
+            WindowSetup(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, windowStyle);
         }
     }
 }
