@@ -50,22 +50,26 @@ namespace _2DGame.Utility
                 "If you run out of health, you'll lose the game.");
             EnglishDictionary.Add("ControlsString",
                 "Controls:\n\n" +
-                "Up Arrow / X / W / L \t-\t Jump\n" +
-                "Left Arrow / A \t-\t Move left\n" +
-                "Right Arrow / D \t-\t Move right\n" +
-                "Z / K \t-\t Attack\n" +
-                "P / Esc \t-\t Pause the game");
+                "Jump -\t [ Up Arrow ]  /  [ X ]  /  [ W ]  /  [ L ]  /  ( D-pad Up )  /  ( A )\n" +
+                "Move left -\t [ Left Arrow ]  /  [ A ]  /  ( D-pad Left )\n" +
+                "Move right -\t [ Right Arrow ]  /  [ D ]  /  ( D-pad Right )\n" +
+                "Attack -\t [ Z ]  /  [ K ]  /  ( X ) \n" +
+                "Pause game -\t [ P ]  /  [ Esc ]  /  ( Menu )  /  ( Back )\n" +
+                "Fullscreen mode -\t [ F11 ]");
             EnglishDictionary.Add("CloseGameButtonString", "CLOSE GAME");
             EnglishDictionary.Add("MusicVolumeButtonString", "Music Volume");
             EnglishDictionary.Add("SoundVolumeButtonString", "Sound Volume");
             EnglishDictionary.Add("LanguageButtonString", "Language");
             EnglishDictionary.Add("ScoreString", "Score: ");
-            EnglishDictionary.Add("PausedMenuString", "The game is paused\n\nPress [P] to resume\nPress [Esc] to exit to menu");
+            EnglishDictionary.Add("PausedMenuString",
+                "The game is paused\n\n" +
+                "Press [ P ] or ( Back ) to resume\n" +
+                "Press [ Esc ] or ( Menu ) to exit to menu");
             EnglishDictionary.Add("GameOverWonString", "GAME OVER!\n  You won!\n");
             EnglishDictionary.Add("GameOverLostString", "GAME OVER!\n You lost!\n");
             EnglishDictionary.Add("GameOverFinalScoreString", "Final score: ");
             EnglishDictionary.Add("GameOverTypeNameString", "Please type out your name:");
-            EnglishDictionary.Add("GameOverPressKeyString", "Press the [Enter] key to continue.");
+            EnglishDictionary.Add("GameOverPressKeyString", "Press the [ Enter ] key to continue");
         }
 
         private static void InitializeRomanianDictionary()
@@ -98,22 +102,27 @@ namespace _2DGame.Utility
                 "Daca ramai fara inimi de viata, vei pierde jocul.");
             RomanianDictionary.Add("ControlsString",
                 "Controale:\n\n" +
-                "Sageata sus / X / W / L \t-\t Saritura\n" +
-                "Sageata stanga / A \t-\t Deplasare la stanga\n" +
-                "Sageata dreapta / D \t-\t Deplasare la dreapta\n" +
-                "Z / K \t-\t Atac\n" +
-                "P / Esc \t-\t Pauza joc");
+                "Salt -\t [ Sageata sus ]  /  [ X ]  /  [ W ]  /  [ L ]  /  ( D-pad sus )  /  ( A )\n" +
+                "Deplasare la stanga -\t [ Sageata stanga ]  /  [ A ]  /  ( D-pad stanga )\n" +
+                "Deplasare la dreapta -\t [ Sageata dreapta ]  /  [ D ]  /  ( D-pad dreapta )\n" +
+                "Atac -\t [ Z ]  /  [ K ]  /  ( X )\n" +
+                "Suspendare joc -\t [ P ]  /  [ Esc ]  /  ( Menu )  /  ( Back )\n" +
+                "Modul Ecran complet -\t [ F11 ]");
             RomanianDictionary.Add("CloseGameButtonString", "INCHIDE JOCUL");
             RomanianDictionary.Add("MusicVolumeButtonString", "Volumul muzicii");
             RomanianDictionary.Add("SoundVolumeButtonString", "Volumul sunetului");
             RomanianDictionary.Add("LanguageButtonString", "Limba");
             RomanianDictionary.Add("ScoreString", "Scor: ");
-            RomanianDictionary.Add("PausedMenuString", "Jocul este suspendat\n\nApasa tasta [P] pentru a continua\nApasa tasta [Esc] pentru a reveni\nla meniul principal");
+            RomanianDictionary.Add("PausedMenuString",
+                "Jocul este suspendat\n\n" +
+                "Apasa [ P ] sau ( Back ) pentru a continua\n" +
+                "Apasa [ Esc ] sau ( Menu ) pentru a reveni\n" +
+                "la meniul principal");
             RomanianDictionary.Add("GameOverWonString", "JOC TERMINAT!\n  Ai castigat!\n");
             RomanianDictionary.Add("GameOverLostString", "JOC TERMINAT!\n  Ai pierdut!\n");
             RomanianDictionary.Add("GameOverFinalScoreString", "Scor final: ");
             RomanianDictionary.Add("GameOverTypeNameString", "Tasteaza-ti numele:");
-            RomanianDictionary.Add("GameOverPressKeyString", "Apasa tasta [Enter] pentru a continua.");
+            RomanianDictionary.Add("GameOverPressKeyString", "Apasa tasta [ Enter ] pentru a continua");
         }
 
         public static void AddLocalizedText(Text text, string str)

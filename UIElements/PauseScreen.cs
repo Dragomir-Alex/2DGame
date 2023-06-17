@@ -19,8 +19,7 @@ namespace _2DGame.LevelUI
             rectangleBackground = new RectangleShape(new Vector2f(Game.WINDOW_WIDTH, Game.WINDOW_HEIGHT));
             rectangleBackground.FillColor = new Color(0, 0, 0, 100);
 
-            text = new Text("", TextureManager.GameFont);
-            text.CharacterSize = 60;
+            text = new Text("", TextureManager.GameFont, 50);
             text.Origin = new Vector2f((int)(text.GetGlobalBounds().Width / 2), (int)(text.GetGlobalBounds().Height / 2));
             text.Position = new Vector2f((int)(Game.WINDOW_WIDTH / 2), (int)(Game.WINDOW_HEIGHT / 2));
             text.FillColor = Color.White;
