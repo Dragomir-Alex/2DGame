@@ -41,6 +41,20 @@ namespace _2DGame.Utility
                 "Lunarnia - Gem sprite sheet \nhttps://lunarnia.itch.io\n\n" +
                 "LoadedInReverse - Life hearts texture \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
                 "Extra free assets, music and sounds from Freesound (freesound.org) and OpenGameArt (opengameart.org)");
+            EnglishDictionary.Add("InstructionsButtonString", "INSTRUCTIONS");
+            EnglishDictionary.Add("InstructionsTitleString", "Instructions");
+            EnglishDictionary.Add("InstructionsString",
+                "The goal of this game is to get a high score and reach the portal at the end of the level.\n" +
+                "You can collect gems to get points. Collecting pink hearts will restore your health.\n" +
+                "Enemies can hurt you, so try to either avoid them or defeat them.\n" +
+                "If you run out of health, you'll lose the game.");
+            EnglishDictionary.Add("ControlsString",
+                "Controls:\n\n" +
+                "Up Arrow / X / W / L \t-\t Jump\n" +
+                "Left Arrow / A \t-\t Move left\n" +
+                "Right Arrow / D \t-\t Move right\n" +
+                "Z / K \t-\t Attack\n" +
+                "P / Esc \t-\t Pause the game");
             EnglishDictionary.Add("CloseGameButtonString", "CLOSE GAME");
             EnglishDictionary.Add("MusicVolumeButtonString", "Music Volume");
             EnglishDictionary.Add("SoundVolumeButtonString", "Sound Volume");
@@ -73,6 +87,22 @@ namespace _2DGame.Utility
                 "Lunarnia - Sprite sheet-ul cristalului \nhttps://lunarnia.itch.io\n\n" +
                 "LoadedInReverse - Textura inimilor de viata \nhttps://loadedinreverse.itch.io/life-hearts-basic\n\n" +
                 "Alte imagini, muzica si sunete gratuite de pe Freesound (freesound.org) si OpenGameArt (opengameart.org)");
+            RomanianDictionary.Add("InstructionsButtonString", "INSTRUCTIUNI");
+            RomanianDictionary.Add("InstructionsTitleString", "Instructiuni");
+            RomanianDictionary.Add("InstructionsString",
+                "Scopul acestui joc este de a aduna cat mai multe puncte si de a ajunge la\n" +
+                "portalul de la capatul nivelului.\n" +
+                "Poti colecta cristale pentru a primi puncte. Inimile roz colectate\n" +
+                "restituie o inima de viata.\n" +
+                "Inamicii te pot rani, asa ca incearca sa ii eviti sau sa ii infrangi.\n" +
+                "Daca ramai fara inimi de viata, vei pierde jocul.");
+            RomanianDictionary.Add("ControlsString",
+                "Controale:\n\n" +
+                "Sageata sus / X / W / L \t-\t Saritura\n" +
+                "Sageata stanga / A \t-\t Deplasare la stanga\n" +
+                "Sageata dreapta / D \t-\t Deplasare la dreapta\n" +
+                "Z / K \t-\t Atac\n" +
+                "P / Esc \t-\t Pauza joc");
             RomanianDictionary.Add("CloseGameButtonString", "INCHIDE JOCUL");
             RomanianDictionary.Add("MusicVolumeButtonString", "Volumul muzicii");
             RomanianDictionary.Add("SoundVolumeButtonString", "Volumul sunetului");

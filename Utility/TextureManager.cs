@@ -52,7 +52,7 @@ namespace _2DGame.Utility
         {
             GameFont = new Font(FONTS_PATH + "8bitOperatorPlus-Regular.ttf");
             GameFontBold = new Font(FONTS_PATH + "8bitOperatorPlus-Bold.ttf");
-            DebugFont = new Font(FONTS_PATH + "8bitOperatorPlus-Regular.ttf");
+            DebugFont = GameFont;
         }
 
         public static void LoadTilesetTexture()

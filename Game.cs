@@ -168,6 +168,7 @@ namespace _2DGame
         public override void Update(GameTime gameTime)
         {
             SoundManager.PlayMusic();
+            XInputController.Update();
 
             switch (CurrentState)
             {

@@ -21,11 +21,30 @@ namespace _2DGame.Utility
         {
             if (!gameLoop.IsFocused) return;
 
-            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left) || Keyboard.IsKeyPressed(Keyboard.Key.A);
-            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right) || Keyboard.IsKeyPressed(Keyboard.Key.D);
-            bool moveUp = (Keyboard.IsKeyPressed(Keyboard.Key.Up) || Keyboard.IsKeyPressed(Keyboard.Key.X) || Keyboard.IsKeyPressed(Keyboard.Key.L));
-            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.Down) || Keyboard.IsKeyPressed(Keyboard.Key.S);
-            bool attack = Keyboard.IsKeyPressed(Keyboard.Key.Z) || Keyboard.IsKeyPressed(Keyboard.Key.K);
+            Debug.WriteLine(XInputController.GamePad.Buttons);
+
+
+            bool moveLeft = Keyboard.IsKeyPressed(Keyboard.Key.Left)
+                || Keyboard.IsKeyPressed(Keyboard.Key.A)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.DPadLeft);
+
+            bool moveRight = Keyboard.IsKeyPressed(Keyboard.Key.Right)
+                || Keyboard.IsKeyPressed(Keyboard.Key.D)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.DPadRight);
+
+            bool moveUp = Keyboard.IsKeyPressed(Keyboard.Key.Up)
+                || Keyboard.IsKeyPressed(Keyboard.Key.X)
+                || Keyboard.IsKeyPressed(Keyboard.Key.W)
+                || Keyboard.IsKeyPressed(Keyboard.Key.L)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.DPadUp)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.A);
+
+            bool moveDown = Keyboard.IsKeyPressed(Keyboard.Key.Down)
+                || Keyboard.IsKeyPressed(Keyboard.Key.S)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.DPadDown);
+            bool attack = Keyboard.IsKeyPressed(Keyboard.Key.Z)
+                || Keyboard.IsKeyPressed(Keyboard.Key.K)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.X);
 
             bool isMove = moveLeft || moveRight || moveUp || moveDown;
 
@@ -47,7 +66,10 @@ namespace _2DGame.Utility
         {
             if (!gameLoop.IsFocused) return;
 
-            bool buttonPress = Mouse.IsButtonPressed(Mouse.Button.Left) || Keyboard.IsKeyPressed(Keyboard.Key.Enter) || Keyboard.IsKeyPressed(Keyboard.Key.Space);
+            bool buttonPress = Mouse.IsButtonPressed(Mouse.Button.Left)
+                || Keyboard.IsKeyPressed(Keyboard.Key.Enter)
+                || Keyboard.IsKeyPressed(Keyboard.Key.Space)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.A);
 
             Vector2f mousePosition = gameLoop.Window.MapPixelToCoords(Mouse.GetPosition(gameLoop.Window), gameLoop.RenderTexture.GetView());
 
@@ -75,9 +97,15 @@ namespace _2DGame.Utility
         {
             if (!game.IsFocused) return;
 
-            bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P) || Keyboard.IsKeyPressed(Keyboard.Key.Escape);
-            bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1);
-            bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2);
+            bool pause = Keyboard.IsKeyPressed(Keyboard.Key.P)
+                || Keyboard.IsKeyPressed(Keyboard.Key.Escape)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.Back)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.Start);
+
+            bool debug = Keyboard.IsKeyPressed(Keyboard.Key.F1)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.LeftShoulder);
+            bool toggleCollisions = Keyboard.IsKeyPressed(Keyboard.Key.F2)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.RightShoulder);
 
             if (pause && pause != previousPauseState)
             {
@@ -103,7 +131,8 @@ namespace _2DGame.Utility
         {
             if (!game.IsFocused) return;
 
-            bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape);
+            bool esc = Keyboard.IsKeyPressed(Keyboard.Key.Escape)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.Start);
 
             if (esc && !previousPauseState)
             {
@@ -117,7 +146,8 @@ namespace _2DGame.Utility
         {
             if (!game.IsFocused || isProcessingGameOver) return;
 
-            bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter);
+            bool enter = Keyboard.IsKeyPressed(Keyboard.Key.Enter)
+                || XInputController.GamePad.Buttons.HasFlag(SharpDX.XInput.GamepadButtonFlags.Start);
 
             if (enter && gameOverScreen.GetPlayerName().Length != 0)
             {
