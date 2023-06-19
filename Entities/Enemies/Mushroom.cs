@@ -45,7 +45,7 @@ namespace _2DGame.Entities.Enemies
             }
         }
 
-        public const int MAX_HEALTH = 5;
+        public const int MAX_HEALTH = 4;
         public const float TRIGGER_DISTANCE = 6f * Tilemap.TILE_SIZE;
         public const float ATTACK_TRIGGER_DISTANCE = 1.5f * Tilemap.TILE_SIZE;
         public const uint INVINCIBILITY_FRAME_COUNT = 25;
@@ -70,7 +70,7 @@ namespace _2DGame.Entities.Enemies
             PreviousFrameState = State.Idle;
             AttackDamage = 1;
             ScoreOnDeath = 50;
-            Health = new Health(3);
+            Health = new Health(MAX_HEALTH);
             Velocity = new Vector2f();
         }
 
