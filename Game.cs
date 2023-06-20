@@ -269,8 +269,12 @@ namespace _2DGame
 
         public void ToggleFullscreen()
         {
+            if (CurrentState == GameState.GameOver)
+                SoundManager.StopMusic();
+
             windowStyle = (windowStyle == Styles.Default) ? Styles.Fullscreen : Styles.Default;
             Window.Close();
+
             WindowSetup(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, windowStyle);
 
             if (CurrentState == GameState.GameOver)
