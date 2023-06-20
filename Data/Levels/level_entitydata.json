@@ -1,0 +1,135 @@
+[
+	{
+		"ID": 0,
+		"TileCoordinates": {
+        "X": 17,
+        "Y": 49
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 19,
+        "Y": 49
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 21,
+        "Y": 48
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 23,
+        "Y": 49
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 31,
+        "Y": 50
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 33,
+        "Y": 49
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 35,
+        "Y": 50
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 45,
+        "Y": 52
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 49,
+        "Y": 47
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 52,
+        "Y": 44
+		}
+	},
+	{
+		"ID": 1,
+		"TileCoordinates": {
+        "X": 66,
+        "Y": 45
+		}
+	},
+	{
+		"ID": 3,
+		"TileCoordinates": {
+        "X": 33,
+        "Y": 51
+		}
+	},
+	{
+		"ID": 3,
+		"TileCoordinates": {
+        "X": 45,
+        "Y": 53
+		}
+	},
+	{
+		"ID": 3,
+		"TileCoordinates": {
+        "X": 66,
+        "Y": 47
+		}
+	},
+	{
+		"ID": 4,
+		"TileCoordinates": {
+        "X": 25,
+        "Y": 53
+		}
+	},
+	{
+		"ID": 4,
+		"TileCoordinates": {
+        "X": 63,
+        "Y": 41
+		}
+	},
+	{
+		"ID": 5,
+		"TileCoordinates": {
+        "X": 58,
+        "Y": 39
+		}
+	},
+	{
+		"ID": 5,
+		"TileCoordinates": {
+        "X": 70,
+        "Y": 47
+		}
+	},
+	{
+		"ID": 6,
+		"TileCoordinates": {
+        "X": 73,
+        "Y": 47
+		}
+	}
+]

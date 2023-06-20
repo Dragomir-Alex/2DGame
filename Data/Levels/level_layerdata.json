@@ -1,0 +1,90 @@
+[
+  {
+    "XOffset": 3000,
+    "YOffset": 2200,
+    "RepeatX": false,
+    "RepeatY": false,
+    "XSpeed": 2.5,
+    "YSpeed": 2.5,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 1600,
+    "YOffset": 1042,
+    "RepeatX": false,
+    "RepeatY": false,
+    "XSpeed": 1,
+    "YSpeed": 1,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 1600,
+    "YOffset": 1042,
+    "RepeatX": false,
+    "RepeatY": false,
+    "XSpeed": 1,
+    "YSpeed": 1,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 0,
+    "YOffset": 0,
+    "RepeatX": false,
+    "RepeatY": false,
+    "XSpeed": 1,
+    "YSpeed": 1,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 0,
+    "YOffset": 700,
+    "RepeatX": true,
+    "RepeatY": false,
+    "XSpeed": 0.6,
+    "YSpeed": 0.2,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 0,
+    "YOffset": 650,
+    "RepeatX": true,
+    "RepeatY": false,
+    "XSpeed": 0.3,
+    "YSpeed": 0.12,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 0,
+    "YOffset": 700,
+    "RepeatX": true,
+    "RepeatY": false,
+    "XSpeed": 0.2,
+    "YSpeed": 0.06,
+    "AutoXSpeed": 0,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  },
+  {
+    "XOffset": 0,
+    "YOffset": 160,
+    "RepeatX": true,
+    "RepeatY": false,
+    "XSpeed": 0,
+    "YSpeed": 0,
+    "AutoXSpeed": 1,
+    "AutoYSpeed": 0,
+    "IsVisible": true
+  }
+]
