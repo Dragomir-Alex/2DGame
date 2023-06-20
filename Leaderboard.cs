@@ -64,19 +64,12 @@ namespace _2DGame
         {
             await using var dataSource = NpgsqlDataSource.Create(CONNECTION_STRING);
 
-            try
+            await using (var cmd = dataSource.CreateCommand("INSERT INTO user_scores (user_name, score) VALUES ($1, $2)"))
             {
-                await using (var cmd = dataSource.CreateCommand("INSERT INTO user_scores (user_name, score) VALUES ($1, $2)"))
-                {
-                    cmd.CommandTimeout = 3;
-                    cmd.Parameters.AddWithValue(name);
-                    cmd.Parameters.AddWithValue(score);
-                    await cmd.ExecuteNonQueryAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
+                cmd.CommandTimeout = 3;
+                cmd.Parameters.AddWithValue(name);
+                cmd.Parameters.AddWithValue(score);
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
@@ -86,9 +79,8 @@ namespace _2DGame
 
             await using var dataSource = NpgsqlDataSource.Create(CONNECTION_STRING);
 
-            try
+            await using (var cmd = dataSource.CreateCommand("SELECT user_name, score FROM user_scores ORDER BY score DESC LIMIT 10"))
             {
-                await using (var cmd = dataSource.CreateCommand("SELECT user_name, score FROM user_scores ORDER BY score DESC LIMIT 10"))
                 await using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     cmd.CommandTimeout = 3;
@@ -97,10 +89,6 @@ namespace _2DGame
                         GlobalHighScores.Add(new HighScore(reader.GetString(0), reader.GetInt32(1)));
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
             }
         }
 

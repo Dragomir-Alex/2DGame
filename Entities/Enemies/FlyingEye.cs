@@ -49,10 +49,10 @@ namespace _2DGame.Entities.Enemies
         public const float ATTACK_TRIGGER_DISTANCE = 1.5f * Tilemap.TILE_SIZE;
         public const uint INVINCIBILITY_FRAME_COUNT = 25;
 
-        public const float MAX_VELOCITY = 3f;
+        public const float MAX_VELOCITY = 2f;
         public const float FALL_MAX_VELOCITY = 5f;
-        private const float VELOCITY_GAIN = 0.3f;
-        private const float VELOCITY_REDUCTION = 0.2f;
+        private const float VELOCITY_GAIN = 0.2f;
+        private const float VELOCITY_REDUCTION = 0.1f;
         private const float GRAVITY = 0.5f;
 
         public const int HITBOX_WIDTH = 40;
