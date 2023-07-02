@@ -150,9 +150,10 @@ namespace _2DGame.Utility
 
             if (enter && gameOverScreen.GetPlayerName().Length != 0)
             {
+                
                 isProcessingGameOver = true;
 
-                await leaderboard.Add(gameOverScreen.GetPlayerName(), Score.Value);
+                // await leaderboard.Add(gameOverScreen.GetPlayerName(), Score.Value);
                 leaderboard.Save();
                 game.CurrentState = GameLoop.GameState.LoadingMenu;
                 gameOverScreen.Reset(game);
