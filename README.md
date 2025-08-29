@@ -15,4 +15,4 @@ Witchi is a 2D platformer video game created using C# and the SFML library. The 
 
 ## Credits
 
-All the assets are free-to-use, most of them were downloaded from [OpenGameArt.org](https://opengameart.org/); the source of each individual asset can be found in the game's **Credits** menu. I would like to thank Georgi Kanchev for creating the [TransformableHitbox2D](https://github.com/georgi-kanchev/TransformableHitbox2D) NuGet package that was used in this project's collision code for this project, as well as for helping me with debugging SFML-related issues.
+All the assets are free-to-use, most of them were downloaded from [OpenGameArt.org](https://opengameart.org/); the source of each individual asset can be found in the game's **Credits** menu. I would like to thank Georgi Kanchev for creating the [TransformableHitbox2D](https://github.com/georgi-kanchev/TransformableHitbox2D) NuGet package that was used in this project's collision code, as well as for helping me with debugging SFML-related issues.
